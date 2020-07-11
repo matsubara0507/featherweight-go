@@ -18,7 +18,7 @@ jobs:
 
     - name: Build application
       run: |
-        elm make src/Main.elm --output=docs/static/main.js
+        elm make app/Main.elm --output=docs/static/main.js
         git diff --quiet || exit 1
 
     - name: Run test
