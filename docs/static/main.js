@@ -6627,8 +6627,11 @@ var $author$project$Go$Featherweight$Syntax$parser = function () {
 			$elm$parser$Parser$ignorer,
 			A2(
 				$elm$parser$Parser$ignorer,
-				A2($elm$parser$Parser$ignorer, parseMainExp, $elm$parser$Parser$spaces),
-				$elm$parser$Parser$symbol('}')),
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2($elm$parser$Parser$ignorer, parseMainExp, $elm$parser$Parser$spaces),
+					$elm$parser$Parser$symbol('}')),
+				$elm$parser$Parser$spaces),
 			$elm$parser$Parser$end));
 }();
 var $elm$parser$Parser$DeadEnd = F3(

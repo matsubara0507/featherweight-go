@@ -119,6 +119,7 @@ parser =
         |= parseMainExp
         |. spaces
         |. symbol "}"
+        |. spaces
         |. Parser.end
 
 
