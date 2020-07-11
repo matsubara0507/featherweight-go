@@ -1,5 +1,6 @@
 module Go.Parser.Helper exposing
     ( blockWith
+    , displayError
     , newlineSequence
     , newlines
     , whitespaces
@@ -58,3 +59,65 @@ newlines =
     succeed ()
         |. oneOf [ symbol "\n", symbol "\u{000D}" ]
         |. spaces
+
+
+displayError : List DeadEnd -> String
+displayError errs =
+    List.map displayDeadEnd errs |> String.join "\n"
+
+
+displayDeadEnd : DeadEnd -> String
+displayDeadEnd err =
+    String.concat
+        [ String.fromInt err.row
+        , ":"
+        , String.fromInt err.col
+        , " "
+        , displayProblem err.problem
+        ]
+
+
+displayProblem : Parser.Problem -> String
+displayProblem problem =
+    case problem of
+        Expecting msg ->
+            "expecting " ++ msg
+
+        ExpectingInt ->
+            "expecting Int"
+
+        ExpectingHex ->
+            "expecting Hex"
+
+        ExpectingOctal ->
+            "expecting Octal"
+
+        ExpectingBinary ->
+            "expecting Binary"
+
+        ExpectingFloat ->
+            "expecting Float"
+
+        ExpectingNumber ->
+            "expecting Number"
+
+        ExpectingVariable ->
+            "expecting Variable"
+
+        ExpectingSymbol msg ->
+            "expecting symbol '" ++ msg ++ "'"
+
+        ExpectingKeyword msg ->
+            "expecting keyword '" ++ msg ++ "'"
+
+        ExpectingEnd ->
+            "expecting end"
+
+        UnexpectedChar ->
+            "unexpecting Char"
+
+        Problem msg ->
+            msg
+
+        BadRepeat ->
+            "bad repeat"
