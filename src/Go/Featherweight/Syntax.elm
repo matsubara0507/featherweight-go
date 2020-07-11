@@ -9,9 +9,9 @@ module Go.Featherweight.Syntax exposing
     , TypeLiteral(..)
     , TypeName
     , VarName
-    , parse
-    , parseDecl
-    , parseExp
+    , declParser
+    , expParser
+    , parser
     )
 
 import Go.Parser.Helper exposing (..)
@@ -86,8 +86,8 @@ type Expression
         }
 
 
-parse : Parser Program
-parse =
+parser : Parser Program
+parser =
     let
         parseMainPackage =
             succeed ()
@@ -107,12 +107,12 @@ parse =
                 |. whitespaces
                 |. symbol "="
                 |. whitespaces
-                |= parseExp
+                |= expParser
     in
     succeed Program
         |. parseMainPackage
         |. newlines
-        |= newlineSequence parseMainFunc parseDecl
+        |= newlineSequence parseMainFunc declParser
         |. spaces
         |. symbol "{"
         |. spaces
@@ -122,125 +122,125 @@ parse =
         |. Parser.end
 
 
-parseDecl : Parser Declaration
-parseDecl =
+declParser : Parser Declaration
+declParser =
     oneOf
         [ succeed (\name lit -> TDecl { name = name, literal = lit })
             |. keyword "type"
             |. whitespaces
-            |= parseName
+            |= nameParser
             |. whitespaces
-            |= parseTypeLit
+            |= typeLitParser
         , succeed (\r n s v -> MDecl { recv = r, name = n, sign = s, retv = v })
             |. keyword "func"
             |. spaces
             |. symbol "("
-            |= parseNameAndType
+            |= nameAndTypeParser
             |. symbol ")"
             |. spaces
-            |= parseName
-            |= parseMethodSign
+            |= nameParser
+            |= methodSignParser
             |. spaces
             |. symbol "{"
             |. spaces
             |. keyword "return"
             |. whitespaces
-            |= parseExp
+            |= expParser
             |. spaces
             |. symbol "}"
         ]
 
 
-parseTypeLit : Parser TypeLiteral
-parseTypeLit =
+typeLitParser : Parser TypeLiteral
+typeLitParser =
     oneOf
         [ succeed Structure
             |. keyword "struct"
             |. spaces
             |. symbol "{"
             |. spaces
-            |= newlineSequence (symbol "}") parseNameAndType
+            |= newlineSequence (symbol "}") nameAndTypeParser
         , succeed Interface
             |. keyword "interface"
             |. spaces
             |. symbol "{"
             |. spaces
-            |= newlineSequence (symbol "}") parseMethodSpecific
+            |= newlineSequence (symbol "}") methodSpecificParser
         ]
 
 
-parseNameAndType : Parser ( String, TypeName )
-parseNameAndType =
+nameAndTypeParser : Parser ( String, TypeName )
+nameAndTypeParser =
     succeed (\n t -> ( n, t ))
-        |= parseName
+        |= nameParser
         |. whitespaces
-        |= parseName
+        |= nameParser
 
 
-parseMethodSpecific : Parser MethodSpecific
-parseMethodSpecific =
+methodSpecificParser : Parser MethodSpecific
+methodSpecificParser =
     succeed MethodSpecific
-        |= parseName
-        |= parseMethodSign
+        |= nameParser
+        |= methodSignParser
 
 
-parseMethodSign : Parser MethodSignature
-parseMethodSign =
+methodSignParser : Parser MethodSignature
+methodSignParser =
     succeed MethodSignature
-        |= blockWith ( "(", ")" ) parseNameAndType
+        |= blockWith ( "(", ")" ) nameAndTypeParser
         |. whitespaces
-        |= parseName
+        |= nameParser
 
 
-parseExp : Parser Expression
-parseExp =
-    parseName
-        |> Parser.andThen parseExpWithName
-        |> Parser.andThen (\exp -> loop exp stepParseExpWithExp)
+expParser : Parser Expression
+expParser =
+    nameParser
+        |> Parser.andThen expParserWithName
+        |> Parser.andThen (\exp -> loop exp stepExpParserWithExp)
 
 
-parseExpWithName : String -> Parser Expression
-parseExpWithName name =
+expParserWithName : String -> Parser Expression
+expParserWithName name =
     oneOf
         [ succeed (\args -> StructLiteral { struct = name, args = args })
-            |= blockWith ( "{", "}" ) (lazy <| \_ -> parseExp)
+            |= blockWith ( "{", "}" ) (lazy <| \_ -> expParser)
         , succeed (Var name)
         ]
 
 
-stepParseExpWithExp : Expression -> Parser (Step Expression Expression)
-stepParseExpWithExp exp =
+stepExpParserWithExp : Expression -> Parser (Step Expression Expression)
+stepExpParserWithExp exp =
     oneOf
         [ succeed Loop
             |. symbol "."
-            |= parseExpWithExp exp
+            |= expParserWithExp exp
         , succeed (Done exp)
         ]
 
 
-parseExpWithExp : Expression -> Parser Expression
-parseExpWithExp exp =
+expParserWithExp : Expression -> Parser Expression
+expParserWithExp exp =
     oneOf
         [ succeed (\ty -> TypeAssertion { exp = exp, ty = ty })
             |. symbol "("
-            |= parseName
+            |= nameParser
             |. symbol ")"
-        , parseName
-            |> Parser.andThen (parseExpWithExpAndName exp)
+        , nameParser
+            |> Parser.andThen (expParserWithExpAndName exp)
         ]
 
 
-parseExpWithExpAndName : Expression -> String -> Parser Expression
-parseExpWithExpAndName exp name =
+expParserWithExpAndName : Expression -> String -> Parser Expression
+expParserWithExpAndName exp name =
     oneOf
         [ succeed (\args -> MethodCall { exp = exp, method = name, args = args })
-            |= blockWith ( "(", ")" ) (lazy <| \_ -> parseExp)
+            |= blockWith ( "(", ")" ) (lazy <| \_ -> expParser)
         , succeed (SelectField { exp = exp, field = name })
         ]
 
 
-parseName : Parser String
-parseName =
+nameParser : Parser String
+nameParser =
     variable
         { start = Char.isAlphaNum
         , inner = \c -> Char.isAlphaNum c || c == '_'

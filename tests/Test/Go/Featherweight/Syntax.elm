@@ -10,10 +10,10 @@ import Test exposing (..)
 suite : Test
 suite =
     describe "module Go.Featherweight.Syntax"
-        [ describe "parse"
+        [ describe "parser"
             [ test "parse sample FG code" <|
                 \_ ->
-                    Parser.run parse sample
+                    Parser.run parser sample
                         |> Expect.equal
                             (Ok <|
                                 { decls =
@@ -92,10 +92,10 @@ suite =
                                 }
                             )
             ]
-        , describe "parseDecl"
+        , describe "declParser"
             [ test "parse structure type declaration" <|
                 \_ ->
-                    Parser.run parseDecl
+                    Parser.run declParser
                         "type hoge struct {\n  hoge1 int\n  hoge2 bool\n}"
                         |> Expect.equal
                             (Ok <|
@@ -106,7 +106,7 @@ suite =
                             )
             , test "parse interface type declaration" <|
                 \_ ->
-                    Parser.run parseDecl
+                    Parser.run declParser
                         "type hoge interface {\n  hoge1(x int) int\n  hoge2(x int, y bool) bool\n}"
                         |> Expect.equal
                             (Ok <|
@@ -131,7 +131,7 @@ suite =
                             )
             , test "parse method declaration" <|
                 \_ ->
-                    Parser.run parseDecl
+                    Parser.run declParser
                         "func (self int) hoge(x int, y bool) int {return self}"
                         |> Expect.equal
                             (Ok <|
@@ -146,10 +146,10 @@ suite =
                                     }
                             )
             ]
-        , describe "parseExp"
+        , describe "expParser"
             [ test "parse expression" <|
                 \_ ->
-                    Parser.run parseExp
+                    Parser.run expParser
                         "A{b}.hoge(x, y).Hoge.(int).Fuga"
                         |> Expect.equal
                             (Ok <|
