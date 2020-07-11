@@ -1,0 +1,24 @@
+name: Verify
+
+on:
+  pull_request: null
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: jorelali/setup-elm@v2
+      with:
+        elm-version: 0.19.1
+
+    - name: Build application
+      run: |
+        elm make src/Main.elm --output=docs/static/main.js
+        git diff --quiet || exit 1
+
+    - name: Run test
+      run: npx elm-test
