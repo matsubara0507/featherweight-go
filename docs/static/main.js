@@ -5281,6 +5281,1252 @@ var $author$project$Main$init = function (_v0) {
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$core$Result$andThen = F2(
+	function (callback, result) {
+		if (!result.$) {
+			var value = result.a;
+			return callback(value);
+		} else {
+			var msg = result.a;
+			return $elm$core$Result$Err(msg);
+		}
+	});
+var $author$project$Go$Featherweight$TypeError = function (a) {
+	return {$: 1, a: a};
+};
+var $elm$core$Basics$always = F2(
+	function (a, _v0) {
+		return a;
+	});
+var $elm$core$Basics$composeL = F3(
+	function (g, f, x) {
+		return g(
+			f(x));
+	});
+var $elm$core$Basics$compare = _Utils_compare;
+var $elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === -2) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
+				switch (_v1) {
+					case 0:
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 1:
+						return $elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Go$Featherweight$Type$findTypeLiteral = F2(
+	function (t, dmap) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			$elm$core$Result$Err('undefined type \'' + (t + '\'')),
+			A2(
+				$elm$core$Maybe$map,
+				A2($elm$core$Basics$composeL, $elm$core$Result$Ok, $elm$core$Tuple$first),
+				A2($elm$core$Dict$get, t, dmap)));
+	});
+var $elm$core$Result$map = F2(
+	function (func, ra) {
+		if (!ra.$) {
+			var a = ra.a;
+			return $elm$core$Result$Ok(
+				func(a));
+		} else {
+			var e = ra.a;
+			return $elm$core$Result$Err(e);
+		}
+	});
+var $author$project$Go$Featherweight$Type$checkTypeNameWith = F2(
+	function (dmap, t) {
+		return A2(
+			$elm$core$Result$map,
+			$elm$core$Basics$always(0),
+			A2($author$project$Go$Featherweight$Type$findTypeLiteral, t, dmap));
+	});
+var $elm$core$Result$map2 = F3(
+	function (func, ra, rb) {
+		if (ra.$ === 1) {
+			var x = ra.a;
+			return $elm$core$Result$Err(x);
+		} else {
+			var a = ra.a;
+			if (rb.$ === 1) {
+				var x = rb.a;
+				return $elm$core$Result$Err(x);
+			} else {
+				var b = rb.a;
+				return $elm$core$Result$Ok(
+					A2(func, a, b));
+			}
+		}
+	});
+var $elm_community$result_extra$Result$Extra$combine = A2(
+	$elm$core$List$foldr,
+	$elm$core$Result$map2($elm$core$List$cons),
+	$elm$core$Result$Ok(_List_Nil));
+var $author$project$Go$Featherweight$Type$combine_ = A2(
+	$elm$core$Basics$composeL,
+	$elm$core$Result$map(
+		$elm$core$Basics$always(0)),
+	$elm_community$result_extra$Result$Extra$combine);
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
+var $elm$core$Dict$Black = 1;
+var $elm$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+	});
+var $elm$core$Dict$Red = 0;
+var $elm$core$Dict$balance = F5(
+	function (color, key, value, left, right) {
+		if ((right.$ === -1) && (!right.a)) {
+			var _v1 = right.a;
+			var rK = right.b;
+			var rV = right.c;
+			var rLeft = right.d;
+			var rRight = right.e;
+			if ((left.$ === -1) && (!left.a)) {
+				var _v3 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var lLeft = left.d;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					0,
+					key,
+					value,
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					color,
+					rK,
+					rV,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					rRight);
+			}
+		} else {
+			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+				var _v5 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var _v6 = left.d;
+				var _v7 = _v6.a;
+				var llK = _v6.b;
+				var llV = _v6.c;
+				var llLeft = _v6.d;
+				var llRight = _v6.e;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					0,
+					lK,
+					lV,
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+			} else {
+				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
+			}
+		}
+	});
+var $elm$core$Dict$insertHelp = F3(
+	function (key, value, dict) {
+		if (dict.$ === -2) {
+			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		} else {
+			var nColor = dict.a;
+			var nKey = dict.b;
+			var nValue = dict.c;
+			var nLeft = dict.d;
+			var nRight = dict.e;
+			var _v1 = A2($elm$core$Basics$compare, key, nKey);
+			switch (_v1) {
+				case 0:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						A3($elm$core$Dict$insertHelp, key, value, nLeft),
+						nRight);
+				case 1:
+					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
+				default:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						nLeft,
+						A3($elm$core$Dict$insertHelp, key, value, nRight));
+			}
+		}
+	});
+var $elm$core$Dict$insert = F3(
+	function (key, value, dict) {
+		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
+		if ((_v0.$ === -1) && (!_v0.a)) {
+			var _v1 = _v0.a;
+			var k = _v0.b;
+			var v = _v0.c;
+			var l = _v0.d;
+			var r = _v0.e;
+			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _v0;
+			return x;
+		}
+	});
+var $elm$core$Dict$member = F2(
+	function (key, dict) {
+		var _v0 = A2($elm$core$Dict$get, key, dict);
+		if (!_v0.$) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+var $author$project$Go$Featherweight$Type$findDupItem = F2(
+	function (cache, xs) {
+		findDupItem:
+		while (true) {
+			if (!xs.b) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var y = xs.a;
+				var ys = xs.b;
+				if (A2($elm$core$Dict$member, y, cache)) {
+					return $elm$core$Maybe$Just(y);
+				} else {
+					var $temp$cache = A3($elm$core$Dict$insert, y, 0, cache),
+						$temp$xs = ys;
+					cache = $temp$cache;
+					xs = $temp$xs;
+					continue findDupItem;
+				}
+			}
+		}
+	});
+var $author$project$Go$Featherweight$Type$distinct = function (xs) {
+	return A2(
+		$elm$core$Maybe$withDefault,
+		$elm$core$Result$Ok(0),
+		A2(
+			$elm$core$Maybe$map,
+			$elm$core$Result$Err,
+			A2($author$project$Go$Featherweight$Type$findDupItem, $elm$core$Dict$empty, xs)));
+};
+var $elm$core$Result$map3 = F4(
+	function (func, ra, rb, rc) {
+		if (ra.$ === 1) {
+			var x = ra.a;
+			return $elm$core$Result$Err(x);
+		} else {
+			var a = ra.a;
+			if (rb.$ === 1) {
+				var x = rb.a;
+				return $elm$core$Result$Err(x);
+			} else {
+				var b = rb.a;
+				if (rc.$ === 1) {
+					var x = rc.a;
+					return $elm$core$Result$Err(x);
+				} else {
+					var c = rc.a;
+					return $elm$core$Result$Ok(
+						A3(func, a, b, c));
+				}
+			}
+		}
+	});
+var $elm$core$Result$mapError = F2(
+	function (f, result) {
+		if (!result.$) {
+			var v = result.a;
+			return $elm$core$Result$Ok(v);
+		} else {
+			var e = result.a;
+			return $elm$core$Result$Err(
+				f(e));
+		}
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $author$project$Go$Featherweight$Type$checkMethodSpecWith = F2(
+	function (dmap, s) {
+		return A4(
+			$elm$core$Result$map3,
+			F3(
+				function (_v0, _v1, _v2) {
+					return 0;
+				}),
+			A2(
+				$elm$core$Result$mapError,
+				function (x) {
+					return 'duplicated variable \'' + (x + ('\' on \'' + (s.Z + '\'')));
+				},
+				$author$project$Go$Featherweight$Type$distinct(
+					A2($elm$core$List$map, $elm$core$Tuple$first, s.aP.W))),
+			$author$project$Go$Featherweight$Type$combine_(
+				A2(
+					$elm$core$List$map,
+					$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
+					A2($elm$core$List$map, $elm$core$Tuple$second, s.aP.W))),
+			A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, s.aP.bH));
+	});
+var $author$project$Go$Featherweight$Type$uniqMethodSpec = function (s) {
+	return _Utils_Tuple3(
+		s.Z,
+		A2($elm$core$List$map, $elm$core$Tuple$second, s.aP.W),
+		s.aP.bH);
+};
+var $author$project$Go$Featherweight$Type$checkTypeLitWith = F3(
+	function (dmap, t, tlit) {
+		if (!tlit.$) {
+			var fs = tlit.a;
+			return A3(
+				$elm$core$Result$map2,
+				F2(
+					function (_v1, _v2) {
+						return 0;
+					}),
+				A2(
+					$elm$core$Result$mapError,
+					function (f) {
+						return 'duplicated field \'' + (f + ('\' on \'' + (t + '\'')));
+					},
+					$author$project$Go$Featherweight$Type$distinct(
+						A2($elm$core$List$map, $elm$core$Tuple$first, fs))),
+				$author$project$Go$Featherweight$Type$combine_(
+					A2(
+						$elm$core$List$map,
+						$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
+						A2($elm$core$List$map, $elm$core$Tuple$second, fs))));
+		} else {
+			var mss = tlit.a;
+			return A3(
+				$elm$core$Result$map2,
+				F2(
+					function (_v3, _v4) {
+						return 0;
+					}),
+				A2(
+					$elm$core$Result$mapError,
+					function (_v5) {
+						var m = _v5.a;
+						return 'duplicated method \'' + (m + ('\' on \'' + (t + '\'')));
+					},
+					$author$project$Go$Featherweight$Type$distinct(
+						A2($elm$core$List$map, $author$project$Go$Featherweight$Type$uniqMethodSpec, mss))),
+				$author$project$Go$Featherweight$Type$combine_(
+					A2(
+						$elm$core$List$map,
+						$author$project$Go$Featherweight$Type$checkMethodSpecWith(dmap),
+						mss)));
+		}
+	});
+var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
+	function (dmap, d) {
+		if (!d.$) {
+			var decl = d.a;
+			return A3($author$project$Go$Featherweight$Type$checkTypeLitWith, dmap, decl.Z, decl.bn);
+		} else {
+			var decl = d.a;
+			return $author$project$Go$Featherweight$Type$combine_(
+				_List_fromArray(
+					[
+						A2(
+						$elm$core$Result$mapError,
+						function (x) {
+							return 'duplicated variable \'' + (x + '\'');
+						},
+						$author$project$Go$Featherweight$Type$distinct(
+							A2(
+								$elm$core$List$cons,
+								decl.bD.a,
+								A2($elm$core$List$map, $elm$core$Tuple$first, decl.aP.W)))),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.bD.b),
+						$author$project$Go$Featherweight$Type$combine_(
+						A2(
+							$elm$core$List$map,
+							$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
+							A2($elm$core$List$map, $elm$core$Tuple$second, decl.aP.W))),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.aP.bH)
+					]));
+		}
+	});
+var $elm$core$List$maybeCons = F3(
+	function (f, mx, xs) {
+		var _v0 = f(mx);
+		if (!_v0.$) {
+			var x = _v0.a;
+			return A2($elm$core$List$cons, x, xs);
+		} else {
+			return xs;
+		}
+	});
+var $elm$core$List$filterMap = F2(
+	function (f, xs) {
+		return A3(
+			$elm$core$List$foldr,
+			$elm$core$List$maybeCons(f),
+			_List_Nil,
+			xs);
+	});
+var $author$project$Go$Featherweight$Type$mdecls = $elm$core$List$filterMap(
+	function (x) {
+		if (x.$ === 1) {
+			var decl = x.a;
+			return $elm$core$Maybe$Just(
+				_Utils_Tuple2(decl.bD.b, decl.Z));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, dict) {
+				var key = _v0.a;
+				var value = _v0.b;
+				return A3($elm$core$Dict$insert, key, value, dict);
+			}),
+		$elm$core$Dict$empty,
+		assocs);
+};
+var $elm$core$Dict$getMin = function (dict) {
+	getMin:
+	while (true) {
+		if ((dict.$ === -1) && (dict.d.$ === -1)) {
+			var left = dict.d;
+			var $temp$dict = left;
+			dict = $temp$dict;
+			continue getMin;
+		} else {
+			return dict;
+		}
+	}
+};
+var $elm$core$Dict$moveRedLeft = function (dict) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.e.d.$ === -1) && (!dict.e.d.a)) {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _v1 = dict.d;
+			var lClr = _v1.a;
+			var lK = _v1.b;
+			var lV = _v1.c;
+			var lLeft = _v1.d;
+			var lRight = _v1.e;
+			var _v2 = dict.e;
+			var rClr = _v2.a;
+			var rK = _v2.b;
+			var rV = _v2.c;
+			var rLeft = _v2.d;
+			var _v3 = rLeft.a;
+			var rlK = rLeft.b;
+			var rlV = rLeft.c;
+			var rlL = rLeft.d;
+			var rlR = rLeft.e;
+			var rRight = _v2.e;
+			return A5(
+				$elm$core$Dict$RBNode_elm_builtin,
+				0,
+				rlK,
+				rlV,
+				A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					rlL),
+				A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rlR, rRight));
+		} else {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _v4 = dict.d;
+			var lClr = _v4.a;
+			var lK = _v4.b;
+			var lV = _v4.c;
+			var lLeft = _v4.d;
+			var lRight = _v4.e;
+			var _v5 = dict.e;
+			var rClr = _v5.a;
+			var rK = _v5.b;
+			var rV = _v5.c;
+			var rLeft = _v5.d;
+			var rRight = _v5.e;
+			if (clr === 1) {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			}
+		}
+	} else {
+		return dict;
+	}
+};
+var $elm$core$Dict$moveRedRight = function (dict) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.d.d.$ === -1) && (!dict.d.d.a)) {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _v1 = dict.d;
+			var lClr = _v1.a;
+			var lK = _v1.b;
+			var lV = _v1.c;
+			var _v2 = _v1.d;
+			var _v3 = _v2.a;
+			var llK = _v2.b;
+			var llV = _v2.c;
+			var llLeft = _v2.d;
+			var llRight = _v2.e;
+			var lRight = _v1.e;
+			var _v4 = dict.e;
+			var rClr = _v4.a;
+			var rK = _v4.b;
+			var rV = _v4.c;
+			var rLeft = _v4.d;
+			var rRight = _v4.e;
+			return A5(
+				$elm$core$Dict$RBNode_elm_builtin,
+				0,
+				lK,
+				lV,
+				A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+				A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					lRight,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight)));
+		} else {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _v5 = dict.d;
+			var lClr = _v5.a;
+			var lK = _v5.b;
+			var lV = _v5.c;
+			var lLeft = _v5.d;
+			var lRight = _v5.e;
+			var _v6 = dict.e;
+			var rClr = _v6.a;
+			var rK = _v6.b;
+			var rV = _v6.c;
+			var rLeft = _v6.d;
+			var rRight = _v6.e;
+			if (clr === 1) {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			}
+		}
+	} else {
+		return dict;
+	}
+};
+var $elm$core$Dict$removeHelpPrepEQGT = F7(
+	function (targetKey, dict, color, key, value, left, right) {
+		if ((left.$ === -1) && (!left.a)) {
+			var _v1 = left.a;
+			var lK = left.b;
+			var lV = left.c;
+			var lLeft = left.d;
+			var lRight = left.e;
+			return A5(
+				$elm$core$Dict$RBNode_elm_builtin,
+				color,
+				lK,
+				lV,
+				lLeft,
+				A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, lRight, right));
+		} else {
+			_v2$2:
+			while (true) {
+				if ((right.$ === -1) && (right.a === 1)) {
+					if (right.d.$ === -1) {
+						if (right.d.a === 1) {
+							var _v3 = right.a;
+							var _v4 = right.d;
+							var _v5 = _v4.a;
+							return $elm$core$Dict$moveRedRight(dict);
+						} else {
+							break _v2$2;
+						}
+					} else {
+						var _v6 = right.a;
+						var _v7 = right.d;
+						return $elm$core$Dict$moveRedRight(dict);
+					}
+				} else {
+					break _v2$2;
+				}
+			}
+			return dict;
+		}
+	});
+var $elm$core$Dict$removeMin = function (dict) {
+	if ((dict.$ === -1) && (dict.d.$ === -1)) {
+		var color = dict.a;
+		var key = dict.b;
+		var value = dict.c;
+		var left = dict.d;
+		var lColor = left.a;
+		var lLeft = left.d;
+		var right = dict.e;
+		if (lColor === 1) {
+			if ((lLeft.$ === -1) && (!lLeft.a)) {
+				var _v3 = lLeft.a;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					color,
+					key,
+					value,
+					$elm$core$Dict$removeMin(left),
+					right);
+			} else {
+				var _v4 = $elm$core$Dict$moveRedLeft(dict);
+				if (_v4.$ === -1) {
+					var nColor = _v4.a;
+					var nKey = _v4.b;
+					var nValue = _v4.c;
+					var nLeft = _v4.d;
+					var nRight = _v4.e;
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						$elm$core$Dict$removeMin(nLeft),
+						nRight);
+				} else {
+					return $elm$core$Dict$RBEmpty_elm_builtin;
+				}
+			}
+		} else {
+			return A5(
+				$elm$core$Dict$RBNode_elm_builtin,
+				color,
+				key,
+				value,
+				$elm$core$Dict$removeMin(left),
+				right);
+		}
+	} else {
+		return $elm$core$Dict$RBEmpty_elm_builtin;
+	}
+};
+var $elm$core$Dict$removeHelp = F2(
+	function (targetKey, dict) {
+		if (dict.$ === -2) {
+			return $elm$core$Dict$RBEmpty_elm_builtin;
+		} else {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			if (_Utils_cmp(targetKey, key) < 0) {
+				if ((left.$ === -1) && (left.a === 1)) {
+					var _v4 = left.a;
+					var lLeft = left.d;
+					if ((lLeft.$ === -1) && (!lLeft.a)) {
+						var _v6 = lLeft.a;
+						return A5(
+							$elm$core$Dict$RBNode_elm_builtin,
+							color,
+							key,
+							value,
+							A2($elm$core$Dict$removeHelp, targetKey, left),
+							right);
+					} else {
+						var _v7 = $elm$core$Dict$moveRedLeft(dict);
+						if (_v7.$ === -1) {
+							var nColor = _v7.a;
+							var nKey = _v7.b;
+							var nValue = _v7.c;
+							var nLeft = _v7.d;
+							var nRight = _v7.e;
+							return A5(
+								$elm$core$Dict$balance,
+								nColor,
+								nKey,
+								nValue,
+								A2($elm$core$Dict$removeHelp, targetKey, nLeft),
+								nRight);
+						} else {
+							return $elm$core$Dict$RBEmpty_elm_builtin;
+						}
+					}
+				} else {
+					return A5(
+						$elm$core$Dict$RBNode_elm_builtin,
+						color,
+						key,
+						value,
+						A2($elm$core$Dict$removeHelp, targetKey, left),
+						right);
+				}
+			} else {
+				return A2(
+					$elm$core$Dict$removeHelpEQGT,
+					targetKey,
+					A7($elm$core$Dict$removeHelpPrepEQGT, targetKey, dict, color, key, value, left, right));
+			}
+		}
+	});
+var $elm$core$Dict$removeHelpEQGT = F2(
+	function (targetKey, dict) {
+		if (dict.$ === -1) {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			if (_Utils_eq(targetKey, key)) {
+				var _v1 = $elm$core$Dict$getMin(right);
+				if (_v1.$ === -1) {
+					var minKey = _v1.b;
+					var minValue = _v1.c;
+					return A5(
+						$elm$core$Dict$balance,
+						color,
+						minKey,
+						minValue,
+						left,
+						$elm$core$Dict$removeMin(right));
+				} else {
+					return $elm$core$Dict$RBEmpty_elm_builtin;
+				}
+			} else {
+				return A5(
+					$elm$core$Dict$balance,
+					color,
+					key,
+					value,
+					left,
+					A2($elm$core$Dict$removeHelp, targetKey, right));
+			}
+		} else {
+			return $elm$core$Dict$RBEmpty_elm_builtin;
+		}
+	});
+var $elm$core$Dict$remove = F2(
+	function (key, dict) {
+		var _v0 = A2($elm$core$Dict$removeHelp, key, dict);
+		if ((_v0.$ === -1) && (!_v0.a)) {
+			var _v1 = _v0.a;
+			var k = _v0.b;
+			var v = _v0.c;
+			var l = _v0.d;
+			var r = _v0.e;
+			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _v0;
+			return x;
+		}
+	});
+var $elm$core$Dict$update = F3(
+	function (targetKey, alter, dictionary) {
+		var _v0 = alter(
+			A2($elm$core$Dict$get, targetKey, dictionary));
+		if (!_v0.$) {
+			var value = _v0.a;
+			return A3($elm$core$Dict$insert, targetKey, value, dictionary);
+		} else {
+			return A2($elm$core$Dict$remove, targetKey, dictionary);
+		}
+	});
+var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
+	var update = F2(
+		function (decl, _v2) {
+			var tlit = _v2.a;
+			var mss = _v2.b;
+			return _Utils_Tuple2(
+				tlit,
+				A2(
+					$elm$core$List$cons,
+					{Z: decl.Z, aP: decl.aP},
+					mss));
+		});
+	return A3(
+		$elm$core$List$foldl,
+		function (d) {
+			if (!d.$) {
+				return $elm$core$Basics$identity;
+			} else {
+				var decl = d.a;
+				return A2(
+					$elm$core$Dict$update,
+					decl.bD.b,
+					$elm$core$Maybe$map(
+						update(decl)));
+			}
+		},
+		$elm$core$Dict$fromList(
+			A2(
+				$elm$core$List$filterMap,
+				function (t) {
+					if (!t.$) {
+						var decl = t.a;
+						return $elm$core$Maybe$Just(
+							_Utils_Tuple2(
+								decl.Z,
+								_Utils_Tuple2(decl.bn, _List_Nil)));
+					} else {
+						return $elm$core$Maybe$Nothing;
+					}
+				},
+				decls)),
+		decls);
+};
+var $author$project$Go$Featherweight$Type$newEnv = function (decls) {
+	return _Utils_Tuple2(
+		$elm$core$Dict$empty,
+		$author$project$Go$Featherweight$Type$mkDeclMap(decls));
+};
+var $author$project$Go$Featherweight$Type$tdecls = $elm$core$List$filterMap(
+	function (x) {
+		if (!x.$) {
+			var decl = x.a;
+			return $elm$core$Maybe$Just(decl.Z);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm_community$result_extra$Result$Extra$combineMap = function (f) {
+	return A2(
+		$elm$core$Basics$composeL,
+		$elm_community$result_extra$Result$Extra$combine,
+		$elm$core$List$map(f));
+};
+var $author$project$Go$Featherweight$Type$fields = F2(
+	function (t, tlit) {
+		if (!tlit.$) {
+			var fs = tlit.a;
+			return $elm$core$Result$Ok(fs);
+		} else {
+			return $elm$core$Result$Err('type \'' + (t + '\' is interface, but expect structure'));
+		}
+	});
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$Go$Featherweight$Type$findFieldTypeOn = F2(
+	function (_v0, name) {
+		var t = _v0.a;
+		var tlit = _v0.b;
+		return A2(
+			$elm$core$Result$andThen,
+			function (fs) {
+				var _v1 = $elm$core$List$head(
+					A2(
+						$elm$core$List$filter,
+						function (_v2) {
+							var f = _v2.a;
+							return _Utils_eq(f, name);
+						},
+						fs));
+				if (!_v1.$) {
+					var _v3 = _v1.a;
+					var ty = _v3.b;
+					return $elm$core$Result$Ok(ty);
+				} else {
+					return $elm$core$Result$Err('undefined field \'' + (name + ('\' on \'' + (t + '\''))));
+				}
+			},
+			A2($author$project$Go$Featherweight$Type$fields, t, tlit));
+	});
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (!maybeValue.$) {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Go$Featherweight$Type$findMethodSpecific = F2(
+	function (_v0, dmap) {
+		var t = _v0.a;
+		var m = _v0.b;
+		return A2(
+			$elm$core$Maybe$withDefault,
+			$elm$core$Result$Err('undefined method \'' + (t + ('.' + (m + '\'')))),
+			A2(
+				$elm$core$Maybe$map,
+				$elm$core$Result$Ok,
+				A2(
+					$elm$core$Maybe$andThen,
+					$elm$core$List$head,
+					A2(
+						$elm$core$Maybe$map,
+						$elm$core$List$filter(
+							function (s) {
+								return _Utils_eq(s.Z, m);
+							}),
+						A2(
+							$elm$core$Maybe$map,
+							$elm$core$Tuple$second,
+							A2($elm$core$Dict$get, t, dmap))))));
+	});
+var $elm_community$result_extra$Result$Extra$join = function (r) {
+	if (r.$ === 1) {
+		var x = r.a;
+		return $elm$core$Result$Err(x);
+	} else {
+		if (r.a.$ === 1) {
+			var x = r.a.a;
+			return $elm$core$Result$Err(x);
+		} else {
+			var a = r.a.a;
+			return $elm$core$Result$Ok(a);
+		}
+	}
+};
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
+var $elm$core$Basics$not = _Basics_not;
+var $elm$core$List$all = F2(
+	function (isOkay, list) {
+		return !A2(
+			$elm$core$List$any,
+			A2($elm$core$Basics$composeL, $elm$core$Basics$not, isOkay),
+			list);
+	});
+var $elm$core$Maybe$map2 = F3(
+	function (func, ma, mb) {
+		if (ma.$ === 1) {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 1) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				return $elm$core$Maybe$Just(
+					A2(func, a, b));
+			}
+		}
+	});
+var $elm$core$List$member = F2(
+	function (x, xs) {
+		return A2(
+			$elm$core$List$any,
+			function (a) {
+				return _Utils_eq(a, x);
+			},
+			xs);
+	});
+var $author$project$Go$Featherweight$Type$subtypeWith = F3(
+	function (dmap, t, u) {
+		var err = $elm$core$Result$Err('type \'' + (t + ('\' is not subtype of \'' + (u + '\''))));
+		return A2(
+			$elm$core$Result$andThen,
+			function (tlit) {
+				if (!tlit.$) {
+					return _Utils_eq(t, u) ? $elm$core$Result$Ok(0) : err;
+				} else {
+					return A2(
+						$elm$core$Maybe$withDefault,
+						err,
+						A3(
+							$elm$core$Maybe$map2,
+							F2(
+								function (ms, ns) {
+									return A2(
+										$elm$core$List$all,
+										function (m) {
+											return A2($elm$core$List$member, m, ms);
+										},
+										ns) ? $elm$core$Result$Ok(0) : err;
+								}),
+							A2(
+								$elm$core$Maybe$map,
+								$elm$core$List$map($author$project$Go$Featherweight$Type$uniqMethodSpec),
+								A2(
+									$elm$core$Maybe$map,
+									$elm$core$Tuple$second,
+									A2($elm$core$Dict$get, t, dmap))),
+							A2(
+								$elm$core$Maybe$map,
+								$elm$core$List$map($author$project$Go$Featherweight$Type$uniqMethodSpec),
+								A2(
+									$elm$core$Maybe$map,
+									$elm$core$Tuple$second,
+									A2($elm$core$Dict$get, u, dmap)))));
+				}
+			},
+			A2($author$project$Go$Featherweight$Type$findTypeLiteral, u, dmap));
+	});
+var $author$project$Go$Featherweight$Type$typeInferWith = F2(
+	function (env, exp) {
+		var _v0 = env;
+		var gamma = _v0.a;
+		var dmap = _v0.b;
+		switch (exp.$) {
+			case 0:
+				var name = exp.a;
+				return A2(
+					$elm$core$Maybe$withDefault,
+					$elm$core$Result$Err('undefined variable \'' + (name + '\'')),
+					A2(
+						$elm$core$Maybe$map,
+						$elm$core$Result$Ok,
+						A2($elm$core$Dict$get, name, gamma)));
+			case 1:
+				var mcall = exp.a;
+				return A2(
+					$elm$core$Result$andThen,
+					function (s) {
+						return A2(
+							$elm$core$Result$map,
+							function (_v2) {
+								return s.aP.bH;
+							},
+							$elm_community$result_extra$Result$Extra$join(
+								A3(
+									$elm$core$Result$map2,
+									function (ts) {
+										return A2(
+											$elm$core$Basics$composeL,
+											$author$project$Go$Featherweight$Type$combine_,
+											A2(
+												$elm$core$List$map2,
+												$author$project$Go$Featherweight$Type$subtypeWith(dmap),
+												ts));
+									},
+									A2(
+										$elm_community$result_extra$Result$Extra$combineMap,
+										$author$project$Go$Featherweight$Type$typeInferWith(env),
+										mcall.W),
+									$elm$core$Result$Ok(
+										A2($elm$core$List$map, $elm$core$Tuple$second, s.aP.W)))));
+					},
+					A2(
+						$elm$core$Result$andThen,
+						function (t) {
+							return A2(
+								$author$project$Go$Featherweight$Type$findMethodSpecific,
+								_Utils_Tuple2(t, mcall.bo),
+								dmap);
+						},
+						A2($author$project$Go$Featherweight$Type$typeInferWith, env, mcall.S)));
+			case 2:
+				var slit = exp.a;
+				return A2(
+					$elm$core$Result$map,
+					function (_v4) {
+						return slit.bN;
+					},
+					A4(
+						$elm$core$Result$map3,
+						F2(
+							function (_v3, ts) {
+								return A2(
+									$elm$core$Basics$composeL,
+									$author$project$Go$Featherweight$Type$combine_,
+									A2(
+										$elm$core$List$map2,
+										$author$project$Go$Featherweight$Type$subtypeWith(dmap),
+										ts));
+							}),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bN),
+						A2(
+							$elm_community$result_extra$Result$Extra$combineMap,
+							$author$project$Go$Featherweight$Type$typeInferWith(env),
+							slit.W),
+						A2(
+							$elm$core$Result$andThen,
+							A2(
+								$elm$core$Basics$composeL,
+								$elm$core$Result$map(
+									$elm$core$List$map($elm$core$Tuple$second)),
+								$author$project$Go$Featherweight$Type$fields(slit.bN)),
+							A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bN, dmap))));
+			case 3:
+				var sel = exp.a;
+				return A2(
+					$elm$core$Result$andThen,
+					function (t) {
+						return A2(
+							$elm$core$Result$andThen,
+							function (lit) {
+								return A2(
+									$author$project$Go$Featherweight$Type$findFieldTypeOn,
+									_Utils_Tuple2(t, lit),
+									sel.bg);
+							},
+							A2($author$project$Go$Featherweight$Type$findTypeLiteral, t, dmap));
+					},
+					A2($author$project$Go$Featherweight$Type$typeInferWith, env, sel.S));
+			default:
+				var ta = exp.a;
+				return A2(
+					$elm$core$Result$map,
+					function (_v6) {
+						return ta.bT;
+					},
+					$elm_community$result_extra$Result$Extra$join(
+						A3(
+							$elm$core$Result$map2,
+							function (_v5) {
+								return A2($author$project$Go$Featherweight$Type$subtypeWith, dmap, ta.bT);
+							},
+							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, ta.bT),
+							A2($author$project$Go$Featherweight$Type$typeInferWith, env, ta.S))));
+		}
+	});
+var $author$project$Go$Featherweight$Type$check = function (p) {
+	var env = $author$project$Go$Featherweight$Type$newEnv(p.a6);
+	var dmap = env.b;
+	return $author$project$Go$Featherweight$Type$combine_(
+		_List_fromArray(
+			[
+				A2(
+				$elm$core$Result$mapError,
+				function (x) {
+					return 'duplicated type \'' + (x + '\'');
+				},
+				$author$project$Go$Featherweight$Type$distinct(
+					$author$project$Go$Featherweight$Type$tdecls(p.a6))),
+				A2(
+				$elm$core$Result$mapError,
+				function (_v0) {
+					var x = _v0.a;
+					var y = _v0.b;
+					return 'duplicated method \'' + (x + ('.' + (y + '\'')));
+				},
+				$author$project$Go$Featherweight$Type$distinct(
+					$author$project$Go$Featherweight$Type$mdecls(p.a6))),
+				$author$project$Go$Featherweight$Type$combine_(
+				A2(
+					$elm$core$List$map,
+					$author$project$Go$Featherweight$Type$checkDeclWith(dmap),
+					p.a6)),
+				A2(
+				$elm$core$Result$map,
+				$elm$core$Basics$always(0),
+				A2(
+					$author$project$Go$Featherweight$Type$typeInferWith,
+					$author$project$Go$Featherweight$Type$newEnv(p.a6),
+					p.S))
+			]));
+};
+var $author$project$Go$Featherweight$check = A2(
+	$elm$core$Basics$composeL,
+	$elm$core$Result$mapError($author$project$Go$Featherweight$TypeError),
+	$author$project$Go$Featherweight$Type$check);
 var $elm$core$String$concat = function (strings) {
 	return A2($elm$core$String$join, '', strings);
 };
@@ -5336,6 +6582,18 @@ var $author$project$Go$Parser$Helper$displayError = function (errs) {
 		$elm$core$String$join,
 		'\n',
 		A2($elm$core$List$map, $author$project$Go$Parser$Helper$displayDeadEnd, errs));
+};
+var $author$project$Go$Featherweight$displayError = function (err) {
+	if (!err.$) {
+		var txt = err.a;
+		return $author$project$Go$Parser$Helper$displayError(txt);
+	} else {
+		var txt = err.a;
+		return txt;
+	}
+};
+var $author$project$Go$Featherweight$ParseError = function (a) {
+	return {$: 0, a: a};
 };
 var $author$project$Go$Featherweight$Syntax$Program = F2(
 	function (decls, exp) {
@@ -5423,10 +6681,6 @@ var $elm$parser$Parser$Advanced$andThen = F2(
 	});
 var $elm$parser$Parser$andThen = $elm$parser$Parser$Advanced$andThen;
 var $elm$parser$Parser$Optional = 1;
-var $elm$core$Basics$always = F2(
-	function (a, _v0) {
-		return a;
-	});
 var $elm$parser$Parser$Advanced$map2 = F3(
 	function (func, _v0, _v1) {
 		var parseA = _v0;
@@ -5753,7 +7007,6 @@ var $elm$parser$Parser$Advanced$isSubString = _Parser_isSubString;
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
-var $elm$core$Basics$not = _Basics_not;
 var $elm$parser$Parser$Advanced$token = function (_v0) {
 	var str = _v0.a;
 	var expecting = _v0.b;
@@ -5920,118 +7173,7 @@ var $elm$parser$Parser$loop = F2(
 			});
 	});
 var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
-var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Set$empty = $elm$core$Dict$empty;
-var $elm$core$Dict$Black = 1;
-var $elm$core$Dict$RBNode_elm_builtin = F5(
-	function (a, b, c, d, e) {
-		return {$: -1, a: a, b: b, c: c, d: d, e: e};
-	});
-var $elm$core$Dict$Red = 0;
-var $elm$core$Dict$balance = F5(
-	function (color, key, value, left, right) {
-		if ((right.$ === -1) && (!right.a)) {
-			var _v1 = right.a;
-			var rK = right.b;
-			var rV = right.c;
-			var rLeft = right.d;
-			var rRight = right.e;
-			if ((left.$ === -1) && (!left.a)) {
-				var _v3 = left.a;
-				var lK = left.b;
-				var lV = left.c;
-				var lLeft = left.d;
-				var lRight = left.e;
-				return A5(
-					$elm$core$Dict$RBNode_elm_builtin,
-					0,
-					key,
-					value,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
-			} else {
-				return A5(
-					$elm$core$Dict$RBNode_elm_builtin,
-					color,
-					rK,
-					rV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
-					rRight);
-			}
-		} else {
-			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
-				var _v5 = left.a;
-				var lK = left.b;
-				var lV = left.c;
-				var _v6 = left.d;
-				var _v7 = _v6.a;
-				var llK = _v6.b;
-				var llV = _v6.c;
-				var llLeft = _v6.d;
-				var llRight = _v6.e;
-				var lRight = left.e;
-				return A5(
-					$elm$core$Dict$RBNode_elm_builtin,
-					0,
-					lK,
-					lV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
-			} else {
-				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
-			}
-		}
-	});
-var $elm$core$Basics$compare = _Utils_compare;
-var $elm$core$Dict$insertHelp = F3(
-	function (key, value, dict) {
-		if (dict.$ === -2) {
-			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
-		} else {
-			var nColor = dict.a;
-			var nKey = dict.b;
-			var nValue = dict.c;
-			var nLeft = dict.d;
-			var nRight = dict.e;
-			var _v1 = A2($elm$core$Basics$compare, key, nKey);
-			switch (_v1) {
-				case 0:
-					return A5(
-						$elm$core$Dict$balance,
-						nColor,
-						nKey,
-						nValue,
-						A3($elm$core$Dict$insertHelp, key, value, nLeft),
-						nRight);
-				case 1:
-					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
-				default:
-					return A5(
-						$elm$core$Dict$balance,
-						nColor,
-						nKey,
-						nValue,
-						nLeft,
-						A3($elm$core$Dict$insertHelp, key, value, nRight));
-			}
-		}
-	});
-var $elm$core$Dict$insert = F3(
-	function (key, value, dict) {
-		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
-		if ((_v0.$ === -1) && (!_v0.a)) {
-			var _v1 = _v0.a;
-			var k = _v0.b;
-			var v = _v0.c;
-			var l = _v0.d;
-			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
-		} else {
-			var x = _v0;
-			return x;
-		}
-	});
 var $elm$core$Set$insert = F2(
 	function (key, _v0) {
 		var dict = _v0;
@@ -6044,46 +7186,6 @@ var $author$project$Go$Featherweight$Syntax$keywords = $elm$core$Set$fromList(
 	_List_fromArray(
 		['package', 'main', 'func', 'struct', 'interface', 'type', 'return']));
 var $elm$parser$Parser$ExpectingVariable = {$: 7};
-var $elm$core$Dict$get = F2(
-	function (targetKey, dict) {
-		get:
-		while (true) {
-			if (dict.$ === -2) {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				var key = dict.b;
-				var value = dict.c;
-				var left = dict.d;
-				var right = dict.e;
-				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
-				switch (_v1) {
-					case 0:
-						var $temp$targetKey = targetKey,
-							$temp$dict = left;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-					case 1:
-						return $elm$core$Maybe$Just(value);
-					default:
-						var $temp$targetKey = targetKey,
-							$temp$dict = right;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-				}
-			}
-		}
-	});
-var $elm$core$Dict$member = F2(
-	function (key, dict) {
-		var _v0 = A2($elm$core$Dict$get, key, dict);
-		if (!_v0.$) {
-			return true;
-		} else {
-			return false;
-		}
-	});
 var $elm$core$Set$member = F2(
 	function (key, _v0) {
 		var dict = _v0;
@@ -6693,8 +7795,15 @@ var $elm$parser$Parser$run = F2(
 				A2($elm$core$List$map, $elm$parser$Parser$problemToDeadEnd, problems));
 		}
 	});
-var $author$project$Main$parseFG = function (model) {
-	var _v0 = A2($elm$parser$Parser$run, $author$project$Go$Featherweight$Syntax$parser, model.K);
+var $author$project$Go$Featherweight$parse = A2(
+	$elm$core$Basics$composeL,
+	$elm$core$Result$mapError($author$project$Go$Featherweight$ParseError),
+	$elm$parser$Parser$run($author$project$Go$Featherweight$Syntax$parser));
+var $author$project$Main$checkFG = function (model) {
+	var _v0 = A2(
+		$elm$core$Result$andThen,
+		$author$project$Go$Featherweight$check,
+		$author$project$Go$Featherweight$parse(model.K));
 	if (!_v0.$) {
 		return _Utils_update(
 			model,
@@ -6704,7 +7813,7 @@ var $author$project$Main$parseFG = function (model) {
 		return _Utils_update(
 			model,
 			{
-				J: $author$project$Go$Parser$Helper$displayError(err)
+				J: $author$project$Go$Featherweight$displayError(err)
 			});
 	}
 };
@@ -6712,7 +7821,7 @@ var $author$project$Main$update = F2(
 	function (msg, model) {
 		var txt = msg;
 		return _Utils_Tuple2(
-			$author$project$Main$parseFG(
+			$author$project$Main$checkFG(
 				_Utils_update(
 					model,
 					{K: txt})),
@@ -6804,7 +7913,7 @@ var $author$project$Main$viewFormValidateFG = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$elm$html$Html$text('parse OK')
+				$elm$html$Html$text('OK')
 			])));
 };
 var $author$project$Main$viewFormFG = function (model) {

@@ -2,12 +2,10 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
-import Go.Featherweight.Syntax as FG
-import Go.Parser.Helper as Parser
+import Go.Featherweight as FG
 import Html as Html exposing (..)
 import Html.Attributes exposing (attribute, class, id, style)
 import Html.Events exposing (onInput)
-import Parser
 
 
 main : Program () Model Msg
@@ -49,17 +47,17 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         InputText txt ->
-            ( parseFG { model | input = txt }, Cmd.none )
+            ( checkFG { model | input = txt }, Cmd.none )
 
 
-parseFG : Model -> Model
-parseFG model =
-    case Parser.run FG.parser model.input of
+checkFG : Model -> Model
+checkFG model =
+    case Result.andThen FG.check <| FG.parse model.input of
         Ok _ ->
             { model | error = "" }
 
         Err err ->
-            { model | error = Parser.displayError err }
+            { model | error = FG.displayError err }
 
 
 view : Model -> Html Msg
@@ -115,4 +113,4 @@ viewFormValidateFG model =
     else
         p
             [ class "note success", id "fg-code-validation" ]
-            [ text "parse OK" ]
+            [ text "OK" ]

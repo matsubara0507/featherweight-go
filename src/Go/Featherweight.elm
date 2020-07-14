@@ -2,11 +2,13 @@ module Go.Featherweight exposing
     ( Error(..)
     , Program
     , check
+    , displayError
     , parse
     )
 
 import Go.Featherweight.Syntax as FG
 import Go.Featherweight.Type as FG
+import Go.Parser.Helper as Parser
 import Parser exposing (DeadEnd)
 
 
@@ -17,6 +19,16 @@ type alias Program =
 type Error
     = ParseError (List DeadEnd)
     | TypeError FG.TypeError
+
+
+displayError : Error -> String
+displayError err =
+    case err of
+        ParseError txt ->
+            Parser.displayError txt
+
+        TypeError txt ->
+            txt
 
 
 parse : String -> Result Error Program
