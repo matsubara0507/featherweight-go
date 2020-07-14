@@ -1,9 +1,7 @@
 module Test.Go.Featherweight.Type exposing (suite)
 
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, int, list, string)
 import Go.Featherweight as FG
-
 import Test exposing (..)
 
 

@@ -1,7 +1,6 @@
 module Test.Go.Featherweight.Syntax exposing (suite)
 
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, int, list, string)
 import Go.Featherweight.Syntax exposing (..)
 import Parser
 import Test exposing (..)
