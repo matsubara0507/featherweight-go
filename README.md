@@ -6,6 +6,14 @@ Implement [Featherweight Go](https://arxiv.org/abs/2005.11710) using Elm
 
 ![](image/page.jpg)
 
+## Implement
+
+- [x] FG code parser
+- [x] FG type checker
+- [ ] FGG code parser
+- [ ] FGG type checker
+- [ ] Monomorphisation
+
 ## Build
 
 ```
