@@ -27,8 +27,8 @@ displayError err =
         ParseError txt ->
             Parser.displayError txt
 
-        TypeError txt ->
-            txt
+        TypeError e ->
+            FG.displayError e
 
 
 parse : String -> Result Error Program

@@ -2,6 +2,7 @@ module Test.Go.Featherweight.Type exposing (suite)
 
 import Expect exposing (Expectation)
 import Go.Featherweight as FG
+import Go.Featherweight.Type exposing (TypeError(..))
 import Test exposing (..)
 
 
@@ -28,7 +29,8 @@ suite =
                 \_ ->
                     FG.parse failCode1
                         |> Result.andThen FG.check
-                        |> Expect.equal (Err <| FG.TypeError "undefined type 'Fuga'")
+                        |> Expect.equal
+                            (Err <| FG.TypeError <| Undefined "type" "Fuga")
             ]
         ]
 

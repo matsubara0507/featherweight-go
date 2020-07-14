@@ -5294,9 +5294,21 @@ var $elm$core$Result$andThen = F2(
 var $author$project$Go$Featherweight$TypeError = function (a) {
 	return {$: 1, a: a};
 };
+var $author$project$Go$Featherweight$Type$DuplicatedDefinition = F2(
+	function (a, b) {
+		return {$: 0, a: a, b: b};
+	});
 var $elm$core$Basics$always = F2(
 	function (a, _v0) {
 		return a;
+	});
+var $author$project$Go$Featherweight$Type$ErrorOn = F2(
+	function (a, b) {
+		return {$: 4, a: a, b: b};
+	});
+var $author$project$Go$Featherweight$Type$Undefined = F2(
+	function (a, b) {
+		return {$: 1, a: a, b: b};
 	});
 var $elm$core$Basics$composeL = F3(
 	function (g, f, x) {
@@ -5358,7 +5370,8 @@ var $author$project$Go$Featherweight$Type$findTypeLiteral = F2(
 	function (t, dmap) {
 		return A2(
 			$elm$core$Maybe$withDefault,
-			$elm$core$Result$Err('undefined type \'' + (t + '\'')),
+			$elm$core$Result$Err(
+				A2($author$project$Go$Featherweight$Type$Undefined, 'type', t)),
 			A2(
 				$elm$core$Maybe$map,
 				A2($elm$core$Basics$composeL, $elm$core$Result$Ok, $elm$core$Tuple$first),
@@ -5605,9 +5618,10 @@ var $author$project$Go$Featherweight$Type$checkMethodSpecWith = F2(
 				}),
 			A2(
 				$elm$core$Result$mapError,
-				function (x) {
-					return 'duplicated variable \'' + (x + ('\' on \'' + (s.aa + '\'')));
-				},
+				A2(
+					$elm$core$Basics$composeL,
+					$author$project$Go$Featherweight$Type$ErrorOn(s.aa),
+					$author$project$Go$Featherweight$Type$DuplicatedDefinition('variable')),
 				$author$project$Go$Featherweight$Type$distinct(
 					A2($elm$core$List$map, $elm$core$Tuple$first, s.aR.X))),
 			$author$project$Go$Featherweight$Type$combine_(
@@ -5623,8 +5637,8 @@ var $author$project$Go$Featherweight$Type$uniqMethodSpec = function (s) {
 		A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X),
 		s.aR.bJ);
 };
-var $author$project$Go$Featherweight$Type$checkTypeLitWith = F3(
-	function (dmap, t, tlit) {
+var $author$project$Go$Featherweight$Type$checkTypeLitWith = F2(
+	function (dmap, tlit) {
 		if (!tlit.$) {
 			var fs = tlit.a;
 			return A3(
@@ -5635,9 +5649,7 @@ var $author$project$Go$Featherweight$Type$checkTypeLitWith = F3(
 					}),
 				A2(
 					$elm$core$Result$mapError,
-					function (f) {
-						return 'duplicated field \'' + (f + ('\' on \'' + (t + '\'')));
-					},
+					$author$project$Go$Featherweight$Type$DuplicatedDefinition('field'),
 					$author$project$Go$Featherweight$Type$distinct(
 						A2($elm$core$List$map, $elm$core$Tuple$first, fs))),
 				$author$project$Go$Featherweight$Type$combine_(
@@ -5657,7 +5669,7 @@ var $author$project$Go$Featherweight$Type$checkTypeLitWith = F3(
 					$elm$core$Result$mapError,
 					function (_v5) {
 						var m = _v5.a;
-						return 'duplicated method \'' + (m + ('\' on \'' + (t + '\'')));
+						return A2($author$project$Go$Featherweight$Type$DuplicatedDefinition, 'method', m);
 					},
 					$author$project$Go$Featherweight$Type$distinct(
 						A2($elm$core$List$map, $author$project$Go$Featherweight$Type$uniqMethodSpec, mss))),
@@ -5672,7 +5684,10 @@ var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 	function (dmap, d) {
 		if (!d.$) {
 			var decl = d.a;
-			return A3($author$project$Go$Featherweight$Type$checkTypeLitWith, dmap, decl.aa, decl.bp);
+			return A2(
+				$elm$core$Result$mapError,
+				$author$project$Go$Featherweight$Type$ErrorOn(decl.aa),
+				A2($author$project$Go$Featherweight$Type$checkTypeLitWith, dmap, decl.bp));
 		} else {
 			var decl = d.a;
 			return $author$project$Go$Featherweight$Type$combine_(
@@ -5680,9 +5695,7 @@ var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 					[
 						A2(
 						$elm$core$Result$mapError,
-						function (x) {
-							return 'duplicated variable \'' + (x + '\'');
-						},
+						$author$project$Go$Featherweight$Type$DuplicatedDefinition('variable'),
 						$author$project$Go$Featherweight$Type$distinct(
 							A2(
 								$elm$core$List$cons,
@@ -6174,13 +6187,17 @@ var $elm_community$result_extra$Result$Extra$combineMap = function (f) {
 		$elm_community$result_extra$Result$Extra$combine,
 		$elm$core$List$map(f));
 };
+var $author$project$Go$Featherweight$Type$ExpectStructType = function (a) {
+	return {$: 2, a: a};
+};
 var $author$project$Go$Featherweight$Type$fields = F2(
 	function (t, tlit) {
 		if (!tlit.$) {
 			var fs = tlit.a;
 			return $elm$core$Result$Ok(fs);
 		} else {
-			return $elm$core$Result$Err('type \'' + (t + '\' is interface, but expect structure'));
+			return $elm$core$Result$Err(
+				$author$project$Go$Featherweight$Type$ExpectStructType(t));
 		}
 	});
 var $elm$core$List$filter = F2(
@@ -6223,7 +6240,11 @@ var $author$project$Go$Featherweight$Type$findFieldTypeOn = F2(
 					var ty = _v3.b;
 					return $elm$core$Result$Ok(ty);
 				} else {
-					return $elm$core$Result$Err('undefined field \'' + (name + ('\' on \'' + (t + '\''))));
+					return $elm$core$Result$Err(
+						A2(
+							$author$project$Go$Featherweight$Type$ErrorOn,
+							t,
+							A2($author$project$Go$Featherweight$Type$Undefined, 'field', name)));
 				}
 			},
 			A2($author$project$Go$Featherweight$Type$fields, t, tlit));
@@ -6243,7 +6264,8 @@ var $author$project$Go$Featherweight$Type$findMethodSpecific = F2(
 		var m = _v0.b;
 		return A2(
 			$elm$core$Maybe$withDefault,
-			$elm$core$Result$Err('undefined method \'' + (t + ('.' + (m + '\'')))),
+			$elm$core$Result$Err(
+				A2($author$project$Go$Featherweight$Type$Undefined, 'method', t + ('.' + m))),
 			A2(
 				$elm$core$Maybe$map,
 				$elm$core$Result$Ok,
@@ -6275,6 +6297,10 @@ var $elm_community$result_extra$Result$Extra$join = function (r) {
 		}
 	}
 };
+var $author$project$Go$Featherweight$Type$NotSubtype = F2(
+	function (a, b) {
+		return {$: 3, a: a, b: b};
+	});
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -6330,7 +6356,8 @@ var $elm$core$List$member = F2(
 	});
 var $author$project$Go$Featherweight$Type$subtypeWith = F3(
 	function (dmap, t, u) {
-		var err = $elm$core$Result$Err('type \'' + (t + ('\' is not subtype of \'' + (u + '\''))));
+		var err = $elm$core$Result$Err(
+			A2($author$project$Go$Featherweight$Type$NotSubtype, t, u));
 		return A2(
 			$elm$core$Result$andThen,
 			function (tlit) {
@@ -6379,7 +6406,8 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 				var name = exp.a;
 				return A2(
 					$elm$core$Maybe$withDefault,
-					$elm$core$Result$Err('undefined variable \'' + (name + '\'')),
+					$elm$core$Result$Err(
+						A2($author$project$Go$Featherweight$Type$Undefined, 'variable', name)),
 					A2(
 						$elm$core$Maybe$map,
 						$elm$core$Result$Ok,
@@ -6495,9 +6523,7 @@ var $author$project$Go$Featherweight$Type$check = function (p) {
 			[
 				A2(
 				$elm$core$Result$mapError,
-				function (x) {
-					return 'duplicated type \'' + (x + '\'');
-				},
+				$author$project$Go$Featherweight$Type$DuplicatedDefinition('type'),
 				$author$project$Go$Featherweight$Type$distinct(
 					$author$project$Go$Featherweight$Type$tdecls(p.a8))),
 				A2(
@@ -6505,7 +6531,7 @@ var $author$project$Go$Featherweight$Type$check = function (p) {
 				function (_v0) {
 					var x = _v0.a;
 					var y = _v0.b;
-					return 'duplicated method \'' + (x + ('.' + (y + '\'')));
+					return A2($author$project$Go$Featherweight$Type$DuplicatedDefinition, 'method', x + ('.' + y));
 				},
 				$author$project$Go$Featherweight$Type$distinct(
 					$author$project$Go$Featherweight$Type$mdecls(p.a8))),
@@ -6527,6 +6553,29 @@ var $author$project$Go$Featherweight$check = A2(
 	$elm$core$Basics$composeL,
 	$elm$core$Result$mapError($author$project$Go$Featherweight$TypeError),
 	$author$project$Go$Featherweight$Type$check);
+var $author$project$Go$Featherweight$Type$displayError = function (err) {
+	switch (err.$) {
+		case 0:
+			var key = err.a;
+			var val = err.b;
+			return 'duplicated ' + (key + (' \'' + (val + '\'')));
+		case 1:
+			var key = err.a;
+			var val = err.b;
+			return 'undefined ' + (key + (' \'' + (val + '\'')));
+		case 2:
+			var t = err.a;
+			return 'type \'' + (t + '\' is interface, but expected to structure');
+		case 3:
+			var t = err.a;
+			var u = err.b;
+			return 'type \'' + (t + ('\' is not subtype of \'' + (u + '\'')));
+		default:
+			var val = err.a;
+			var e = err.b;
+			return $author$project$Go$Featherweight$Type$displayError(e) + (' on \'' + (val + '\''));
+	}
+};
 var $elm$core$String$concat = function (strings) {
 	return A2($elm$core$String$join, '', strings);
 };
@@ -6588,8 +6637,8 @@ var $author$project$Go$Featherweight$displayError = function (err) {
 		var txt = err.a;
 		return $author$project$Go$Parser$Helper$displayError(txt);
 	} else {
-		var txt = err.a;
-		return txt;
+		var e = err.a;
+		return $author$project$Go$Featherweight$Type$displayError(e);
 	}
 };
 var $author$project$Go$Featherweight$ParseError = function (a) {

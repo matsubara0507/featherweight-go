@@ -1,7 +1,8 @@
 module Go.Featherweight.Type exposing
-    ( TypeError
+    ( TypeError(..)
     , check
     , checkDeclWith
+    , displayError
     , distinct
     , mdecls
     , tdecls
@@ -66,8 +67,31 @@ newEnv decls =
     ( Dict.empty, mkDeclMap decls )
 
 
-type alias TypeError =
-    String
+type TypeError
+    = DuplicatedDefinition String String
+    | Undefined String String
+    | ExpectStructType TypeName
+    | NotSubtype TypeName TypeName
+    | ErrorOn String TypeError
+
+
+displayError : TypeError -> String
+displayError err =
+    case err of
+        DuplicatedDefinition key val ->
+            "duplicated " ++ key ++ " '" ++ val ++ "'"
+
+        Undefined key val ->
+            "undefined " ++ key ++ " '" ++ val ++ "'"
+
+        ExpectStructType t ->
+            "type '" ++ t ++ "' is interface, but expected to structure"
+
+        NotSubtype t u ->
+            "type '" ++ t ++ "' is not subtype of '" ++ u ++ "'"
+
+        ErrorOn val e ->
+            displayError e ++ " on '" ++ val ++ "'"
 
 
 check : FG.Program -> Result TypeError ()
@@ -81,9 +105,9 @@ check p =
     in
     combine_
         [ distinct (tdecls p.decls)
-            |> Result.mapError (\x -> "duplicated type '" ++ x ++ "'")
+            |> Result.mapError (DuplicatedDefinition "type")
         , distinct (mdecls p.decls)
-            |> Result.mapError (\( x, y ) -> "duplicated method '" ++ x ++ "." ++ y ++ "'")
+            |> Result.mapError (\( x, y ) -> DuplicatedDefinition "method" (x ++ "." ++ y))
         , combine_ (List.map (checkDeclWith dmap) p.decls)
         , typeInferWith (newEnv p.decls) p.exp
             |> Result.map (always ())
@@ -94,7 +118,8 @@ checkDeclWith : DeclMap -> Declaration -> Result TypeError ()
 checkDeclWith dmap d =
     case d of
         TDecl decl ->
-            checkTypeLitWith dmap decl.name decl.literal
+            checkTypeLitWith dmap decl.literal
+                |> Result.mapError (ErrorOn decl.name)
 
         MDecl decl ->
             combine_
@@ -102,7 +127,7 @@ checkDeclWith dmap d =
                     |> List.map Tuple.first
                     |> (::) (Tuple.first decl.recv)
                     |> distinct
-                    |> Result.mapError (\x -> "duplicated variable '" ++ x ++ "'")
+                    |> Result.mapError (DuplicatedDefinition "variable")
                 , checkTypeNameWith dmap (Tuple.second decl.recv)
                 , decl.sign.args
                     |> List.map Tuple.second
@@ -112,14 +137,14 @@ checkDeclWith dmap d =
                 ]
 
 
-checkTypeLitWith : DeclMap -> TypeName -> TypeLiteral -> Result TypeError ()
-checkTypeLitWith dmap t tlit =
+checkTypeLitWith : DeclMap -> TypeLiteral -> Result TypeError ()
+checkTypeLitWith dmap tlit =
     case tlit of
         Structure fs ->
             Result.map2 (\_ _ -> ())
                 (List.map Tuple.first fs
                     |> distinct
-                    |> Result.mapError (\f -> "duplicated field '" ++ f ++ "' on '" ++ t ++ "'")
+                    |> Result.mapError (DuplicatedDefinition "field")
                 )
                 (List.map Tuple.second fs
                     |> List.map (checkTypeNameWith dmap)
@@ -130,7 +155,7 @@ checkTypeLitWith dmap t tlit =
             Result.map2 (\_ _ -> ())
                 (List.map uniqMethodSpec mss
                     |> distinct
-                    |> Result.mapError (\( m, _, _ ) -> "duplicated method '" ++ m ++ "' on '" ++ t ++ "'")
+                    |> Result.mapError (\( m, _, _ ) -> DuplicatedDefinition "method" m)
                 )
                 (List.map (checkMethodSpecWith dmap) mss
                     |> combine_
@@ -142,7 +167,7 @@ checkMethodSpecWith dmap s =
     Result.map3 (\_ _ _ -> ())
         (List.map Tuple.first s.sign.args
             |> distinct
-            |> Result.mapError (\x -> "duplicated variable '" ++ x ++ "' on '" ++ s.name ++ "'")
+            |> Result.mapError (ErrorOn s.name << DuplicatedDefinition "variable")
         )
         (List.map Tuple.second s.sign.args
             |> List.map (checkTypeNameWith dmap)
@@ -161,7 +186,7 @@ typeInferWith env exp =
         Var name ->
             Dict.get name gamma
                 |> Maybe.map Ok
-                |> Maybe.withDefault (Err <| "undefined variable '" ++ name ++ "'")
+                |> Maybe.withDefault (Err <| Undefined "variable" name)
 
         MethodCall mcall ->
             typeInferWith env mcall.exp
@@ -206,7 +231,7 @@ findTypeLiteral : TypeName -> DeclMap -> Result TypeError TypeLiteral
 findTypeLiteral t dmap =
     Dict.get t dmap
         |> Maybe.map (Ok << Tuple.first)
-        |> Maybe.withDefault (Err <| "undefined type '" ++ t ++ "'")
+        |> Maybe.withDefault (Err <| Undefined "type" t)
 
 
 findMethodSpecific : ( TypeName, MethodName ) -> DeclMap -> Result TypeError MethodSpecific
@@ -216,7 +241,7 @@ findMethodSpecific ( t, m ) dmap =
         |> Maybe.map (List.filter <| \s -> s.name == m)
         |> Maybe.andThen List.head
         |> Maybe.map Ok
-        |> Maybe.withDefault (Err <| "undefined method '" ++ t ++ "." ++ m ++ "'")
+        |> Maybe.withDefault (Err <| Undefined "method" (t ++ "." ++ m))
 
 
 findFieldTypeOn : ( TypeName, TypeLiteral ) -> FieldName -> Result TypeError TypeName
@@ -229,7 +254,7 @@ findFieldTypeOn ( t, tlit ) name =
                         Ok ty
 
                     Nothing ->
-                        Err ("undefined field '" ++ name ++ "' on '" ++ t ++ "'")
+                        Err (ErrorOn t <| Undefined "field" name)
             )
 
 
@@ -240,7 +265,7 @@ fields t tlit =
             Ok fs
 
         Interface _ ->
-            Err ("type '" ++ t ++ "' is interface, but expect structure")
+            Err (ExpectStructType t)
 
 
 checkTypeNameWith : DeclMap -> TypeName -> Result TypeError ()
@@ -297,7 +322,7 @@ subtypeWith : DeclMap -> TypeName -> TypeName -> Result TypeError ()
 subtypeWith dmap t u =
     let
         err =
-            Err ("type '" ++ t ++ "' is not subtype of '" ++ u ++ "'")
+            Err (NotSubtype t u)
     in
     findTypeLiteral u dmap
         |> Result.andThen
