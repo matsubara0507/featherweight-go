@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.bM.L === region.ba.L)
+	if (region.bO.N === region.bc.N)
 	{
-		return 'on line ' + region.bM.L;
+		return 'on line ' + region.bO.N;
 	}
-	return 'on lines ' + region.bM.L + ' through ' + region.ba.L;
+	return 'on lines ' + region.bO.N + ' through ' + region.bc.N;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bj,
-		impl.bU,
-		impl.bO,
+		impl.bl,
+		impl.bX,
+		impl.bQ,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		y: func(record.y),
-		ad: record.ad,
-		ab: record.ab
+		af: record.af,
+		ad: record.ad
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.y;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ad;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.af;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.ab) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.ad) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bj,
-		impl.bU,
-		impl.bO,
+		impl.bl,
+		impl.bX,
+		impl.bQ,
 		function(sendToApp, initialModel) {
-			var view = impl.bV;
+			var view = impl.bY;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bj,
-		impl.bU,
-		impl.bO,
+		impl.bl,
+		impl.bX,
+		impl.bQ,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.ac && impl.ac(sendToApp)
-			var view = impl.bV;
+			var divertHrefToApp = impl.ae && impl.ae(sendToApp)
+			var view = impl.bY;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a0);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a2);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bR) && (_VirtualDom_doc.title = title = doc.bR);
+				(title !== doc.bT) && (_VirtualDom_doc.title = title = doc.bT);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.by;
-	var onUrlRequest = impl.bz;
+	var onUrlChange = impl.bA;
+	var onUrlRequest = impl.bB;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		ac: function(sendToApp)
+		ae: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aI === next.aI
-							&& curr.av === next.av
-							&& curr.aF.a === next.aF.a
+							&& curr.aK === next.aK
+							&& curr.ax === next.ax
+							&& curr.aH.a === next.aH.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		bj: function(flags)
+		bl: function(flags)
 		{
-			return A3(impl.bj, flags, _Browser_getUrl(), key);
+			return A3(impl.bl, flags, _Browser_getUrl(), key);
 		},
-		bV: impl.bV,
-		bU: impl.bU,
-		bO: impl.bO
+		bY: impl.bY,
+		bX: impl.bX,
+		bQ: impl.bQ
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { bh: 'hidden', a2: 'visibilitychange' }
+		? { bj: 'hidden', a4: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { bh: 'mozHidden', a2: 'mozvisibilitychange' }
+		? { bj: 'mozHidden', a4: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { bh: 'msHidden', a2: 'msvisibilitychange' }
+		? { bj: 'msHidden', a4: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { bh: 'webkitHidden', a2: 'webkitvisibilitychange' }
-		: { bh: 'hidden', a2: 'visibilitychange' };
+		? { bj: 'webkitHidden', a4: 'webkitvisibilitychange' }
+		: { bj: 'hidden', a4: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aO: _Browser_getScene(),
-		aV: {
-			aX: _Browser_window.pageXOffset,
-			aY: _Browser_window.pageYOffset,
-			aW: _Browser_doc.documentElement.clientWidth,
-			at: _Browser_doc.documentElement.clientHeight
+		aQ: _Browser_getScene(),
+		aX: {
+			aZ: _Browser_window.pageXOffset,
+			a_: _Browser_window.pageYOffset,
+			aY: _Browser_doc.documentElement.clientWidth,
+			av: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aW: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		at: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aY: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		av: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aO: {
-				aW: node.scrollWidth,
-				at: node.scrollHeight
+			aQ: {
+				aY: node.scrollWidth,
+				av: node.scrollHeight
 			},
-			aV: {
-				aX: node.scrollLeft,
-				aY: node.scrollTop,
-				aW: node.clientWidth,
-				at: node.clientHeight
+			aX: {
+				aZ: node.scrollLeft,
+				a_: node.scrollTop,
+				aY: node.clientWidth,
+				av: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aO: _Browser_getScene(),
-			aV: {
-				aX: x,
-				aY: y,
-				aW: _Browser_doc.documentElement.clientWidth,
-				at: _Browser_doc.documentElement.clientHeight
+			aQ: _Browser_getScene(),
+			aX: {
+				aZ: x,
+				a_: y,
+				aY: _Browser_doc.documentElement.clientWidth,
+				av: _Browser_doc.documentElement.clientHeight
 			},
-			a9: {
-				aX: x + rect.left,
-				aY: y + rect.top,
-				aW: rect.width,
-				at: rect.height
+			bb: {
+				aZ: x + rect.left,
+				a_: y + rect.top,
+				aY: rect.width,
+				av: rect.height
 			}
 		};
 	});
@@ -4989,7 +4989,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {aq: fragment, av: host, aD: path, aF: port_, aI: protocol, aJ: query};
+		return {as: fragment, ax: host, aF: path, aH: port_, aK: protocol, aL: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5268,15 +5268,15 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Main$Model = F2(
-	function (input, error) {
-		return {J: error, K: input};
+var $author$project$Main$Model = F4(
+	function (inputFGG, inputFG, errorFGG, errorFG) {
+		return {J: errorFG, K: errorFGG, L: inputFG, M: inputFGG};
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		A2($author$project$Main$Model, '', ''),
+		A4($author$project$Main$Model, '', '', '', ''),
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5606,22 +5606,22 @@ var $author$project$Go$Featherweight$Type$checkMethodSpecWith = F2(
 			A2(
 				$elm$core$Result$mapError,
 				function (x) {
-					return 'duplicated variable \'' + (x + ('\' on \'' + (s.Z + '\'')));
+					return 'duplicated variable \'' + (x + ('\' on \'' + (s.aa + '\'')));
 				},
 				$author$project$Go$Featherweight$Type$distinct(
-					A2($elm$core$List$map, $elm$core$Tuple$first, s.aP.W))),
+					A2($elm$core$List$map, $elm$core$Tuple$first, s.aR.X))),
 			$author$project$Go$Featherweight$Type$combine_(
 				A2(
 					$elm$core$List$map,
 					$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
-					A2($elm$core$List$map, $elm$core$Tuple$second, s.aP.W))),
-			A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, s.aP.bH));
+					A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X))),
+			A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, s.aR.bJ));
 	});
 var $author$project$Go$Featherweight$Type$uniqMethodSpec = function (s) {
 	return _Utils_Tuple3(
-		s.Z,
-		A2($elm$core$List$map, $elm$core$Tuple$second, s.aP.W),
-		s.aP.bH);
+		s.aa,
+		A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X),
+		s.aR.bJ);
 };
 var $author$project$Go$Featherweight$Type$checkTypeLitWith = F3(
 	function (dmap, t, tlit) {
@@ -5672,7 +5672,7 @@ var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 	function (dmap, d) {
 		if (!d.$) {
 			var decl = d.a;
-			return A3($author$project$Go$Featherweight$Type$checkTypeLitWith, dmap, decl.Z, decl.bn);
+			return A3($author$project$Go$Featherweight$Type$checkTypeLitWith, dmap, decl.aa, decl.bp);
 		} else {
 			var decl = d.a;
 			return $author$project$Go$Featherweight$Type$combine_(
@@ -5686,15 +5686,15 @@ var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 						$author$project$Go$Featherweight$Type$distinct(
 							A2(
 								$elm$core$List$cons,
-								decl.bD.a,
-								A2($elm$core$List$map, $elm$core$Tuple$first, decl.aP.W)))),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.bD.b),
+								decl.bF.a,
+								A2($elm$core$List$map, $elm$core$Tuple$first, decl.aR.X)))),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.bF.b),
 						$author$project$Go$Featherweight$Type$combine_(
 						A2(
 							$elm$core$List$map,
 							$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
-							A2($elm$core$List$map, $elm$core$Tuple$second, decl.aP.W))),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.aP.bH)
+							A2($elm$core$List$map, $elm$core$Tuple$second, decl.aR.X))),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.aR.bJ)
 					]));
 		}
 	});
@@ -5721,7 +5721,7 @@ var $author$project$Go$Featherweight$Type$mdecls = $elm$core$List$filterMap(
 		if (x.$ === 1) {
 			var decl = x.a;
 			return $elm$core$Maybe$Just(
-				_Utils_Tuple2(decl.bD.b, decl.Z));
+				_Utils_Tuple2(decl.bF.b, decl.aa));
 		} else {
 			return $elm$core$Maybe$Nothing;
 		}
@@ -6120,7 +6120,7 @@ var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 				tlit,
 				A2(
 					$elm$core$List$cons,
-					{Z: decl.Z, aP: decl.aP},
+					{aa: decl.aa, aR: decl.aR},
 					mss));
 		});
 	return A3(
@@ -6132,7 +6132,7 @@ var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 				var decl = d.a;
 				return A2(
 					$elm$core$Dict$update,
-					decl.bD.b,
+					decl.bF.b,
 					$elm$core$Maybe$map(
 						update(decl)));
 			}
@@ -6145,8 +6145,8 @@ var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 						var decl = t.a;
 						return $elm$core$Maybe$Just(
 							_Utils_Tuple2(
-								decl.Z,
-								_Utils_Tuple2(decl.bn, _List_Nil)));
+								decl.aa,
+								_Utils_Tuple2(decl.bp, _List_Nil)));
 					} else {
 						return $elm$core$Maybe$Nothing;
 					}
@@ -6163,7 +6163,7 @@ var $author$project$Go$Featherweight$Type$tdecls = $elm$core$List$filterMap(
 	function (x) {
 		if (!x.$) {
 			var decl = x.a;
-			return $elm$core$Maybe$Just(decl.Z);
+			return $elm$core$Maybe$Just(decl.aa);
 		} else {
 			return $elm$core$Maybe$Nothing;
 		}
@@ -6254,7 +6254,7 @@ var $author$project$Go$Featherweight$Type$findMethodSpecific = F2(
 						$elm$core$Maybe$map,
 						$elm$core$List$filter(
 							function (s) {
-								return _Utils_eq(s.Z, m);
+								return _Utils_eq(s.aa, m);
 							}),
 						A2(
 							$elm$core$Maybe$map,
@@ -6392,7 +6392,7 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 						return A2(
 							$elm$core$Result$map,
 							function (_v2) {
-								return s.aP.bH;
+								return s.aR.bJ;
 							},
 							$elm_community$result_extra$Result$Extra$join(
 								A3(
@@ -6409,25 +6409,25 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 									A2(
 										$elm_community$result_extra$Result$Extra$combineMap,
 										$author$project$Go$Featherweight$Type$typeInferWith(env),
-										mcall.W),
+										mcall.X),
 									$elm$core$Result$Ok(
-										A2($elm$core$List$map, $elm$core$Tuple$second, s.aP.W)))));
+										A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X)))));
 					},
 					A2(
 						$elm$core$Result$andThen,
 						function (t) {
 							return A2(
 								$author$project$Go$Featherweight$Type$findMethodSpecific,
-								_Utils_Tuple2(t, mcall.bo),
+								_Utils_Tuple2(t, mcall.bq),
 								dmap);
 						},
-						A2($author$project$Go$Featherweight$Type$typeInferWith, env, mcall.S)));
+						A2($author$project$Go$Featherweight$Type$typeInferWith, env, mcall.T)));
 			case 2:
 				var slit = exp.a;
 				return A2(
 					$elm$core$Result$map,
 					function (_v4) {
-						return slit.bN;
+						return slit.bP;
 					},
 					A4(
 						$elm$core$Result$map3,
@@ -6441,19 +6441,19 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 										$author$project$Go$Featherweight$Type$subtypeWith(dmap),
 										ts));
 							}),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bN),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bP),
 						A2(
 							$elm_community$result_extra$Result$Extra$combineMap,
 							$author$project$Go$Featherweight$Type$typeInferWith(env),
-							slit.W),
+							slit.X),
 						A2(
 							$elm$core$Result$andThen,
 							A2(
 								$elm$core$Basics$composeL,
 								$elm$core$Result$map(
 									$elm$core$List$map($elm$core$Tuple$second)),
-								$author$project$Go$Featherweight$Type$fields(slit.bN)),
-							A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bN, dmap))));
+								$author$project$Go$Featherweight$Type$fields(slit.bP)),
+							A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bP, dmap))));
 			case 3:
 				var sel = exp.a;
 				return A2(
@@ -6465,30 +6465,30 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 								return A2(
 									$author$project$Go$Featherweight$Type$findFieldTypeOn,
 									_Utils_Tuple2(t, lit),
-									sel.bg);
+									sel.bi);
 							},
 							A2($author$project$Go$Featherweight$Type$findTypeLiteral, t, dmap));
 					},
-					A2($author$project$Go$Featherweight$Type$typeInferWith, env, sel.S));
+					A2($author$project$Go$Featherweight$Type$typeInferWith, env, sel.T));
 			default:
 				var ta = exp.a;
 				return A2(
 					$elm$core$Result$map,
 					function (_v6) {
-						return ta.bT;
+						return ta.bV;
 					},
 					$elm_community$result_extra$Result$Extra$join(
 						A3(
 							$elm$core$Result$map2,
 							function (_v5) {
-								return A2($author$project$Go$Featherweight$Type$subtypeWith, dmap, ta.bT);
+								return A2($author$project$Go$Featherweight$Type$subtypeWith, dmap, ta.bV);
 							},
-							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, ta.bT),
-							A2($author$project$Go$Featherweight$Type$typeInferWith, env, ta.S))));
+							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, ta.bV),
+							A2($author$project$Go$Featherweight$Type$typeInferWith, env, ta.T))));
 		}
 	});
 var $author$project$Go$Featherweight$Type$check = function (p) {
-	var env = $author$project$Go$Featherweight$Type$newEnv(p.a6);
+	var env = $author$project$Go$Featherweight$Type$newEnv(p.a8);
 	var dmap = env.b;
 	return $author$project$Go$Featherweight$Type$combine_(
 		_List_fromArray(
@@ -6499,7 +6499,7 @@ var $author$project$Go$Featherweight$Type$check = function (p) {
 					return 'duplicated type \'' + (x + '\'');
 				},
 				$author$project$Go$Featherweight$Type$distinct(
-					$author$project$Go$Featherweight$Type$tdecls(p.a6))),
+					$author$project$Go$Featherweight$Type$tdecls(p.a8))),
 				A2(
 				$elm$core$Result$mapError,
 				function (_v0) {
@@ -6508,19 +6508,19 @@ var $author$project$Go$Featherweight$Type$check = function (p) {
 					return 'duplicated method \'' + (x + ('.' + (y + '\'')));
 				},
 				$author$project$Go$Featherweight$Type$distinct(
-					$author$project$Go$Featherweight$Type$mdecls(p.a6))),
+					$author$project$Go$Featherweight$Type$mdecls(p.a8))),
 				$author$project$Go$Featherweight$Type$combine_(
 				A2(
 					$elm$core$List$map,
 					$author$project$Go$Featherweight$Type$checkDeclWith(dmap),
-					p.a6)),
+					p.a8)),
 				A2(
 				$elm$core$Result$map,
 				$elm$core$Basics$always(0),
 				A2(
 					$author$project$Go$Featherweight$Type$typeInferWith,
-					$author$project$Go$Featherweight$Type$newEnv(p.a6),
-					p.S))
+					$author$project$Go$Featherweight$Type$newEnv(p.a8),
+					p.T))
 			]));
 };
 var $author$project$Go$Featherweight$check = A2(
@@ -6570,11 +6570,11 @@ var $author$project$Go$Parser$Helper$displayDeadEnd = function (err) {
 	return $elm$core$String$concat(
 		_List_fromArray(
 			[
-				$elm$core$String$fromInt(err.bJ),
+				$elm$core$String$fromInt(err.bL),
 				':',
-				$elm$core$String$fromInt(err.a4),
+				$elm$core$String$fromInt(err.a6),
 				' ',
-				$author$project$Go$Parser$Helper$displayProblem(err.bC)
+				$author$project$Go$Parser$Helper$displayProblem(err.bE)
 			]));
 };
 var $author$project$Go$Parser$Helper$displayError = function (errs) {
@@ -6597,7 +6597,7 @@ var $author$project$Go$Featherweight$ParseError = function (a) {
 };
 var $author$project$Go$Featherweight$Syntax$Program = F2(
 	function (decls, exp) {
-		return {a6: decls, S: exp};
+		return {a8: decls, T: exp};
 	});
 var $elm$parser$Parser$Advanced$Bad = F2(
 	function (a, b) {
@@ -6994,14 +6994,14 @@ var $elm$parser$Parser$Advanced$AddRight = F2(
 	});
 var $elm$parser$Parser$Advanced$DeadEnd = F4(
 	function (row, col, problem, contextStack) {
-		return {a4: col, a5: contextStack, bC: problem, bJ: row};
+		return {a6: col, a7: contextStack, bE: problem, bL: row};
 	});
 var $elm$parser$Parser$Advanced$fromState = F2(
 	function (s, x) {
 		return A2(
 			$elm$parser$Parser$Advanced$AddRight,
 			$elm$parser$Parser$Advanced$Empty,
-			A4($elm$parser$Parser$Advanced$DeadEnd, s.bJ, s.a4, x, s.c));
+			A4($elm$parser$Parser$Advanced$DeadEnd, s.bL, s.a6, x, s.c));
 	});
 var $elm$parser$Parser$Advanced$isSubString = _Parser_isSubString;
 var $elm$core$Basics$negate = function (n) {
@@ -7012,7 +7012,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 	var expecting = _v0.b;
 	var progress = !$elm$core$String$isEmpty(str);
 	return function (s) {
-		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.bJ, s.a4, s.a);
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.bL, s.a6, s.a);
 		var newOffset = _v1.a;
 		var newRow = _v1.b;
 		var newCol = _v1.c;
@@ -7023,23 +7023,23 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 			$elm$parser$Parser$Advanced$Good,
 			progress,
 			0,
-			{a4: newCol, c: s.c, d: s.d, b: newOffset, bJ: newRow, a: s.a});
+			{a6: newCol, c: s.c, d: s.d, b: newOffset, bL: newRow, a: s.a});
 	};
 };
 var $elm$parser$Parser$Advanced$sequence = function (i) {
 	return A2(
 		$elm$parser$Parser$Advanced$skip,
-		$elm$parser$Parser$Advanced$token(i.bM),
+		$elm$parser$Parser$Advanced$token(i.bO),
 		A2(
 			$elm$parser$Parser$Advanced$skip,
-			i.bL,
+			i.bN,
 			A5(
 				$elm$parser$Parser$Advanced$sequenceEnd,
-				$elm$parser$Parser$Advanced$token(i.ba),
-				i.bL,
-				i.bm,
-				$elm$parser$Parser$Advanced$token(i.bK),
-				i.bS)));
+				$elm$parser$Parser$Advanced$token(i.bc),
+				i.bN,
+				i.bo,
+				$elm$parser$Parser$Advanced$token(i.bM),
+				i.bU)));
 };
 var $elm$parser$Parser$Advanced$Forbidden = 0;
 var $elm$parser$Parser$Advanced$Mandatory = 2;
@@ -7070,12 +7070,12 @@ var $elm$parser$Parser$toToken = function (str) {
 var $elm$parser$Parser$sequence = function (i) {
 	return $elm$parser$Parser$Advanced$sequence(
 		{
-			ba: $elm$parser$Parser$toToken(i.ba),
-			bm: i.bm,
-			bK: $elm$parser$Parser$toToken(i.bK),
-			bL: i.bL,
+			bc: $elm$parser$Parser$toToken(i.bc),
+			bo: i.bo,
 			bM: $elm$parser$Parser$toToken(i.bM),
-			bS: $elm$parser$Parser$toAdvancedTrailing(i.bS)
+			bN: i.bN,
+			bO: $elm$parser$Parser$toToken(i.bO),
+			bU: $elm$parser$Parser$toAdvancedTrailing(i.bU)
 		});
 };
 var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
@@ -7089,7 +7089,7 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 					$elm$parser$Parser$Advanced$Good,
 					_Utils_cmp(s0.b, offset) < 0,
 					0,
-					{a4: col, c: s0.c, d: s0.d, b: offset, bJ: row, a: s0.a});
+					{a6: col, c: s0.c, d: s0.d, b: offset, bL: row, a: s0.a});
 			} else {
 				if (_Utils_eq(newOffset, -2)) {
 					var $temp$isGood = isGood,
@@ -7121,7 +7121,7 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 	});
 var $elm$parser$Parser$Advanced$chompWhile = function (isGood) {
 	return function (s) {
-		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.b, s.bJ, s.a4, s);
+		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.b, s.bL, s.a6, s);
 	};
 };
 var $elm$parser$Parser$Advanced$spaces = $elm$parser$Parser$Advanced$chompWhile(
@@ -7134,7 +7134,7 @@ var $author$project$Go$Parser$Helper$blockWith = F2(
 		var start = _v0.a;
 		var end = _v0.b;
 		return $elm$parser$Parser$sequence(
-			{ba: end, bm: p, bK: ',', bL: $elm$parser$Parser$spaces, bM: start, bS: 1});
+			{bc: end, bo: p, bM: ',', bN: $elm$parser$Parser$spaces, bO: start, bU: 1});
 	});
 var $elm$parser$Parser$ignorer = $elm$parser$Parser$Advanced$ignorer;
 var $elm$parser$Parser$Advanced$keeper = F2(
@@ -7197,7 +7197,7 @@ var $elm$parser$Parser$Advanced$varHelp = F7(
 		while (true) {
 			var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, offset, src);
 			if (_Utils_eq(newOffset, -1)) {
-				return {a4: col, c: context, d: indent, b: offset, bJ: row, a: src};
+				return {a6: col, c: context, d: indent, b: offset, bL: row, a: src};
 			} else {
 				if (_Utils_eq(newOffset, -2)) {
 					var $temp$isGood = isGood,
@@ -7237,33 +7237,33 @@ var $elm$parser$Parser$Advanced$varHelp = F7(
 	});
 var $elm$parser$Parser$Advanced$variable = function (i) {
 	return function (s) {
-		var firstOffset = A3($elm$parser$Parser$Advanced$isSubChar, i.bM, s.b, s.a);
+		var firstOffset = A3($elm$parser$Parser$Advanced$isSubChar, i.bO, s.b, s.a);
 		if (_Utils_eq(firstOffset, -1)) {
 			return A2(
 				$elm$parser$Parser$Advanced$Bad,
 				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, i.ao));
+				A2($elm$parser$Parser$Advanced$fromState, s, i.aq));
 		} else {
-			var s1 = _Utils_eq(firstOffset, -2) ? A7($elm$parser$Parser$Advanced$varHelp, i.bk, s.b + 1, s.bJ + 1, 1, s.a, s.d, s.c) : A7($elm$parser$Parser$Advanced$varHelp, i.bk, firstOffset, s.bJ, s.a4 + 1, s.a, s.d, s.c);
+			var s1 = _Utils_eq(firstOffset, -2) ? A7($elm$parser$Parser$Advanced$varHelp, i.bm, s.b + 1, s.bL + 1, 1, s.a, s.d, s.c) : A7($elm$parser$Parser$Advanced$varHelp, i.bm, firstOffset, s.bL, s.a6 + 1, s.a, s.d, s.c);
 			var name = A3($elm$core$String$slice, s.b, s1.b, s.a);
-			return A2($elm$core$Set$member, name, i.bF) ? A2(
+			return A2($elm$core$Set$member, name, i.bH) ? A2(
 				$elm$parser$Parser$Advanced$Bad,
 				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, i.ao)) : A3($elm$parser$Parser$Advanced$Good, true, name, s1);
+				A2($elm$parser$Parser$Advanced$fromState, s, i.aq)) : A3($elm$parser$Parser$Advanced$Good, true, name, s1);
 		}
 	};
 };
 var $elm$parser$Parser$variable = function (i) {
 	return $elm$parser$Parser$Advanced$variable(
-		{ao: $elm$parser$Parser$ExpectingVariable, bk: i.bk, bF: i.bF, bM: i.bM});
+		{aq: $elm$parser$Parser$ExpectingVariable, bm: i.bm, bH: i.bH, bO: i.bO});
 };
 var $author$project$Go$Featherweight$Syntax$nameParser = $elm$parser$Parser$variable(
 	{
-		bk: function (c) {
+		bm: function (c) {
 			return $elm$core$Char$isAlphaNum(c) || (c === '_');
 		},
-		bF: $author$project$Go$Featherweight$Syntax$keywords,
-		bM: $elm$core$Char$isAlphaNum
+		bH: $author$project$Go$Featherweight$Syntax$keywords,
+		bO: $elm$core$Char$isAlphaNum
 	});
 var $elm$parser$Parser$oneOf = $elm$parser$Parser$Advanced$oneOf;
 var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
@@ -7289,7 +7289,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithExp = function (exp) {
 					$elm$parser$Parser$succeed(
 						function (ty) {
 							return $author$project$Go$Featherweight$Syntax$TypeAssertion(
-								{S: exp, bT: ty});
+								{T: exp, bV: ty});
 						}),
 					$elm$parser$Parser$symbol('(')),
 				A2(
@@ -7312,7 +7312,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithExpAndName = F2(
 					$elm$parser$Parser$succeed(
 						function (args) {
 							return $author$project$Go$Featherweight$Syntax$MethodCall(
-								{W: args, S: exp, bo: name});
+								{X: args, T: exp, bq: name});
 						}),
 					A2(
 						$author$project$Go$Parser$Helper$blockWith,
@@ -7323,7 +7323,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithExpAndName = F2(
 							}))),
 					$elm$parser$Parser$succeed(
 					$author$project$Go$Featherweight$Syntax$SelectField(
-						{S: exp, bg: name}))
+						{T: exp, bi: name}))
 				]));
 	});
 var $author$project$Go$Featherweight$Syntax$expParserWithName = function (name) {
@@ -7335,7 +7335,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithName = function (name) 
 				$elm$parser$Parser$succeed(
 					function (args) {
 						return $author$project$Go$Featherweight$Syntax$StructLiteral(
-							{W: args, bN: name});
+							{X: args, bP: name});
 					}),
 				A2(
 					$author$project$Go$Parser$Helper$blockWith,
@@ -7383,7 +7383,7 @@ var $elm$parser$Parser$Advanced$keyword = function (_v0) {
 	var expecting = _v0.b;
 	var progress = !$elm$core$String$isEmpty(kwd);
 	return function (s) {
-		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, kwd, s.b, s.bJ, s.a4, s.a);
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, kwd, s.b, s.bL, s.a6, s.a);
 		var newOffset = _v1.a;
 		var newRow = _v1.b;
 		var newCol = _v1.c;
@@ -7400,7 +7400,7 @@ var $elm$parser$Parser$Advanced$keyword = function (_v0) {
 			$elm$parser$Parser$Advanced$Good,
 			progress,
 			0,
-			{a4: newCol, c: s.c, d: s.d, b: newOffset, bJ: newRow, a: s.a});
+			{a6: newCol, c: s.c, d: s.d, b: newOffset, bL: newRow, a: s.a});
 	};
 };
 var $elm$parser$Parser$keyword = function (kwd) {
@@ -7412,7 +7412,7 @@ var $elm$parser$Parser$keyword = function (kwd) {
 };
 var $author$project$Go$Featherweight$Syntax$MethodSignature = F2(
 	function (args, rett) {
-		return {W: args, bH: rett};
+		return {X: args, bJ: rett};
 	});
 var $elm$parser$Parser$chompWhile = $elm$parser$Parser$Advanced$chompWhile;
 var $author$project$Go$Parser$Helper$whitespaces = A2(
@@ -7457,7 +7457,7 @@ var $author$project$Go$Featherweight$Syntax$Structure = function (a) {
 };
 var $author$project$Go$Featherweight$Syntax$MethodSpecific = F2(
 	function (name, sign) {
-		return {Z: name, aP: sign};
+		return {aa: name, aR: sign};
 	});
 var $author$project$Go$Featherweight$Syntax$methodSpecificParser = A2(
 	$elm$parser$Parser$keeper,
@@ -7599,7 +7599,7 @@ var $author$project$Go$Featherweight$Syntax$declParser = $elm$parser$Parser$oneO
 							F2(
 								function (name, lit) {
 									return $author$project$Go$Featherweight$Syntax$TDecl(
-										{bn: lit, Z: name});
+										{bp: lit, aa: name});
 								})),
 						$elm$parser$Parser$keyword('type')),
 					$author$project$Go$Parser$Helper$whitespaces),
@@ -7623,7 +7623,7 @@ var $author$project$Go$Featherweight$Syntax$declParser = $elm$parser$Parser$oneO
 										F4(
 											function (r, n, s, v) {
 												return $author$project$Go$Featherweight$Syntax$MDecl(
-													{Z: n, bD: r, bI: v, aP: s});
+													{aa: n, bF: r, bK: v, aR: s});
 											})),
 									$elm$parser$Parser$keyword('func')),
 								$elm$parser$Parser$spaces),
@@ -7738,10 +7738,10 @@ var $author$project$Go$Featherweight$Syntax$parser = function () {
 }();
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
-		return {a4: col, bC: problem, bJ: row};
+		return {a6: col, bE: problem, bL: row};
 	});
 var $elm$parser$Parser$problemToDeadEnd = function (p) {
-	return A3($elm$parser$Parser$DeadEnd, p.bJ, p.a4, p.bC);
+	return A3($elm$parser$Parser$DeadEnd, p.bL, p.a6, p.bE);
 };
 var $elm$parser$Parser$Advanced$bagToList = F2(
 	function (bag, list) {
@@ -7773,7 +7773,7 @@ var $elm$parser$Parser$Advanced$run = F2(
 	function (_v0, src) {
 		var parse = _v0;
 		var _v1 = parse(
-			{a4: 1, c: _List_Nil, d: 1, b: 0, bJ: 1, a: src});
+			{a6: 1, c: _List_Nil, d: 1, b: 0, bL: 1, a: src});
 		if (!_v1.$) {
 			var value = _v1.b;
 			return $elm$core$Result$Ok(value);
@@ -7803,7 +7803,7 @@ var $author$project$Main$checkFG = function (model) {
 	var _v0 = A2(
 		$elm$core$Result$andThen,
 		$author$project$Go$Featherweight$check,
-		$author$project$Go$Featherweight$parse(model.K));
+		$author$project$Go$Featherweight$parse(model.L));
 	if (!_v0.$) {
 		return _Utils_update(
 			model,
@@ -7817,15 +7817,535 @@ var $author$project$Main$checkFG = function (model) {
 			});
 	}
 };
+var $author$project$Go$Featherweight$Generics$displayError = function (err) {
+	var txt = err;
+	return $author$project$Go$Parser$Helper$displayError(txt);
+};
+var $author$project$Go$Featherweight$Generics$ParseError = $elm$core$Basics$identity;
+var $author$project$Go$Featherweight$Generics$Syntax$Program = F2(
+	function (decls, exp) {
+		return {a8: decls, T: exp};
+	});
+var $author$project$Go$Featherweight$Generics$Syntax$MDecl = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$TDecl = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$MethodCall = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$SelectField = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$StructLiteral = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$Ty = $elm$core$Basics$identity;
+var $author$project$Go$Featherweight$Generics$Syntax$TypeAssertion = function (a) {
+	return {$: 4, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$Var = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$keywords = $elm$core$Set$fromList(
+	_List_fromArray(
+		['package', 'main', 'func', 'struct', 'interface', 'type', 'return']));
+var $author$project$Go$Featherweight$Generics$Syntax$nameParser = $elm$parser$Parser$variable(
+	{
+		bm: function (c) {
+			return $elm$core$Char$isAlphaNum(c) || (c === '_');
+		},
+		bH: $author$project$Go$Featherweight$Generics$Syntax$keywords,
+		bO: $elm$core$Char$isAlphaNum
+	});
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+function $author$project$Go$Featherweight$Generics$Syntax$cyclic$typeParser() {
+	return A2(
+		$elm$parser$Parser$map,
+		$elm$core$Basics$identity,
+		A2(
+			$elm$parser$Parser$andThen,
+			function (name) {
+				return $elm$parser$Parser$oneOf(
+					_List_fromArray(
+						[
+							A2(
+							$elm$parser$Parser$keeper,
+							$elm$parser$Parser$succeed(
+								$elm$core$Tuple$pair(name)),
+							A2(
+								$author$project$Go$Parser$Helper$blockWith,
+								_Utils_Tuple2('(', ')'),
+								$author$project$Go$Featherweight$Generics$Syntax$cyclic$typeParser())),
+							$elm$parser$Parser$succeed(
+							_Utils_Tuple2(name, _List_Nil))
+						]));
+			},
+			$author$project$Go$Featherweight$Generics$Syntax$nameParser));
+}
+var $author$project$Go$Featherweight$Generics$Syntax$typeParser = $author$project$Go$Featherweight$Generics$Syntax$cyclic$typeParser();
+$author$project$Go$Featherweight$Generics$Syntax$cyclic$typeParser = function () {
+	return $author$project$Go$Featherweight$Generics$Syntax$typeParser;
+};
+var $author$project$Go$Featherweight$Generics$Syntax$expParserWithExp = function (exp) {
+	return $elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				A2(
+				$elm$parser$Parser$keeper,
+				A2(
+					$elm$parser$Parser$ignorer,
+					$elm$parser$Parser$succeed(
+						function (ty) {
+							return $author$project$Go$Featherweight$Generics$Syntax$TypeAssertion(
+								{T: exp, bV: ty});
+						}),
+					$elm$parser$Parser$symbol('(')),
+				A2(
+					$elm$parser$Parser$ignorer,
+					$author$project$Go$Featherweight$Generics$Syntax$typeParser,
+					$elm$parser$Parser$symbol(')'))),
+				A2(
+				$elm$parser$Parser$andThen,
+				$author$project$Go$Featherweight$Generics$Syntax$expParserWithExpAndName(exp),
+				$author$project$Go$Featherweight$Generics$Syntax$nameParser)
+			]));
+};
+var $author$project$Go$Featherweight$Generics$Syntax$expParserWithExpAndName = F2(
+	function (exp, name) {
+		return $elm$parser$Parser$oneOf(
+			_List_fromArray(
+				[
+					A2(
+					$elm$parser$Parser$keeper,
+					$elm$parser$Parser$succeed(
+						function (_v1) {
+							var ts = _v1.a;
+							var xs = _v1.b;
+							return $author$project$Go$Featherweight$Generics$Syntax$MethodCall(
+								{X: xs, T: exp, bq: name, bW: ts});
+						}),
+					$elm$parser$Parser$oneOf(
+						_List_fromArray(
+							[
+								A2(
+								$elm$parser$Parser$keeper,
+								A2(
+									$elm$parser$Parser$keeper,
+									$elm$parser$Parser$succeed($elm$core$Tuple$pair),
+									$elm$parser$Parser$backtrackable(
+										A2(
+											$author$project$Go$Parser$Helper$blockWith,
+											_Utils_Tuple2('(', ')'),
+											$author$project$Go$Featherweight$Generics$Syntax$typeParser))),
+								A2(
+									$author$project$Go$Parser$Helper$blockWith,
+									_Utils_Tuple2('(', ')'),
+									$elm$parser$Parser$lazy(
+										function (_v2) {
+											return $author$project$Go$Featherweight$Generics$Syntax$cyclic$expParser();
+										}))),
+								A2(
+								$elm$parser$Parser$keeper,
+								$elm$parser$Parser$succeed(
+									$elm$core$Tuple$pair(_List_Nil)),
+								A2(
+									$author$project$Go$Parser$Helper$blockWith,
+									_Utils_Tuple2('(', ')'),
+									$elm$parser$Parser$lazy(
+										function (_v3) {
+											return $author$project$Go$Featherweight$Generics$Syntax$cyclic$expParser();
+										})))
+							]))),
+					$elm$parser$Parser$succeed(
+					$author$project$Go$Featherweight$Generics$Syntax$SelectField(
+						{T: exp, bi: name}))
+				]));
+	});
+var $author$project$Go$Featherweight$Generics$Syntax$expParserWithName = function (name) {
+	return $elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				A2(
+				$elm$parser$Parser$andThen,
+				$author$project$Go$Featherweight$Generics$Syntax$structLiteralParser,
+				A2(
+					$elm$parser$Parser$keeper,
+					$elm$parser$Parser$succeed(
+						A2(
+							$elm$core$Basics$composeL,
+							$elm$core$Basics$identity,
+							$elm$core$Tuple$pair(name))),
+					A2(
+						$author$project$Go$Parser$Helper$blockWith,
+						_Utils_Tuple2('(', ')'),
+						$author$project$Go$Featherweight$Generics$Syntax$typeParser))),
+				$author$project$Go$Featherweight$Generics$Syntax$structLiteralParser(
+				_Utils_Tuple2(name, _List_Nil)),
+				$elm$parser$Parser$succeed(
+				$author$project$Go$Featherweight$Generics$Syntax$Var(name))
+			]));
+};
+var $author$project$Go$Featherweight$Generics$Syntax$stepExpParserWithExp = function (exp) {
+	return $elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				A2(
+				$elm$parser$Parser$keeper,
+				A2(
+					$elm$parser$Parser$ignorer,
+					$elm$parser$Parser$succeed($elm$parser$Parser$Loop),
+					$elm$parser$Parser$symbol('.')),
+				$author$project$Go$Featherweight$Generics$Syntax$expParserWithExp(exp)),
+				$elm$parser$Parser$succeed(
+				$elm$parser$Parser$Done(exp))
+			]));
+};
+var $author$project$Go$Featherweight$Generics$Syntax$structLiteralParser = function (ty) {
+	return A2(
+		$elm$parser$Parser$keeper,
+		$elm$parser$Parser$succeed(
+			function (args) {
+				return $author$project$Go$Featherweight$Generics$Syntax$StructLiteral(
+					{X: args, bP: ty});
+			}),
+		A2(
+			$author$project$Go$Parser$Helper$blockWith,
+			_Utils_Tuple2('{', '}'),
+			$elm$parser$Parser$lazy(
+				function (_v0) {
+					return $author$project$Go$Featherweight$Generics$Syntax$cyclic$expParser();
+				})));
+};
+function $author$project$Go$Featherweight$Generics$Syntax$cyclic$expParser() {
+	return A2(
+		$elm$parser$Parser$andThen,
+		function (exp) {
+			return A2($elm$parser$Parser$loop, exp, $author$project$Go$Featherweight$Generics$Syntax$stepExpParserWithExp);
+		},
+		A2($elm$parser$Parser$andThen, $author$project$Go$Featherweight$Generics$Syntax$expParserWithName, $author$project$Go$Featherweight$Generics$Syntax$nameParser));
+}
+var $author$project$Go$Featherweight$Generics$Syntax$expParser = $author$project$Go$Featherweight$Generics$Syntax$cyclic$expParser();
+$author$project$Go$Featherweight$Generics$Syntax$cyclic$expParser = function () {
+	return $author$project$Go$Featherweight$Generics$Syntax$expParser;
+};
+var $author$project$Go$Featherweight$Generics$Syntax$formalParser = function () {
+	var p = A2(
+		$elm$parser$Parser$keeper,
+		A2(
+			$elm$parser$Parser$keeper,
+			$elm$parser$Parser$succeed($elm$core$Tuple$pair),
+			A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$nameParser, $author$project$Go$Parser$Helper$whitespaces)),
+		$author$project$Go$Featherweight$Generics$Syntax$typeParser);
+	return $elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				A2(
+				$elm$parser$Parser$keeper,
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						$elm$parser$Parser$succeed($elm$core$Basics$identity),
+						$elm$parser$Parser$backtrackable(
+							$elm$parser$Parser$symbol('('))),
+					$elm$parser$Parser$spaces),
+				A2(
+					$author$project$Go$Parser$Helper$blockWith,
+					_Utils_Tuple2('type', ')'),
+					p)),
+				$elm$parser$Parser$succeed(_List_Nil)
+			]));
+}();
+var $author$project$Go$Featherweight$Generics$Syntax$MethodSignature = F3(
+	function (formal, args, rett) {
+		return {X: args, Z: formal, bJ: rett};
+	});
+var $author$project$Go$Featherweight$Generics$Syntax$nameAndTypeParser = A2(
+	$elm$parser$Parser$keeper,
+	A2(
+		$elm$parser$Parser$keeper,
+		$elm$parser$Parser$succeed(
+			F2(
+				function (n, t) {
+					return _Utils_Tuple2(n, t);
+				})),
+		A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$nameParser, $author$project$Go$Parser$Helper$whitespaces)),
+	$author$project$Go$Featherweight$Generics$Syntax$typeParser);
+var $author$project$Go$Featherweight$Generics$Syntax$methodSignParser = A2(
+	$elm$parser$Parser$keeper,
+	A2(
+		$elm$parser$Parser$keeper,
+		A2(
+			$elm$parser$Parser$keeper,
+			$elm$parser$Parser$succeed($author$project$Go$Featherweight$Generics$Syntax$MethodSignature),
+			A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$formalParser, $elm$parser$Parser$spaces)),
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$author$project$Go$Parser$Helper$blockWith,
+				_Utils_Tuple2('(', ')'),
+				$author$project$Go$Featherweight$Generics$Syntax$nameAndTypeParser),
+			$author$project$Go$Parser$Helper$whitespaces)),
+	$author$project$Go$Featherweight$Generics$Syntax$typeParser);
+var $author$project$Go$Featherweight$Generics$Syntax$nameAndTypeNameParser = A2(
+	$elm$parser$Parser$keeper,
+	A2(
+		$elm$parser$Parser$keeper,
+		$elm$parser$Parser$succeed(
+			F2(
+				function (n, t) {
+					return _Utils_Tuple2(n, t);
+				})),
+		A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$nameParser, $author$project$Go$Parser$Helper$whitespaces)),
+	$author$project$Go$Featherweight$Generics$Syntax$nameParser);
+var $author$project$Go$Featherweight$Generics$Syntax$Interface = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$Structure = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Syntax$MethodSpecific = F2(
+	function (name, sign) {
+		return {aa: name, aR: sign};
+	});
+var $author$project$Go$Featherweight$Generics$Syntax$methodSpecificParser = A2(
+	$elm$parser$Parser$keeper,
+	A2(
+		$elm$parser$Parser$keeper,
+		$elm$parser$Parser$succeed($author$project$Go$Featherweight$Generics$Syntax$MethodSpecific),
+		$author$project$Go$Featherweight$Generics$Syntax$nameParser),
+	$author$project$Go$Featherweight$Generics$Syntax$methodSignParser);
+var $author$project$Go$Featherweight$Generics$Syntax$typeLitParser = $elm$parser$Parser$oneOf(
+	_List_fromArray(
+		[
+			A2(
+			$elm$parser$Parser$keeper,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						A2(
+							$elm$parser$Parser$ignorer,
+							$elm$parser$Parser$succeed($author$project$Go$Featherweight$Generics$Syntax$Structure),
+							$elm$parser$Parser$keyword('struct')),
+						$elm$parser$Parser$spaces),
+					$elm$parser$Parser$symbol('{')),
+				$elm$parser$Parser$spaces),
+			A2(
+				$author$project$Go$Parser$Helper$newlineSequence,
+				$elm$parser$Parser$symbol('}'),
+				$author$project$Go$Featherweight$Generics$Syntax$nameAndTypeParser)),
+			A2(
+			$elm$parser$Parser$keeper,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						A2(
+							$elm$parser$Parser$ignorer,
+							$elm$parser$Parser$succeed($author$project$Go$Featherweight$Generics$Syntax$Interface),
+							$elm$parser$Parser$keyword('interface')),
+						$elm$parser$Parser$spaces),
+					$elm$parser$Parser$symbol('{')),
+				$elm$parser$Parser$spaces),
+			A2(
+				$author$project$Go$Parser$Helper$newlineSequence,
+				$elm$parser$Parser$symbol('}'),
+				$author$project$Go$Featherweight$Generics$Syntax$methodSpecificParser))
+		]));
+var $author$project$Go$Featherweight$Generics$Syntax$declParser = $elm$parser$Parser$oneOf(
+	_List_fromArray(
+		[
+			A2(
+			$elm$parser$Parser$keeper,
+			A2(
+				$elm$parser$Parser$keeper,
+				A2(
+					$elm$parser$Parser$keeper,
+					A2(
+						$elm$parser$Parser$ignorer,
+						A2(
+							$elm$parser$Parser$ignorer,
+							$elm$parser$Parser$succeed(
+								F3(
+									function (name, fm, lit) {
+										return $author$project$Go$Featherweight$Generics$Syntax$TDecl(
+											{Z: fm, bp: lit, aa: name});
+									})),
+							$elm$parser$Parser$keyword('type')),
+						$author$project$Go$Parser$Helper$whitespaces),
+					A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$nameParser, $elm$parser$Parser$spaces)),
+				A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$formalParser, $elm$parser$Parser$spaces)),
+			$author$project$Go$Featherweight$Generics$Syntax$typeLitParser),
+			A2(
+			$elm$parser$Parser$keeper,
+			A2(
+				$elm$parser$Parser$keeper,
+				A2(
+					$elm$parser$Parser$keeper,
+					A2(
+						$elm$parser$Parser$keeper,
+						A2(
+							$elm$parser$Parser$keeper,
+							A2(
+								$elm$parser$Parser$ignorer,
+								A2(
+									$elm$parser$Parser$ignorer,
+									A2(
+										$elm$parser$Parser$ignorer,
+										$elm$parser$Parser$succeed(
+											F5(
+												function (r, f, n, s, v) {
+													return $author$project$Go$Featherweight$Generics$Syntax$MDecl(
+														{Z: f, aa: n, bF: r, bK: v, aR: s});
+												})),
+										$elm$parser$Parser$keyword('func')),
+									$elm$parser$Parser$spaces),
+								$elm$parser$Parser$symbol('(')),
+							A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$nameAndTypeNameParser, $elm$parser$Parser$spaces)),
+						A2(
+							$elm$parser$Parser$ignorer,
+							A2(
+								$elm$parser$Parser$ignorer,
+								$author$project$Go$Featherweight$Generics$Syntax$formalParser,
+								$elm$parser$Parser$symbol(')')),
+							$elm$parser$Parser$spaces)),
+					$author$project$Go$Featherweight$Generics$Syntax$nameParser),
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						A2(
+							$elm$parser$Parser$ignorer,
+							A2(
+								$elm$parser$Parser$ignorer,
+								A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$methodSignParser, $elm$parser$Parser$spaces),
+								$elm$parser$Parser$symbol('{')),
+							$elm$parser$Parser$spaces),
+						$elm$parser$Parser$keyword('return')),
+					$author$project$Go$Parser$Helper$whitespaces)),
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2($elm$parser$Parser$ignorer, $author$project$Go$Featherweight$Generics$Syntax$expParser, $elm$parser$Parser$spaces),
+				$elm$parser$Parser$symbol('}')))
+		]));
+var $author$project$Go$Featherweight$Generics$Syntax$parser = function () {
+	var parseMainPackage = A2(
+		$elm$parser$Parser$ignorer,
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				$elm$parser$Parser$succeed(0),
+				$elm$parser$Parser$keyword('package')),
+			$author$project$Go$Parser$Helper$whitespaces),
+		$elm$parser$Parser$keyword('main'));
+	var parseMainFunc = A2(
+		$elm$parser$Parser$ignorer,
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				$elm$parser$Parser$succeed(0),
+				$elm$parser$Parser$backtrackable(
+					$elm$parser$Parser$keyword('func'))),
+			$elm$parser$Parser$backtrackable($author$project$Go$Parser$Helper$whitespaces)),
+		$elm$parser$Parser$keyword('main()'));
+	var parseMainExp = A2(
+		$elm$parser$Parser$keeper,
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						$elm$parser$Parser$succeed($elm$core$Basics$identity),
+						$elm$parser$Parser$symbol('_')),
+					$author$project$Go$Parser$Helper$whitespaces),
+				$elm$parser$Parser$symbol('=')),
+			$author$project$Go$Parser$Helper$whitespaces),
+		$author$project$Go$Featherweight$Generics$Syntax$expParser);
+	return A2(
+		$elm$parser$Parser$keeper,
+		A2(
+			$elm$parser$Parser$keeper,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					$elm$parser$Parser$succeed($author$project$Go$Featherweight$Generics$Syntax$Program),
+					parseMainPackage),
+				$author$project$Go$Parser$Helper$newlines),
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						A2($author$project$Go$Parser$Helper$newlineSequence, parseMainFunc, $author$project$Go$Featherweight$Generics$Syntax$declParser),
+						$elm$parser$Parser$spaces),
+					$elm$parser$Parser$symbol('{')),
+				$elm$parser$Parser$spaces)),
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2($elm$parser$Parser$ignorer, parseMainExp, $elm$parser$Parser$spaces),
+					$elm$parser$Parser$symbol('}')),
+				$elm$parser$Parser$spaces),
+			$elm$parser$Parser$end));
+}();
+var $author$project$Go$Featherweight$Generics$parse = A2(
+	$elm$core$Basics$composeL,
+	$elm$core$Result$mapError($elm$core$Basics$identity),
+	$elm$parser$Parser$run($author$project$Go$Featherweight$Generics$Syntax$parser));
+var $author$project$Main$checkFGG = function (model) {
+	var _v0 = $author$project$Go$Featherweight$Generics$parse(model.M);
+	if (!_v0.$) {
+		return _Utils_update(
+			model,
+			{K: ''});
+	} else {
+		var err = _v0.a;
+		return _Utils_update(
+			model,
+			{
+				K: $author$project$Go$Featherweight$Generics$displayError(err)
+			});
+	}
+};
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var txt = msg;
-		return _Utils_Tuple2(
-			$author$project$Main$checkFG(
-				_Utils_update(
-					model,
-					{K: txt})),
-			$elm$core$Platform$Cmd$none);
+		if (!msg.$) {
+			var txt = msg.a;
+			return _Utils_Tuple2(
+				$author$project$Main$checkFGG(
+					_Utils_update(
+						model,
+						{M: txt})),
+				$elm$core$Platform$Cmd$none);
+		} else {
+			var txt = msg.a;
+			return _Utils_Tuple2(
+				$author$project$Main$checkFG(
+					_Utils_update(
+						model,
+						{L: txt})),
+				$elm$core$Platform$Cmd$none);
+		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -7840,7 +8360,9 @@ var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$InputText = $elm$core$Basics$identity;
+var $author$project$Main$InputFG = function (a) {
+	return {$: 1, a: a};
+};
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -7849,11 +8371,11 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 			_VirtualDom_noJavaScriptOrHtmlUri(value));
 	});
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
-var $author$project$Main$isEmpty = function (model) {
-	return model.K === '';
+var $author$project$Main$isEmptyFG = function (model) {
+	return model.L === '';
 };
 var $elm$core$Basics$neq = _Utils_notEqual;
-var $author$project$Main$isError = function (model) {
+var $author$project$Main$isErrorFG = function (model) {
 	return model.J !== '';
 };
 var $elm$html$Html$Events$alwaysStop = function (x) {
@@ -7894,7 +8416,7 @@ var $elm$html$Html$textarea = _VirtualDom_node('textarea');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$viewFormValidateFG = function (model) {
-	return $author$project$Main$isEmpty(model) ? A2($elm$html$Html$p, _List_Nil, _List_Nil) : ($author$project$Main$isError(model) ? A2(
+	return $author$project$Main$isEmptyFG(model) ? A2($elm$html$Html$p, _List_Nil, _List_Nil) : ($author$project$Main$isErrorFG(model) ? A2(
 		$elm$html$Html$p,
 		_List_fromArray(
 			[
@@ -7922,7 +8444,7 @@ var $author$project$Main$viewFormFG = function (model) {
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class('form-group'),
-				$author$project$Main$isEmpty(model) ? $elm$html$Html$Attributes$class('') : ($author$project$Main$isError(model) ? $elm$html$Html$Attributes$class('errored') : $elm$html$Html$Attributes$class('successed'))
+				$author$project$Main$isEmptyFG(model) ? $elm$html$Html$Attributes$class('') : ($author$project$Main$isErrorFG(model) ? $elm$html$Html$Attributes$class('errored') : $elm$html$Html$Attributes$class('successed'))
 			]),
 		_List_fromArray(
 			[
@@ -7948,17 +8470,94 @@ var $author$project$Main$viewFormFG = function (model) {
 						$elm$html$Html$textarea,
 						_List_fromArray(
 							[
-								$elm$html$Html$Events$onInput($elm$core$Basics$identity),
+								$elm$html$Html$Events$onInput($author$project$Main$InputFG),
 								$elm$html$Html$Attributes$class('form-control'),
 								A2($elm$html$Html$Attributes$attribute, 'aria-describedby', 'fg-code-validation'),
 								A2($elm$html$Html$Attributes$attribute, 'wrap', 'off')
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(model.K)
+								$elm$html$Html$text(model.L)
 							]))
 					])),
 				$author$project$Main$viewFormValidateFG(model)
+			]));
+};
+var $author$project$Main$InputFGG = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Main$isEmptyFGG = function (model) {
+	return model.M === '';
+};
+var $author$project$Main$isErrorFGG = function (model) {
+	return model.K !== '';
+};
+var $author$project$Main$viewFormValidateFGG = function (model) {
+	return $author$project$Main$isEmptyFGG(model) ? A2($elm$html$Html$p, _List_Nil, _List_Nil) : ($author$project$Main$isErrorFGG(model) ? A2(
+		$elm$html$Html$p,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('note error'),
+				$elm$html$Html$Attributes$id('fg-code-validation')
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text(model.K)
+			])) : A2(
+		$elm$html$Html$p,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('note success'),
+				$elm$html$Html$Attributes$id('fg-code-validation')
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text('parse OK')
+			])));
+};
+var $author$project$Main$viewFormFGG = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('form-group'),
+				$author$project$Main$isEmptyFGG(model) ? $elm$html$Html$Attributes$class('') : ($author$project$Main$isErrorFGG(model) ? $elm$html$Html$Attributes$class('errored') : $elm$html$Html$Attributes$class('successed'))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-group-header')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('FGG code')
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-group-body')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$textarea,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onInput($author$project$Main$InputFGG),
+								$elm$html$Html$Attributes$class('form-control'),
+								A2($elm$html$Html$Attributes$attribute, 'aria-describedby', 'fg-code-validation'),
+								A2($elm$html$Html$Attributes$attribute, 'wrap', 'off')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(model.M)
+							]))
+					])),
+				$author$project$Main$viewFormValidateFGG(model)
 			]));
 };
 var $author$project$Main$view = function (model) {
@@ -8000,21 +8599,31 @@ var $author$project$Main$view = function (model) {
 					])),
 				A2(
 				$elm$html$Html$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('pb-2')
+					]),
 				_List_fromArray(
 					[
 						$author$project$Main$viewFormFG(model)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$author$project$Main$viewFormFGG(model)
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		bj: $author$project$Main$init,
-		bO: function (_v0) {
+		bl: $author$project$Main$init,
+		bQ: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		bU: $author$project$Main$update,
-		bV: $author$project$Main$view
+		bX: $author$project$Main$update,
+		bY: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

@@ -3,6 +3,7 @@ module Main exposing (main)
 import Browser
 import Browser.Navigation as Nav
 import Go.Featherweight as FG
+import Go.Featherweight.Generics as FGG
 import Html as Html exposing (..)
 import Html.Attributes exposing (attribute, class, id, style)
 import Html.Events exposing (onInput)
@@ -19,45 +20,71 @@ main =
 
 
 type alias Model =
-    { input : String
-    , error : String
+    { inputFGG : String
+    , inputFG : String
+    , errorFGG : String
+    , errorFG : String
     }
 
 
-isEmpty : Model -> Bool
-isEmpty model =
-    model.input == ""
+isEmptyFGG : Model -> Bool
+isEmptyFGG model =
+    model.inputFGG == ""
 
 
-isError : Model -> Bool
-isError model =
-    model.error /= ""
+isErrorFGG : Model -> Bool
+isErrorFGG model =
+    model.errorFGG /= ""
+
+
+isEmptyFG : Model -> Bool
+isEmptyFG model =
+    model.inputFG == ""
+
+
+isErrorFG : Model -> Bool
+isErrorFG model =
+    model.errorFG /= ""
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model "" "", Cmd.none )
+    ( Model "" "" "" "", Cmd.none )
 
 
 type Msg
-    = InputText String
+    = InputFGG String
+    | InputFG String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        InputText txt ->
-            ( checkFG { model | input = txt }, Cmd.none )
+        InputFGG txt ->
+            ( checkFGG { model | inputFGG = txt }, Cmd.none )
+
+        InputFG txt ->
+            ( checkFG { model | inputFG = txt }, Cmd.none )
+
+
+checkFGG : Model -> Model
+checkFGG model =
+    case FGG.parse model.inputFGG of
+        Ok _ ->
+            { model | errorFGG = "" }
+
+        Err err ->
+            { model | errorFGG = FGG.displayError err }
 
 
 checkFG : Model -> Model
 checkFG model =
-    case Result.andThen FG.check <| FG.parse model.input of
+    case Result.andThen FG.check <| FG.parse model.inputFG of
         Ok _ ->
-            { model | error = "" }
+            { model | errorFG = "" }
 
         Err err ->
-            { model | error = FG.displayError err }
+            { model | errorFG = FG.displayError err }
 
 
 view : Model -> Html Msg
@@ -69,7 +96,35 @@ view model =
                 [ h1 [ class "Header-link" ] [ text "Featherweight Go" ]
                 ]
             ]
-        , div [] [ viewFormFG model ]
+        , div [ class "pb-2" ] [ viewFormFG model ]
+        , div [] [ viewFormFGG model ]
+        ]
+
+
+viewFormFGG : Model -> Html Msg
+viewFormFGG model =
+    div
+        [ class "form-group"
+        , if isEmptyFGG model then
+            class ""
+
+          else if isErrorFGG model then
+            class "errored"
+
+          else
+            class "successed"
+        ]
+        [ div [ class "form-group-header" ] [ text "FGG code" ]
+        , div [ class "form-group-body" ]
+            [ textarea
+                [ onInput InputFGG
+                , class "form-control"
+                , attribute "aria-describedby" "fg-code-validation"
+                , attribute "wrap" "off"
+                ]
+                [ text model.inputFGG ]
+            ]
+        , viewFormValidateFGG model
         ]
 
 
@@ -77,10 +132,10 @@ viewFormFG : Model -> Html Msg
 viewFormFG model =
     div
         [ class "form-group"
-        , if isEmpty model then
+        , if isEmptyFG model then
             class ""
 
-          else if isError model then
+          else if isErrorFG model then
             class "errored"
 
           else
@@ -89,26 +144,42 @@ viewFormFG model =
         [ div [ class "form-group-header" ] [ text "FG code" ]
         , div [ class "form-group-body" ]
             [ textarea
-                [ onInput InputText
+                [ onInput InputFG
                 , class "form-control"
                 , attribute "aria-describedby" "fg-code-validation"
                 , attribute "wrap" "off"
                 ]
-                [ text model.input ]
+                [ text model.inputFG ]
             ]
         , viewFormValidateFG model
         ]
 
 
-viewFormValidateFG : Model -> Html msg
-viewFormValidateFG model =
-    if isEmpty model then
+viewFormValidateFGG : Model -> Html msg
+viewFormValidateFGG model =
+    if isEmptyFGG model then
         p [] []
 
-    else if isError model then
+    else if isErrorFGG model then
         p
             [ class "note error", id "fg-code-validation" ]
-            [ text model.error ]
+            [ text model.errorFGG ]
+
+    else
+        p
+            [ class "note success", id "fg-code-validation" ]
+            [ text "parse OK" ]
+
+
+viewFormValidateFG : Model -> Html msg
+viewFormValidateFG model =
+    if isEmptyFG model then
+        p [] []
+
+    else if isErrorFG model then
+        p
+            [ class "note error", id "fg-code-validation" ]
+            [ text model.errorFG ]
 
     else
         p
