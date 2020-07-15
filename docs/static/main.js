@@ -5680,6 +5680,352 @@ var $author$project$Go$Featherweight$Type$checkTypeLitWith = F2(
 						mss)));
 		}
 	});
+var $elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, dict) {
+				var key = _v0.a;
+				var value = _v0.b;
+				return A3($elm$core$Dict$insert, key, value, dict);
+			}),
+		$elm$core$Dict$empty,
+		assocs);
+};
+var $author$project$Go$Featherweight$Type$NotSubtype = F2(
+	function (a, b) {
+		return {$: 3, a: a, b: b};
+	});
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
+var $elm$core$Basics$not = _Basics_not;
+var $elm$core$List$all = F2(
+	function (isOkay, list) {
+		return !A2(
+			$elm$core$List$any,
+			A2($elm$core$Basics$composeL, $elm$core$Basics$not, isOkay),
+			list);
+	});
+var $elm$core$Maybe$map2 = F3(
+	function (func, ma, mb) {
+		if (ma.$ === 1) {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 1) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				return $elm$core$Maybe$Just(
+					A2(func, a, b));
+			}
+		}
+	});
+var $elm$core$List$member = F2(
+	function (x, xs) {
+		return A2(
+			$elm$core$List$any,
+			function (a) {
+				return _Utils_eq(a, x);
+			},
+			xs);
+	});
+var $author$project$Go$Featherweight$Type$subtypeWith = F3(
+	function (dmap, t, u) {
+		var err = $elm$core$Result$Err(
+			A2($author$project$Go$Featherweight$Type$NotSubtype, t, u));
+		return A2(
+			$elm$core$Result$andThen,
+			function (tlit) {
+				if (!tlit.$) {
+					return _Utils_eq(t, u) ? $elm$core$Result$Ok(0) : err;
+				} else {
+					return A2(
+						$elm$core$Maybe$withDefault,
+						err,
+						A3(
+							$elm$core$Maybe$map2,
+							F2(
+								function (ms, ns) {
+									return A2(
+										$elm$core$List$all,
+										function (m) {
+											return A2($elm$core$List$member, m, ms);
+										},
+										ns) ? $elm$core$Result$Ok(0) : err;
+								}),
+							A2(
+								$elm$core$Maybe$map,
+								$elm$core$List$map($author$project$Go$Featherweight$Type$uniqMethodSpec),
+								A2(
+									$elm$core$Maybe$map,
+									$elm$core$Tuple$second,
+									A2($elm$core$Dict$get, t, dmap))),
+							A2(
+								$elm$core$Maybe$map,
+								$elm$core$List$map($author$project$Go$Featherweight$Type$uniqMethodSpec),
+								A2(
+									$elm$core$Maybe$map,
+									$elm$core$Tuple$second,
+									A2($elm$core$Dict$get, u, dmap)))));
+				}
+			},
+			A2($author$project$Go$Featherweight$Type$findTypeLiteral, u, dmap));
+	});
+var $elm_community$result_extra$Result$Extra$combineMap = function (f) {
+	return A2(
+		$elm$core$Basics$composeL,
+		$elm_community$result_extra$Result$Extra$combine,
+		$elm$core$List$map(f));
+};
+var $author$project$Go$Featherweight$Type$ExpectStructType = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Go$Featherweight$Type$fields = F2(
+	function (t, tlit) {
+		if (!tlit.$) {
+			var fs = tlit.a;
+			return $elm$core$Result$Ok(fs);
+		} else {
+			return $elm$core$Result$Err(
+				$author$project$Go$Featherweight$Type$ExpectStructType(t));
+		}
+	});
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$Go$Featherweight$Type$findFieldTypeOn = F2(
+	function (_v0, name) {
+		var t = _v0.a;
+		var tlit = _v0.b;
+		return A2(
+			$elm$core$Result$andThen,
+			function (fs) {
+				var _v1 = $elm$core$List$head(
+					A2(
+						$elm$core$List$filter,
+						function (_v2) {
+							var f = _v2.a;
+							return _Utils_eq(f, name);
+						},
+						fs));
+				if (!_v1.$) {
+					var _v3 = _v1.a;
+					var ty = _v3.b;
+					return $elm$core$Result$Ok(ty);
+				} else {
+					return $elm$core$Result$Err(
+						A2(
+							$author$project$Go$Featherweight$Type$ErrorOn,
+							t,
+							A2($author$project$Go$Featherweight$Type$Undefined, 'field', name)));
+				}
+			},
+			A2($author$project$Go$Featherweight$Type$fields, t, tlit));
+	});
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (!maybeValue.$) {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Go$Featherweight$Type$findMethodSpecific = F2(
+	function (_v0, dmap) {
+		var t = _v0.a;
+		var m = _v0.b;
+		return A2(
+			$elm$core$Maybe$withDefault,
+			$elm$core$Result$Err(
+				A2($author$project$Go$Featherweight$Type$Undefined, 'method', t + ('.' + m))),
+			A2(
+				$elm$core$Maybe$map,
+				$elm$core$Result$Ok,
+				A2(
+					$elm$core$Maybe$andThen,
+					$elm$core$List$head,
+					A2(
+						$elm$core$Maybe$map,
+						$elm$core$List$filter(
+							function (s) {
+								return _Utils_eq(s.aa, m);
+							}),
+						A2(
+							$elm$core$Maybe$map,
+							$elm$core$Tuple$second,
+							A2($elm$core$Dict$get, t, dmap))))));
+	});
+var $elm_community$result_extra$Result$Extra$join = function (r) {
+	if (r.$ === 1) {
+		var x = r.a;
+		return $elm$core$Result$Err(x);
+	} else {
+		if (r.a.$ === 1) {
+			var x = r.a.a;
+			return $elm$core$Result$Err(x);
+		} else {
+			var a = r.a.a;
+			return $elm$core$Result$Ok(a);
+		}
+	}
+};
+var $author$project$Go$Featherweight$Type$typeInferWith = F2(
+	function (env, exp) {
+		var _v0 = env;
+		var gamma = _v0.a;
+		var dmap = _v0.b;
+		switch (exp.$) {
+			case 0:
+				var name = exp.a;
+				return A2(
+					$elm$core$Maybe$withDefault,
+					$elm$core$Result$Err(
+						A2($author$project$Go$Featherweight$Type$Undefined, 'variable', name)),
+					A2(
+						$elm$core$Maybe$map,
+						$elm$core$Result$Ok,
+						A2($elm$core$Dict$get, name, gamma)));
+			case 1:
+				var mcall = exp.a;
+				return A2(
+					$elm$core$Result$andThen,
+					function (s) {
+						return A2(
+							$elm$core$Result$map,
+							function (_v2) {
+								return s.aR.bJ;
+							},
+							$elm_community$result_extra$Result$Extra$join(
+								A3(
+									$elm$core$Result$map2,
+									function (ts) {
+										return A2(
+											$elm$core$Basics$composeL,
+											$author$project$Go$Featherweight$Type$combine_,
+											A2(
+												$elm$core$List$map2,
+												$author$project$Go$Featherweight$Type$subtypeWith(dmap),
+												ts));
+									},
+									A2(
+										$elm_community$result_extra$Result$Extra$combineMap,
+										$author$project$Go$Featherweight$Type$typeInferWith(env),
+										mcall.X),
+									$elm$core$Result$Ok(
+										A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X)))));
+					},
+					A2(
+						$elm$core$Result$andThen,
+						function (t) {
+							return A2(
+								$author$project$Go$Featherweight$Type$findMethodSpecific,
+								_Utils_Tuple2(t, mcall.bq),
+								dmap);
+						},
+						A2($author$project$Go$Featherweight$Type$typeInferWith, env, mcall.T)));
+			case 2:
+				var slit = exp.a;
+				return A2(
+					$elm$core$Result$map,
+					function (_v4) {
+						return slit.bP;
+					},
+					A4(
+						$elm$core$Result$map3,
+						F2(
+							function (_v3, ts) {
+								return A2(
+									$elm$core$Basics$composeL,
+									$author$project$Go$Featherweight$Type$combine_,
+									A2(
+										$elm$core$List$map2,
+										$author$project$Go$Featherweight$Type$subtypeWith(dmap),
+										ts));
+							}),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bP),
+						A2(
+							$elm_community$result_extra$Result$Extra$combineMap,
+							$author$project$Go$Featherweight$Type$typeInferWith(env),
+							slit.X),
+						A2(
+							$elm$core$Result$andThen,
+							A2(
+								$elm$core$Basics$composeL,
+								$elm$core$Result$map(
+									$elm$core$List$map($elm$core$Tuple$second)),
+								$author$project$Go$Featherweight$Type$fields(slit.bP)),
+							A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bP, dmap))));
+			case 3:
+				var sel = exp.a;
+				return A2(
+					$elm$core$Result$andThen,
+					function (t) {
+						return A2(
+							$elm$core$Result$andThen,
+							function (lit) {
+								return A2(
+									$author$project$Go$Featherweight$Type$findFieldTypeOn,
+									_Utils_Tuple2(t, lit),
+									sel.bi);
+							},
+							A2($author$project$Go$Featherweight$Type$findTypeLiteral, t, dmap));
+					},
+					A2($author$project$Go$Featherweight$Type$typeInferWith, env, sel.T));
+			default:
+				var ta = exp.a;
+				return A2(
+					$elm$core$Result$map,
+					function (_v6) {
+						return ta.bV;
+					},
+					$elm_community$result_extra$Result$Extra$join(
+						A3(
+							$elm$core$Result$map2,
+							function (_v5) {
+								return A2($author$project$Go$Featherweight$Type$subtypeWith, dmap, ta.bV);
+							},
+							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, ta.bV),
+							A2($author$project$Go$Featherweight$Type$typeInferWith, env, ta.T))));
+		}
+	});
 var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 	function (dmap, d) {
 		if (!d.$) {
@@ -5707,7 +6053,20 @@ var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 							$elm$core$List$map,
 							$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
 							A2($elm$core$List$map, $elm$core$Tuple$second, decl.aR.X))),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.aR.bJ)
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.aR.bJ),
+						A2(
+						$elm$core$Result$andThen,
+						function (t) {
+							return A3($author$project$Go$Featherweight$Type$subtypeWith, dmap, t, decl.aR.bJ);
+						},
+						function (gamma) {
+							return A2(
+								$author$project$Go$Featherweight$Type$typeInferWith,
+								_Utils_Tuple2(gamma, dmap),
+								decl.bK);
+						}(
+							$elm$core$Dict$fromList(
+								A2($elm$core$List$cons, decl.bF, decl.aR.X))))
 					]));
 		}
 	});
@@ -5739,18 +6098,6 @@ var $author$project$Go$Featherweight$Type$mdecls = $elm$core$List$filterMap(
 			return $elm$core$Maybe$Nothing;
 		}
 	});
-var $elm$core$Dict$fromList = function (assocs) {
-	return A3(
-		$elm$core$List$foldl,
-		F2(
-			function (_v0, dict) {
-				var key = _v0.a;
-				var value = _v0.b;
-				return A3($elm$core$Dict$insert, key, value, dict);
-			}),
-		$elm$core$Dict$empty,
-		assocs);
-};
 var $elm$core$Dict$getMin = function (dict) {
 	getMin:
 	while (true) {
@@ -6179,340 +6526,6 @@ var $author$project$Go$Featherweight$Type$tdecls = $elm$core$List$filterMap(
 			return $elm$core$Maybe$Just(decl.aa);
 		} else {
 			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $elm_community$result_extra$Result$Extra$combineMap = function (f) {
-	return A2(
-		$elm$core$Basics$composeL,
-		$elm_community$result_extra$Result$Extra$combine,
-		$elm$core$List$map(f));
-};
-var $author$project$Go$Featherweight$Type$ExpectStructType = function (a) {
-	return {$: 2, a: a};
-};
-var $author$project$Go$Featherweight$Type$fields = F2(
-	function (t, tlit) {
-		if (!tlit.$) {
-			var fs = tlit.a;
-			return $elm$core$Result$Ok(fs);
-		} else {
-			return $elm$core$Result$Err(
-				$author$project$Go$Featherweight$Type$ExpectStructType(t));
-		}
-	});
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
-var $author$project$Go$Featherweight$Type$findFieldTypeOn = F2(
-	function (_v0, name) {
-		var t = _v0.a;
-		var tlit = _v0.b;
-		return A2(
-			$elm$core$Result$andThen,
-			function (fs) {
-				var _v1 = $elm$core$List$head(
-					A2(
-						$elm$core$List$filter,
-						function (_v2) {
-							var f = _v2.a;
-							return _Utils_eq(f, name);
-						},
-						fs));
-				if (!_v1.$) {
-					var _v3 = _v1.a;
-					var ty = _v3.b;
-					return $elm$core$Result$Ok(ty);
-				} else {
-					return $elm$core$Result$Err(
-						A2(
-							$author$project$Go$Featherweight$Type$ErrorOn,
-							t,
-							A2($author$project$Go$Featherweight$Type$Undefined, 'field', name)));
-				}
-			},
-			A2($author$project$Go$Featherweight$Type$fields, t, tlit));
-	});
-var $elm$core$Maybe$andThen = F2(
-	function (callback, maybeValue) {
-		if (!maybeValue.$) {
-			var value = maybeValue.a;
-			return callback(value);
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $author$project$Go$Featherweight$Type$findMethodSpecific = F2(
-	function (_v0, dmap) {
-		var t = _v0.a;
-		var m = _v0.b;
-		return A2(
-			$elm$core$Maybe$withDefault,
-			$elm$core$Result$Err(
-				A2($author$project$Go$Featherweight$Type$Undefined, 'method', t + ('.' + m))),
-			A2(
-				$elm$core$Maybe$map,
-				$elm$core$Result$Ok,
-				A2(
-					$elm$core$Maybe$andThen,
-					$elm$core$List$head,
-					A2(
-						$elm$core$Maybe$map,
-						$elm$core$List$filter(
-							function (s) {
-								return _Utils_eq(s.aa, m);
-							}),
-						A2(
-							$elm$core$Maybe$map,
-							$elm$core$Tuple$second,
-							A2($elm$core$Dict$get, t, dmap))))));
-	});
-var $elm_community$result_extra$Result$Extra$join = function (r) {
-	if (r.$ === 1) {
-		var x = r.a;
-		return $elm$core$Result$Err(x);
-	} else {
-		if (r.a.$ === 1) {
-			var x = r.a.a;
-			return $elm$core$Result$Err(x);
-		} else {
-			var a = r.a.a;
-			return $elm$core$Result$Ok(a);
-		}
-	}
-};
-var $author$project$Go$Featherweight$Type$NotSubtype = F2(
-	function (a, b) {
-		return {$: 3, a: a, b: b};
-	});
-var $elm$core$List$any = F2(
-	function (isOkay, list) {
-		any:
-		while (true) {
-			if (!list.b) {
-				return false;
-			} else {
-				var x = list.a;
-				var xs = list.b;
-				if (isOkay(x)) {
-					return true;
-				} else {
-					var $temp$isOkay = isOkay,
-						$temp$list = xs;
-					isOkay = $temp$isOkay;
-					list = $temp$list;
-					continue any;
-				}
-			}
-		}
-	});
-var $elm$core$Basics$not = _Basics_not;
-var $elm$core$List$all = F2(
-	function (isOkay, list) {
-		return !A2(
-			$elm$core$List$any,
-			A2($elm$core$Basics$composeL, $elm$core$Basics$not, isOkay),
-			list);
-	});
-var $elm$core$Maybe$map2 = F3(
-	function (func, ma, mb) {
-		if (ma.$ === 1) {
-			return $elm$core$Maybe$Nothing;
-		} else {
-			var a = ma.a;
-			if (mb.$ === 1) {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				var b = mb.a;
-				return $elm$core$Maybe$Just(
-					A2(func, a, b));
-			}
-		}
-	});
-var $elm$core$List$member = F2(
-	function (x, xs) {
-		return A2(
-			$elm$core$List$any,
-			function (a) {
-				return _Utils_eq(a, x);
-			},
-			xs);
-	});
-var $author$project$Go$Featherweight$Type$subtypeWith = F3(
-	function (dmap, t, u) {
-		var err = $elm$core$Result$Err(
-			A2($author$project$Go$Featherweight$Type$NotSubtype, t, u));
-		return A2(
-			$elm$core$Result$andThen,
-			function (tlit) {
-				if (!tlit.$) {
-					return _Utils_eq(t, u) ? $elm$core$Result$Ok(0) : err;
-				} else {
-					return A2(
-						$elm$core$Maybe$withDefault,
-						err,
-						A3(
-							$elm$core$Maybe$map2,
-							F2(
-								function (ms, ns) {
-									return A2(
-										$elm$core$List$all,
-										function (m) {
-											return A2($elm$core$List$member, m, ms);
-										},
-										ns) ? $elm$core$Result$Ok(0) : err;
-								}),
-							A2(
-								$elm$core$Maybe$map,
-								$elm$core$List$map($author$project$Go$Featherweight$Type$uniqMethodSpec),
-								A2(
-									$elm$core$Maybe$map,
-									$elm$core$Tuple$second,
-									A2($elm$core$Dict$get, t, dmap))),
-							A2(
-								$elm$core$Maybe$map,
-								$elm$core$List$map($author$project$Go$Featherweight$Type$uniqMethodSpec),
-								A2(
-									$elm$core$Maybe$map,
-									$elm$core$Tuple$second,
-									A2($elm$core$Dict$get, u, dmap)))));
-				}
-			},
-			A2($author$project$Go$Featherweight$Type$findTypeLiteral, u, dmap));
-	});
-var $author$project$Go$Featherweight$Type$typeInferWith = F2(
-	function (env, exp) {
-		var _v0 = env;
-		var gamma = _v0.a;
-		var dmap = _v0.b;
-		switch (exp.$) {
-			case 0:
-				var name = exp.a;
-				return A2(
-					$elm$core$Maybe$withDefault,
-					$elm$core$Result$Err(
-						A2($author$project$Go$Featherweight$Type$Undefined, 'variable', name)),
-					A2(
-						$elm$core$Maybe$map,
-						$elm$core$Result$Ok,
-						A2($elm$core$Dict$get, name, gamma)));
-			case 1:
-				var mcall = exp.a;
-				return A2(
-					$elm$core$Result$andThen,
-					function (s) {
-						return A2(
-							$elm$core$Result$map,
-							function (_v2) {
-								return s.aR.bJ;
-							},
-							$elm_community$result_extra$Result$Extra$join(
-								A3(
-									$elm$core$Result$map2,
-									function (ts) {
-										return A2(
-											$elm$core$Basics$composeL,
-											$author$project$Go$Featherweight$Type$combine_,
-											A2(
-												$elm$core$List$map2,
-												$author$project$Go$Featherweight$Type$subtypeWith(dmap),
-												ts));
-									},
-									A2(
-										$elm_community$result_extra$Result$Extra$combineMap,
-										$author$project$Go$Featherweight$Type$typeInferWith(env),
-										mcall.X),
-									$elm$core$Result$Ok(
-										A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X)))));
-					},
-					A2(
-						$elm$core$Result$andThen,
-						function (t) {
-							return A2(
-								$author$project$Go$Featherweight$Type$findMethodSpecific,
-								_Utils_Tuple2(t, mcall.bq),
-								dmap);
-						},
-						A2($author$project$Go$Featherweight$Type$typeInferWith, env, mcall.T)));
-			case 2:
-				var slit = exp.a;
-				return A2(
-					$elm$core$Result$map,
-					function (_v4) {
-						return slit.bP;
-					},
-					A4(
-						$elm$core$Result$map3,
-						F2(
-							function (_v3, ts) {
-								return A2(
-									$elm$core$Basics$composeL,
-									$author$project$Go$Featherweight$Type$combine_,
-									A2(
-										$elm$core$List$map2,
-										$author$project$Go$Featherweight$Type$subtypeWith(dmap),
-										ts));
-							}),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bP),
-						A2(
-							$elm_community$result_extra$Result$Extra$combineMap,
-							$author$project$Go$Featherweight$Type$typeInferWith(env),
-							slit.X),
-						A2(
-							$elm$core$Result$andThen,
-							A2(
-								$elm$core$Basics$composeL,
-								$elm$core$Result$map(
-									$elm$core$List$map($elm$core$Tuple$second)),
-								$author$project$Go$Featherweight$Type$fields(slit.bP)),
-							A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bP, dmap))));
-			case 3:
-				var sel = exp.a;
-				return A2(
-					$elm$core$Result$andThen,
-					function (t) {
-						return A2(
-							$elm$core$Result$andThen,
-							function (lit) {
-								return A2(
-									$author$project$Go$Featherweight$Type$findFieldTypeOn,
-									_Utils_Tuple2(t, lit),
-									sel.bi);
-							},
-							A2($author$project$Go$Featherweight$Type$findTypeLiteral, t, dmap));
-					},
-					A2($author$project$Go$Featherweight$Type$typeInferWith, env, sel.T));
-			default:
-				var ta = exp.a;
-				return A2(
-					$elm$core$Result$map,
-					function (_v6) {
-						return ta.bV;
-					},
-					$elm_community$result_extra$Result$Extra$join(
-						A3(
-							$elm$core$Result$map2,
-							function (_v5) {
-								return A2($author$project$Go$Featherweight$Type$subtypeWith, dmap, ta.bV);
-							},
-							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, ta.bV),
-							A2($author$project$Go$Featherweight$Type$typeInferWith, env, ta.T))));
 		}
 	});
 var $author$project$Go$Featherweight$Type$check = function (p) {

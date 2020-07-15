@@ -134,6 +134,9 @@ checkDeclWith dmap d =
                     |> List.map (checkTypeNameWith dmap)
                     |> combine_
                 , checkTypeNameWith dmap decl.sign.rett
+                , Dict.fromList (decl.recv :: decl.sign.args)
+                    |> (\gamma -> typeInferWith ( gamma, dmap ) decl.retv)
+                    |> Result.andThen (\t -> subtypeWith dmap t decl.sign.rett)
                 ]
 
 

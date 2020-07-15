@@ -61,8 +61,12 @@ type Hoge struct { hoge Any }
 
 type Fuga struct {}
 
+func (self Hoge) hogege(other Any) Any {
+    return self.hoge
+}
+
 func main() {
-  _ = Hoge{Fuga{}}.hoge.(Fuga)
+  _ = Hoge{Fuga{}}.hogege(Fuga{}).(Fuga)
 }
 """
 
