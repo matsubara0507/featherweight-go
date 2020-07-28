@@ -25,12 +25,23 @@ suite =
                     FG.parse code3
                         |> Result.andThen FG.check
                         |> Expect.equal (Ok ())
+            , test "success type check simple code with method interface method" <|
+                \_ ->
+                    FG.parse code4
+                        |> Result.andThen FG.check
+                        |> Expect.equal (Ok ())
             , test "fail type check simple code with undefined type" <|
                 \_ ->
                     FG.parse failCode1
                         |> Result.andThen FG.check
                         |> Expect.equal
                             (Err <| FG.TypeError <| Undefined "type" "Fuga")
+            , test "fail type check simple code with undefined interface method" <|
+                \_ ->
+                    FG.parse failCode2
+                        |> Result.andThen FG.check
+                        |> Expect.equal
+                            (Err <| FG.TypeError <| NotSubtype "Hoge" "Piyo")
             ]
         ]
 
@@ -89,6 +100,34 @@ func main() {
 """
 
 
+code4 : String
+code4 =
+    String.dropLeft 1
+        """
+package main
+
+type Any interface {}
+
+type Piyo interface {
+    Piyoyo(x Any) Any
+}
+
+type Hoge struct {}
+
+func (self Hoge) Piyoyo(x Any) Any {
+    return x
+}
+
+type Fuga struct {
+    piyo Piyo
+}
+
+func main() {
+  _ = Fuga{Hoge{}}.piyo.Piyoyo(Hoge{})
+}
+"""
+
+
 failCode1 : String
 failCode1 =
     String.dropLeft 1
@@ -103,5 +142,29 @@ func (self Hoge) hoge(x Fuga) Hoge {
 
 func main() {
   _ = Hoge{}.hoge(Hoge{})
+}
+"""
+
+
+failCode2 : String
+failCode2 =
+    String.dropLeft 1
+        """
+package main
+
+type Any interface {}
+
+type Piyo interface {
+    Piyoyo(x Any) Any
+}
+
+type Hoge struct {}
+
+type Fuga struct {
+    piyo Piyo
+}
+
+func main() {
+  _ = Fuga{Hoge{}}.piyo.Piyoyo(Hoge{})
 }
 """

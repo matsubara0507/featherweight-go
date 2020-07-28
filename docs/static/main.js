@@ -5765,13 +5765,13 @@ var $author$project$Go$Featherweight$Type$subtypeWith = F3(
 						A3(
 							$elm$core$Maybe$map2,
 							F2(
-								function (ms, ns) {
+								function (tms, ums) {
 									return A2(
 										$elm$core$List$all,
 										function (m) {
-											return A2($elm$core$List$member, m, ms);
+											return A2($elm$core$List$member, m, tms);
 										},
-										ns) ? $elm$core$Result$Ok(0) : err;
+										ums) ? $elm$core$Result$Ok(0) : err;
 								}),
 							A2(
 								$elm$core$Maybe$map,
@@ -5893,6 +5893,15 @@ var $author$project$Go$Featherweight$Type$findMethodSpecific = F2(
 							$elm$core$Tuple$second,
 							A2($elm$core$Dict$get, t, dmap))))));
 	});
+var $elm$core$Result$fromMaybe = F2(
+	function (err, maybe) {
+		if (!maybe.$) {
+			var v = maybe.a;
+			return $elm$core$Result$Ok(v);
+		} else {
+			return $elm$core$Result$Err(err);
+		}
+	});
 var $elm_community$result_extra$Result$Extra$join = function (r) {
 	if (r.$ === 1) {
 		var x = r.a;
@@ -5916,13 +5925,9 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 			case 0:
 				var name = exp.a;
 				return A2(
-					$elm$core$Maybe$withDefault,
-					$elm$core$Result$Err(
-						A2($author$project$Go$Featherweight$Type$Undefined, 'variable', name)),
-					A2(
-						$elm$core$Maybe$map,
-						$elm$core$Result$Ok,
-						A2($elm$core$Dict$get, name, gamma)));
+					$elm$core$Result$fromMaybe,
+					A2($author$project$Go$Featherweight$Type$Undefined, 'variable', name),
+					A2($elm$core$Dict$get, name, gamma));
 			case 1:
 				var mcall = exp.a;
 				return A2(
@@ -5968,31 +5973,31 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 					function (_v4) {
 						return slit.bP;
 					},
-					A4(
-						$elm$core$Result$map3,
-						F2(
-							function (_v3, ts) {
-								return A2(
-									$elm$core$Basics$composeL,
-									$author$project$Go$Featherweight$Type$combine_,
-									A2(
-										$elm$core$List$map2,
-										$author$project$Go$Featherweight$Type$subtypeWith(dmap),
-										ts));
-							}),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bP),
-						A2(
-							$elm_community$result_extra$Result$Extra$combineMap,
-							$author$project$Go$Featherweight$Type$typeInferWith(env),
-							slit.X),
-						A2(
-							$elm$core$Result$andThen,
+					$elm_community$result_extra$Result$Extra$join(
+						A4(
+							$elm$core$Result$map3,
+							F3(
+								function (_v3, ts, us) {
+									return $author$project$Go$Featherweight$Type$combine_(
+										A3(
+											$elm$core$List$map2,
+											$author$project$Go$Featherweight$Type$subtypeWith(dmap),
+											ts,
+											us));
+								}),
+							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bP),
 							A2(
-								$elm$core$Basics$composeL,
-								$elm$core$Result$map(
-									$elm$core$List$map($elm$core$Tuple$second)),
-								$author$project$Go$Featherweight$Type$fields(slit.bP)),
-							A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bP, dmap))));
+								$elm_community$result_extra$Result$Extra$combineMap,
+								$author$project$Go$Featherweight$Type$typeInferWith(env),
+								slit.X),
+							A2(
+								$elm$core$Result$andThen,
+								A2(
+									$elm$core$Basics$composeL,
+									$elm$core$Result$map(
+										$elm$core$List$map($elm$core$Tuple$second)),
+									$author$project$Go$Featherweight$Type$fields(slit.bP)),
+								A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bP, dmap)))));
 			case 3:
 				var sel = exp.a;
 				return A2(
@@ -6473,9 +6478,9 @@ var $elm$core$Dict$update = F3(
 	});
 var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 	var update = F2(
-		function (decl, _v2) {
-			var tlit = _v2.a;
-			var mss = _v2.b;
+		function (decl, _v3) {
+			var tlit = _v3.a;
+			var mss = _v3.b;
 			return _Utils_Tuple2(
 				tlit,
 				A2(
@@ -6503,10 +6508,19 @@ var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 				function (t) {
 					if (!t.$) {
 						var decl = t.a;
-						return $elm$core$Maybe$Just(
-							_Utils_Tuple2(
-								decl.aa,
-								_Utils_Tuple2(decl.bp, _List_Nil)));
+						var _v2 = decl.bp;
+						if (!_v2.$) {
+							return $elm$core$Maybe$Just(
+								_Utils_Tuple2(
+									decl.aa,
+									_Utils_Tuple2(decl.bp, _List_Nil)));
+						} else {
+							var methods = _v2.a;
+							return $elm$core$Maybe$Just(
+								_Utils_Tuple2(
+									decl.aa,
+									_Utils_Tuple2(decl.bp, methods)));
+						}
 					} else {
 						return $elm$core$Maybe$Nothing;
 					}

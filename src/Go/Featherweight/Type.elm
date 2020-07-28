@@ -52,7 +52,12 @@ mkDeclMap decls =
                 (\t ->
                     case t of
                         TDecl decl ->
-                            Just ( decl.name, ( decl.literal, [] ) )
+                            case decl.literal of
+                                Structure _ ->
+                                    Just ( decl.name, ( decl.literal, [] ) )
+
+                                Interface methods ->
+                                    Just ( decl.name, ( decl.literal, methods ) )
 
                         MDecl _ ->
                             Nothing
@@ -188,8 +193,7 @@ typeInferWith env exp =
     case exp of
         Var name ->
             Dict.get name gamma
-                |> Maybe.map Ok
-                |> Maybe.withDefault (Err <| Undefined "variable" name)
+                |> Result.fromMaybe (Undefined "variable" name)
 
         MethodCall mcall ->
             typeInferWith env mcall.exp
@@ -209,9 +213,10 @@ typeInferWith env exp =
                 |> Result.andThen
                     (Result.map (List.map Tuple.second) << fields slit.struct)
                 |> Result.map3
-                    (\_ ts -> combine_ << List.map2 (subtypeWith dmap) ts)
+                    (\_ ts us -> combine_ <| List.map2 (subtypeWith dmap) ts us)
                     (checkTypeNameWith dmap slit.struct)
                     (Result.combineMap (typeInferWith env) slit.args)
+                |> Result.join
                 |> Result.map (\_ -> slit.struct)
 
         SelectField sel ->
@@ -340,8 +345,8 @@ subtypeWith dmap t u =
 
                     Interface _ ->
                         Maybe.map2
-                            (\ms ns ->
-                                if List.all (\m -> List.member m ms) ns then
+                            (\tms ums ->
+                                if List.all (\m -> List.member m tms) ums then
                                     Ok ()
 
                                 else
