@@ -69,7 +69,7 @@ update msg model =
 
 checkFGG : Model -> Model
 checkFGG model =
-    case FGG.parse model.inputFGG of
+    case Result.andThen FGG.check <| FGG.parse model.inputFGG of
         Ok _ ->
             { model | errorFGG = "" }
 
@@ -168,7 +168,7 @@ viewFormValidateFGG model =
     else
         p
             [ class "note success", id "fg-code-validation" ]
-            [ text "parse OK" ]
+            [ text "OK" ]
 
 
 viewFormValidateFG : Model -> Html msg

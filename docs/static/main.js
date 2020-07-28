@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.bO.N === region.bc.N)
+	if (region.bS.P === region.bg.P)
 	{
-		return 'on line ' + region.bO.N;
+		return 'on line ' + region.bS.P;
 	}
-	return 'on lines ' + region.bO.N + ' through ' + region.bc.N;
+	return 'on lines ' + region.bS.P + ' through ' + region.bg.P;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bl,
-		impl.bX,
-		impl.bQ,
+		impl.bp,
+		impl.b$,
+		impl.bU,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		y: func(record.y),
-		af: record.af,
-		ad: record.ad
+		z: func(record.z),
+		aj: record.aj,
+		ah: record.ah
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.y;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.af;
+		var message = !tag ? value : tag < 3 ? value.a : value.z;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aj;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.ad) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.ah) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bl,
-		impl.bX,
-		impl.bQ,
+		impl.bp,
+		impl.b$,
+		impl.bU,
 		function(sendToApp, initialModel) {
-			var view = impl.bY;
+			var view = impl.b0;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.bl,
-		impl.bX,
-		impl.bQ,
+		impl.bp,
+		impl.b$,
+		impl.bU,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.ae && impl.ae(sendToApp)
-			var view = impl.bY;
+			var divertHrefToApp = impl.ai && impl.ai(sendToApp)
+			var view = impl.b0;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a2);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a6);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bT) && (_VirtualDom_doc.title = title = doc.bT);
+				(title !== doc.bX) && (_VirtualDom_doc.title = title = doc.bX);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bA;
-	var onUrlRequest = impl.bB;
+	var onUrlChange = impl.bE;
+	var onUrlRequest = impl.bF;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		ae: function(sendToApp)
+		ai: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aK === next.aK
-							&& curr.ax === next.ax
-							&& curr.aH.a === next.aH.a
+							&& curr.aO === next.aO
+							&& curr.aB === next.aB
+							&& curr.aL.a === next.aL.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		bl: function(flags)
+		bp: function(flags)
 		{
-			return A3(impl.bl, flags, _Browser_getUrl(), key);
+			return A3(impl.bp, flags, _Browser_getUrl(), key);
 		},
-		bY: impl.bY,
-		bX: impl.bX,
-		bQ: impl.bQ
+		b0: impl.b0,
+		b$: impl.b$,
+		bU: impl.bU
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { bj: 'hidden', a4: 'visibilitychange' }
+		? { bn: 'hidden', a8: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { bj: 'mozHidden', a4: 'mozvisibilitychange' }
+		? { bn: 'mozHidden', a8: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { bj: 'msHidden', a4: 'msvisibilitychange' }
+		? { bn: 'msHidden', a8: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { bj: 'webkitHidden', a4: 'webkitvisibilitychange' }
-		: { bj: 'hidden', a4: 'visibilitychange' };
+		? { bn: 'webkitHidden', a8: 'webkitvisibilitychange' }
+		: { bn: 'hidden', a8: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aQ: _Browser_getScene(),
-		aX: {
-			aZ: _Browser_window.pageXOffset,
-			a_: _Browser_window.pageYOffset,
-			aY: _Browser_doc.documentElement.clientWidth,
-			av: _Browser_doc.documentElement.clientHeight
+		aU: _Browser_getScene(),
+		a$: {
+			a1: _Browser_window.pageXOffset,
+			a2: _Browser_window.pageYOffset,
+			a0: _Browser_doc.documentElement.clientWidth,
+			az: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aY: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		av: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		a0: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		az: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aQ: {
-				aY: node.scrollWidth,
-				av: node.scrollHeight
+			aU: {
+				a0: node.scrollWidth,
+				az: node.scrollHeight
 			},
-			aX: {
-				aZ: node.scrollLeft,
-				a_: node.scrollTop,
-				aY: node.clientWidth,
-				av: node.clientHeight
+			a$: {
+				a1: node.scrollLeft,
+				a2: node.scrollTop,
+				a0: node.clientWidth,
+				az: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aQ: _Browser_getScene(),
-			aX: {
-				aZ: x,
-				a_: y,
-				aY: _Browser_doc.documentElement.clientWidth,
-				av: _Browser_doc.documentElement.clientHeight
+			aU: _Browser_getScene(),
+			a$: {
+				a1: x,
+				a2: y,
+				a0: _Browser_doc.documentElement.clientWidth,
+				az: _Browser_doc.documentElement.clientHeight
 			},
-			bb: {
-				aZ: x + rect.left,
-				a_: y + rect.top,
-				aY: rect.width,
-				av: rect.height
+			bf: {
+				a1: x + rect.left,
+				a2: y + rect.top,
+				a0: rect.width,
+				az: rect.height
 			}
 		};
 	});
@@ -4989,7 +4989,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {as: fragment, ax: host, aF: path, aH: port_, aK: protocol, aL: query};
+		return {aw: fragment, aB: host, aJ: path, aL: port_, aO: protocol, aP: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5270,7 +5270,7 @@ var $elm$core$Task$perform = F2(
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$Model = F4(
 	function (inputFGG, inputFG, errorFGG, errorFG) {
-		return {J: errorFG, K: errorFGG, L: inputFG, M: inputFGG};
+		return {L: errorFG, M: errorFGG, N: inputFG, O: inputFGG};
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5620,22 +5620,22 @@ var $author$project$Go$Featherweight$Type$checkMethodSpecWith = F2(
 				$elm$core$Result$mapError,
 				A2(
 					$elm$core$Basics$composeL,
-					$author$project$Go$Featherweight$Type$ErrorOn(s.aa),
+					$author$project$Go$Featherweight$Type$ErrorOn(s.ae),
 					$author$project$Go$Featherweight$Type$DuplicatedDefinition('variable')),
 				$author$project$Go$Featherweight$Type$distinct(
-					A2($elm$core$List$map, $elm$core$Tuple$first, s.aR.X))),
+					A2($elm$core$List$map, $elm$core$Tuple$first, s.aV._))),
 			$author$project$Go$Featherweight$Type$combine_(
 				A2(
 					$elm$core$List$map,
 					$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
-					A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X))),
-			A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, s.aR.bJ));
+					A2($elm$core$List$map, $elm$core$Tuple$second, s.aV._))),
+			A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, s.aV.bN));
 	});
 var $author$project$Go$Featherweight$Type$uniqMethodSpec = function (s) {
 	return _Utils_Tuple3(
-		s.aa,
-		A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X),
-		s.aR.bJ);
+		s.ae,
+		A2($elm$core$List$map, $elm$core$Tuple$second, s.aV._),
+		s.aV.bN);
 };
 var $author$project$Go$Featherweight$Type$checkTypeLitWith = F2(
 	function (dmap, tlit) {
@@ -5886,7 +5886,7 @@ var $author$project$Go$Featherweight$Type$findMethodSpecific = F2(
 						$elm$core$Maybe$map,
 						$elm$core$List$filter(
 							function (s) {
-								return _Utils_eq(s.aa, m);
+								return _Utils_eq(s.ae, m);
 							}),
 						A2(
 							$elm$core$Maybe$map,
@@ -5936,7 +5936,7 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 						return A2(
 							$elm$core$Result$map,
 							function (_v2) {
-								return s.aR.bJ;
+								return s.aV.bN;
 							},
 							$elm_community$result_extra$Result$Extra$join(
 								A3(
@@ -5953,25 +5953,25 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 									A2(
 										$elm_community$result_extra$Result$Extra$combineMap,
 										$author$project$Go$Featherweight$Type$typeInferWith(env),
-										mcall.X),
+										mcall._),
 									$elm$core$Result$Ok(
-										A2($elm$core$List$map, $elm$core$Tuple$second, s.aR.X)))));
+										A2($elm$core$List$map, $elm$core$Tuple$second, s.aV._)))));
 					},
 					A2(
 						$elm$core$Result$andThen,
 						function (t) {
 							return A2(
 								$author$project$Go$Featherweight$Type$findMethodSpecific,
-								_Utils_Tuple2(t, mcall.bq),
+								_Utils_Tuple2(t, mcall.bu),
 								dmap);
 						},
-						A2($author$project$Go$Featherweight$Type$typeInferWith, env, mcall.T)));
+						A2($author$project$Go$Featherweight$Type$typeInferWith, env, mcall.W)));
 			case 2:
 				var slit = exp.a;
 				return A2(
 					$elm$core$Result$map,
 					function (_v4) {
-						return slit.bP;
+						return slit.bT;
 					},
 					$elm_community$result_extra$Result$Extra$join(
 						A4(
@@ -5985,19 +5985,19 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 											ts,
 											us));
 								}),
-							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bP),
+							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, slit.bT),
 							A2(
 								$elm_community$result_extra$Result$Extra$combineMap,
 								$author$project$Go$Featherweight$Type$typeInferWith(env),
-								slit.X),
+								slit._),
 							A2(
 								$elm$core$Result$andThen,
 								A2(
 									$elm$core$Basics$composeL,
 									$elm$core$Result$map(
 										$elm$core$List$map($elm$core$Tuple$second)),
-									$author$project$Go$Featherweight$Type$fields(slit.bP)),
-								A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bP, dmap)))));
+									$author$project$Go$Featherweight$Type$fields(slit.bT)),
+								A2($author$project$Go$Featherweight$Type$findTypeLiteral, slit.bT, dmap)))));
 			case 3:
 				var sel = exp.a;
 				return A2(
@@ -6009,26 +6009,26 @@ var $author$project$Go$Featherweight$Type$typeInferWith = F2(
 								return A2(
 									$author$project$Go$Featherweight$Type$findFieldTypeOn,
 									_Utils_Tuple2(t, lit),
-									sel.bi);
+									sel.bm);
 							},
 							A2($author$project$Go$Featherweight$Type$findTypeLiteral, t, dmap));
 					},
-					A2($author$project$Go$Featherweight$Type$typeInferWith, env, sel.T));
+					A2($author$project$Go$Featherweight$Type$typeInferWith, env, sel.W));
 			default:
 				var ta = exp.a;
 				return A2(
 					$elm$core$Result$map,
 					function (_v6) {
-						return ta.bV;
+						return ta.bZ;
 					},
 					$elm_community$result_extra$Result$Extra$join(
 						A3(
 							$elm$core$Result$map2,
 							function (_v5) {
-								return A2($author$project$Go$Featherweight$Type$subtypeWith, dmap, ta.bV);
+								return A2($author$project$Go$Featherweight$Type$subtypeWith, dmap, ta.bZ);
 							},
-							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, ta.bV),
-							A2($author$project$Go$Featherweight$Type$typeInferWith, env, ta.T))));
+							A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, ta.bZ),
+							A2($author$project$Go$Featherweight$Type$typeInferWith, env, ta.W))));
 		}
 	});
 var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
@@ -6037,8 +6037,8 @@ var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 			var decl = d.a;
 			return A2(
 				$elm$core$Result$mapError,
-				$author$project$Go$Featherweight$Type$ErrorOn(decl.aa),
-				A2($author$project$Go$Featherweight$Type$checkTypeLitWith, dmap, decl.bp));
+				$author$project$Go$Featherweight$Type$ErrorOn(decl.ae),
+				A2($author$project$Go$Featherweight$Type$checkTypeLitWith, dmap, decl.bt));
 		} else {
 			var decl = d.a;
 			return $author$project$Go$Featherweight$Type$combine_(
@@ -6050,28 +6050,28 @@ var $author$project$Go$Featherweight$Type$checkDeclWith = F2(
 						$author$project$Go$Featherweight$Type$distinct(
 							A2(
 								$elm$core$List$cons,
-								decl.bF.a,
-								A2($elm$core$List$map, $elm$core$Tuple$first, decl.aR.X)))),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.bF.b),
+								decl.bJ.a,
+								A2($elm$core$List$map, $elm$core$Tuple$first, decl.aV._)))),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.bJ.b),
 						$author$project$Go$Featherweight$Type$combine_(
 						A2(
 							$elm$core$List$map,
 							$author$project$Go$Featherweight$Type$checkTypeNameWith(dmap),
-							A2($elm$core$List$map, $elm$core$Tuple$second, decl.aR.X))),
-						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.aR.bJ),
+							A2($elm$core$List$map, $elm$core$Tuple$second, decl.aV._))),
+						A2($author$project$Go$Featherweight$Type$checkTypeNameWith, dmap, decl.aV.bN),
 						A2(
 						$elm$core$Result$andThen,
 						function (t) {
-							return A3($author$project$Go$Featherweight$Type$subtypeWith, dmap, t, decl.aR.bJ);
+							return A3($author$project$Go$Featherweight$Type$subtypeWith, dmap, t, decl.aV.bN);
 						},
 						function (gamma) {
 							return A2(
 								$author$project$Go$Featherweight$Type$typeInferWith,
 								_Utils_Tuple2(gamma, dmap),
-								decl.bK);
+								decl.bO);
 						}(
 							$elm$core$Dict$fromList(
-								A2($elm$core$List$cons, decl.bF, decl.aR.X))))
+								A2($elm$core$List$cons, decl.bJ, decl.aV._))))
 					]));
 		}
 	});
@@ -6098,7 +6098,7 @@ var $author$project$Go$Featherweight$Type$mdecls = $elm$core$List$filterMap(
 		if (x.$ === 1) {
 			var decl = x.a;
 			return $elm$core$Maybe$Just(
-				_Utils_Tuple2(decl.bF.b, decl.aa));
+				_Utils_Tuple2(decl.bJ.b, decl.ae));
 		} else {
 			return $elm$core$Maybe$Nothing;
 		}
@@ -6485,7 +6485,7 @@ var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 				tlit,
 				A2(
 					$elm$core$List$cons,
-					{aa: decl.aa, aR: decl.aR},
+					{ae: decl.ae, aV: decl.aV},
 					mss));
 		});
 	return A3(
@@ -6497,7 +6497,7 @@ var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 				var decl = d.a;
 				return A2(
 					$elm$core$Dict$update,
-					decl.bF.b,
+					decl.bJ.b,
 					$elm$core$Maybe$map(
 						update(decl)));
 			}
@@ -6508,18 +6508,18 @@ var $author$project$Go$Featherweight$Type$mkDeclMap = function (decls) {
 				function (t) {
 					if (!t.$) {
 						var decl = t.a;
-						var _v2 = decl.bp;
+						var _v2 = decl.bt;
 						if (!_v2.$) {
 							return $elm$core$Maybe$Just(
 								_Utils_Tuple2(
-									decl.aa,
-									_Utils_Tuple2(decl.bp, _List_Nil)));
+									decl.ae,
+									_Utils_Tuple2(decl.bt, _List_Nil)));
 						} else {
 							var methods = _v2.a;
 							return $elm$core$Maybe$Just(
 								_Utils_Tuple2(
-									decl.aa,
-									_Utils_Tuple2(decl.bp, methods)));
+									decl.ae,
+									_Utils_Tuple2(decl.bt, methods)));
 						}
 					} else {
 						return $elm$core$Maybe$Nothing;
@@ -6537,13 +6537,13 @@ var $author$project$Go$Featherweight$Type$tdecls = $elm$core$List$filterMap(
 	function (x) {
 		if (!x.$) {
 			var decl = x.a;
-			return $elm$core$Maybe$Just(decl.aa);
+			return $elm$core$Maybe$Just(decl.ae);
 		} else {
 			return $elm$core$Maybe$Nothing;
 		}
 	});
 var $author$project$Go$Featherweight$Type$check = function (p) {
-	var env = $author$project$Go$Featherweight$Type$newEnv(p.a8);
+	var env = $author$project$Go$Featherweight$Type$newEnv(p.bc);
 	var dmap = env.b;
 	return $author$project$Go$Featherweight$Type$combine_(
 		_List_fromArray(
@@ -6552,7 +6552,7 @@ var $author$project$Go$Featherweight$Type$check = function (p) {
 				$elm$core$Result$mapError,
 				$author$project$Go$Featherweight$Type$DuplicatedDefinition('type'),
 				$author$project$Go$Featherweight$Type$distinct(
-					$author$project$Go$Featherweight$Type$tdecls(p.a8))),
+					$author$project$Go$Featherweight$Type$tdecls(p.bc))),
 				A2(
 				$elm$core$Result$mapError,
 				function (_v0) {
@@ -6561,19 +6561,19 @@ var $author$project$Go$Featherweight$Type$check = function (p) {
 					return A2($author$project$Go$Featherweight$Type$DuplicatedDefinition, 'method', x + ('.' + y));
 				},
 				$author$project$Go$Featherweight$Type$distinct(
-					$author$project$Go$Featherweight$Type$mdecls(p.a8))),
+					$author$project$Go$Featherweight$Type$mdecls(p.bc))),
 				$author$project$Go$Featherweight$Type$combine_(
 				A2(
 					$elm$core$List$map,
 					$author$project$Go$Featherweight$Type$checkDeclWith(dmap),
-					p.a8)),
+					p.bc)),
 				A2(
 				$elm$core$Result$map,
 				$elm$core$Basics$always(0),
 				A2(
 					$author$project$Go$Featherweight$Type$typeInferWith,
-					$author$project$Go$Featherweight$Type$newEnv(p.a8),
-					p.T))
+					$author$project$Go$Featherweight$Type$newEnv(p.bc),
+					p.W))
 			]));
 };
 var $author$project$Go$Featherweight$check = A2(
@@ -6646,11 +6646,11 @@ var $author$project$Go$Parser$Helper$displayDeadEnd = function (err) {
 	return $elm$core$String$concat(
 		_List_fromArray(
 			[
-				$elm$core$String$fromInt(err.bL),
+				$elm$core$String$fromInt(err.bP),
 				':',
-				$elm$core$String$fromInt(err.a6),
+				$elm$core$String$fromInt(err.ba),
 				' ',
-				$author$project$Go$Parser$Helper$displayProblem(err.bE)
+				$author$project$Go$Parser$Helper$displayProblem(err.bI)
 			]));
 };
 var $author$project$Go$Parser$Helper$displayError = function (errs) {
@@ -6673,7 +6673,7 @@ var $author$project$Go$Featherweight$ParseError = function (a) {
 };
 var $author$project$Go$Featherweight$Syntax$Program = F2(
 	function (decls, exp) {
-		return {a8: decls, T: exp};
+		return {bc: decls, W: exp};
 	});
 var $elm$parser$Parser$Advanced$Bad = F2(
 	function (a, b) {
@@ -7070,14 +7070,14 @@ var $elm$parser$Parser$Advanced$AddRight = F2(
 	});
 var $elm$parser$Parser$Advanced$DeadEnd = F4(
 	function (row, col, problem, contextStack) {
-		return {a6: col, a7: contextStack, bE: problem, bL: row};
+		return {ba: col, bb: contextStack, bI: problem, bP: row};
 	});
 var $elm$parser$Parser$Advanced$fromState = F2(
 	function (s, x) {
 		return A2(
 			$elm$parser$Parser$Advanced$AddRight,
 			$elm$parser$Parser$Advanced$Empty,
-			A4($elm$parser$Parser$Advanced$DeadEnd, s.bL, s.a6, x, s.c));
+			A4($elm$parser$Parser$Advanced$DeadEnd, s.bP, s.ba, x, s.c));
 	});
 var $elm$parser$Parser$Advanced$isSubString = _Parser_isSubString;
 var $elm$core$Basics$negate = function (n) {
@@ -7088,7 +7088,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 	var expecting = _v0.b;
 	var progress = !$elm$core$String$isEmpty(str);
 	return function (s) {
-		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.bL, s.a6, s.a);
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.b, s.bP, s.ba, s.a);
 		var newOffset = _v1.a;
 		var newRow = _v1.b;
 		var newCol = _v1.c;
@@ -7099,23 +7099,23 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 			$elm$parser$Parser$Advanced$Good,
 			progress,
 			0,
-			{a6: newCol, c: s.c, d: s.d, b: newOffset, bL: newRow, a: s.a});
+			{ba: newCol, c: s.c, d: s.d, b: newOffset, bP: newRow, a: s.a});
 	};
 };
 var $elm$parser$Parser$Advanced$sequence = function (i) {
 	return A2(
 		$elm$parser$Parser$Advanced$skip,
-		$elm$parser$Parser$Advanced$token(i.bO),
+		$elm$parser$Parser$Advanced$token(i.bS),
 		A2(
 			$elm$parser$Parser$Advanced$skip,
-			i.bN,
+			i.bR,
 			A5(
 				$elm$parser$Parser$Advanced$sequenceEnd,
-				$elm$parser$Parser$Advanced$token(i.bc),
-				i.bN,
-				i.bo,
-				$elm$parser$Parser$Advanced$token(i.bM),
-				i.bU)));
+				$elm$parser$Parser$Advanced$token(i.bg),
+				i.bR,
+				i.bs,
+				$elm$parser$Parser$Advanced$token(i.bQ),
+				i.bY)));
 };
 var $elm$parser$Parser$Advanced$Forbidden = 0;
 var $elm$parser$Parser$Advanced$Mandatory = 2;
@@ -7146,12 +7146,12 @@ var $elm$parser$Parser$toToken = function (str) {
 var $elm$parser$Parser$sequence = function (i) {
 	return $elm$parser$Parser$Advanced$sequence(
 		{
-			bc: $elm$parser$Parser$toToken(i.bc),
-			bo: i.bo,
-			bM: $elm$parser$Parser$toToken(i.bM),
-			bN: i.bN,
-			bO: $elm$parser$Parser$toToken(i.bO),
-			bU: $elm$parser$Parser$toAdvancedTrailing(i.bU)
+			bg: $elm$parser$Parser$toToken(i.bg),
+			bs: i.bs,
+			bQ: $elm$parser$Parser$toToken(i.bQ),
+			bR: i.bR,
+			bS: $elm$parser$Parser$toToken(i.bS),
+			bY: $elm$parser$Parser$toAdvancedTrailing(i.bY)
 		});
 };
 var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
@@ -7165,7 +7165,7 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 					$elm$parser$Parser$Advanced$Good,
 					_Utils_cmp(s0.b, offset) < 0,
 					0,
-					{a6: col, c: s0.c, d: s0.d, b: offset, bL: row, a: s0.a});
+					{ba: col, c: s0.c, d: s0.d, b: offset, bP: row, a: s0.a});
 			} else {
 				if (_Utils_eq(newOffset, -2)) {
 					var $temp$isGood = isGood,
@@ -7197,7 +7197,7 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 	});
 var $elm$parser$Parser$Advanced$chompWhile = function (isGood) {
 	return function (s) {
-		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.b, s.bL, s.a6, s);
+		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.b, s.bP, s.ba, s);
 	};
 };
 var $elm$parser$Parser$Advanced$spaces = $elm$parser$Parser$Advanced$chompWhile(
@@ -7210,7 +7210,7 @@ var $author$project$Go$Parser$Helper$blockWith = F2(
 		var start = _v0.a;
 		var end = _v0.b;
 		return $elm$parser$Parser$sequence(
-			{bc: end, bo: p, bM: ',', bN: $elm$parser$Parser$spaces, bO: start, bU: 1});
+			{bg: end, bs: p, bQ: ',', bR: $elm$parser$Parser$spaces, bS: start, bY: 1});
 	});
 var $elm$parser$Parser$ignorer = $elm$parser$Parser$Advanced$ignorer;
 var $elm$parser$Parser$Advanced$keeper = F2(
@@ -7273,7 +7273,7 @@ var $elm$parser$Parser$Advanced$varHelp = F7(
 		while (true) {
 			var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, offset, src);
 			if (_Utils_eq(newOffset, -1)) {
-				return {a6: col, c: context, d: indent, b: offset, bL: row, a: src};
+				return {ba: col, c: context, d: indent, b: offset, bP: row, a: src};
 			} else {
 				if (_Utils_eq(newOffset, -2)) {
 					var $temp$isGood = isGood,
@@ -7313,33 +7313,33 @@ var $elm$parser$Parser$Advanced$varHelp = F7(
 	});
 var $elm$parser$Parser$Advanced$variable = function (i) {
 	return function (s) {
-		var firstOffset = A3($elm$parser$Parser$Advanced$isSubChar, i.bO, s.b, s.a);
+		var firstOffset = A3($elm$parser$Parser$Advanced$isSubChar, i.bS, s.b, s.a);
 		if (_Utils_eq(firstOffset, -1)) {
 			return A2(
 				$elm$parser$Parser$Advanced$Bad,
 				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, i.aq));
+				A2($elm$parser$Parser$Advanced$fromState, s, i.au));
 		} else {
-			var s1 = _Utils_eq(firstOffset, -2) ? A7($elm$parser$Parser$Advanced$varHelp, i.bm, s.b + 1, s.bL + 1, 1, s.a, s.d, s.c) : A7($elm$parser$Parser$Advanced$varHelp, i.bm, firstOffset, s.bL, s.a6 + 1, s.a, s.d, s.c);
+			var s1 = _Utils_eq(firstOffset, -2) ? A7($elm$parser$Parser$Advanced$varHelp, i.bq, s.b + 1, s.bP + 1, 1, s.a, s.d, s.c) : A7($elm$parser$Parser$Advanced$varHelp, i.bq, firstOffset, s.bP, s.ba + 1, s.a, s.d, s.c);
 			var name = A3($elm$core$String$slice, s.b, s1.b, s.a);
-			return A2($elm$core$Set$member, name, i.bH) ? A2(
+			return A2($elm$core$Set$member, name, i.bL) ? A2(
 				$elm$parser$Parser$Advanced$Bad,
 				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, i.aq)) : A3($elm$parser$Parser$Advanced$Good, true, name, s1);
+				A2($elm$parser$Parser$Advanced$fromState, s, i.au)) : A3($elm$parser$Parser$Advanced$Good, true, name, s1);
 		}
 	};
 };
 var $elm$parser$Parser$variable = function (i) {
 	return $elm$parser$Parser$Advanced$variable(
-		{aq: $elm$parser$Parser$ExpectingVariable, bm: i.bm, bH: i.bH, bO: i.bO});
+		{au: $elm$parser$Parser$ExpectingVariable, bq: i.bq, bL: i.bL, bS: i.bS});
 };
 var $author$project$Go$Featherweight$Syntax$nameParser = $elm$parser$Parser$variable(
 	{
-		bm: function (c) {
+		bq: function (c) {
 			return $elm$core$Char$isAlphaNum(c) || (c === '_');
 		},
-		bH: $author$project$Go$Featherweight$Syntax$keywords,
-		bO: $elm$core$Char$isAlphaNum
+		bL: $author$project$Go$Featherweight$Syntax$keywords,
+		bS: $elm$core$Char$isAlphaNum
 	});
 var $elm$parser$Parser$oneOf = $elm$parser$Parser$Advanced$oneOf;
 var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
@@ -7365,7 +7365,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithExp = function (exp) {
 					$elm$parser$Parser$succeed(
 						function (ty) {
 							return $author$project$Go$Featherweight$Syntax$TypeAssertion(
-								{T: exp, bV: ty});
+								{W: exp, bZ: ty});
 						}),
 					$elm$parser$Parser$symbol('(')),
 				A2(
@@ -7388,7 +7388,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithExpAndName = F2(
 					$elm$parser$Parser$succeed(
 						function (args) {
 							return $author$project$Go$Featherweight$Syntax$MethodCall(
-								{X: args, T: exp, bq: name});
+								{_: args, W: exp, bu: name});
 						}),
 					A2(
 						$author$project$Go$Parser$Helper$blockWith,
@@ -7399,7 +7399,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithExpAndName = F2(
 							}))),
 					$elm$parser$Parser$succeed(
 					$author$project$Go$Featherweight$Syntax$SelectField(
-						{T: exp, bi: name}))
+						{W: exp, bm: name}))
 				]));
 	});
 var $author$project$Go$Featherweight$Syntax$expParserWithName = function (name) {
@@ -7411,7 +7411,7 @@ var $author$project$Go$Featherweight$Syntax$expParserWithName = function (name) 
 				$elm$parser$Parser$succeed(
 					function (args) {
 						return $author$project$Go$Featherweight$Syntax$StructLiteral(
-							{X: args, bP: name});
+							{_: args, bT: name});
 					}),
 				A2(
 					$author$project$Go$Parser$Helper$blockWith,
@@ -7459,7 +7459,7 @@ var $elm$parser$Parser$Advanced$keyword = function (_v0) {
 	var expecting = _v0.b;
 	var progress = !$elm$core$String$isEmpty(kwd);
 	return function (s) {
-		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, kwd, s.b, s.bL, s.a6, s.a);
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, kwd, s.b, s.bP, s.ba, s.a);
 		var newOffset = _v1.a;
 		var newRow = _v1.b;
 		var newCol = _v1.c;
@@ -7476,7 +7476,7 @@ var $elm$parser$Parser$Advanced$keyword = function (_v0) {
 			$elm$parser$Parser$Advanced$Good,
 			progress,
 			0,
-			{a6: newCol, c: s.c, d: s.d, b: newOffset, bL: newRow, a: s.a});
+			{ba: newCol, c: s.c, d: s.d, b: newOffset, bP: newRow, a: s.a});
 	};
 };
 var $elm$parser$Parser$keyword = function (kwd) {
@@ -7488,7 +7488,7 @@ var $elm$parser$Parser$keyword = function (kwd) {
 };
 var $author$project$Go$Featherweight$Syntax$MethodSignature = F2(
 	function (args, rett) {
-		return {X: args, bJ: rett};
+		return {_: args, bN: rett};
 	});
 var $elm$parser$Parser$chompWhile = $elm$parser$Parser$Advanced$chompWhile;
 var $author$project$Go$Parser$Helper$whitespaces = A2(
@@ -7533,7 +7533,7 @@ var $author$project$Go$Featherweight$Syntax$Structure = function (a) {
 };
 var $author$project$Go$Featherweight$Syntax$MethodSpecific = F2(
 	function (name, sign) {
-		return {aa: name, aR: sign};
+		return {ae: name, aV: sign};
 	});
 var $author$project$Go$Featherweight$Syntax$methodSpecificParser = A2(
 	$elm$parser$Parser$keeper,
@@ -7675,7 +7675,7 @@ var $author$project$Go$Featherweight$Syntax$declParser = $elm$parser$Parser$oneO
 							F2(
 								function (name, lit) {
 									return $author$project$Go$Featherweight$Syntax$TDecl(
-										{bp: lit, aa: name});
+										{bt: lit, ae: name});
 								})),
 						$elm$parser$Parser$keyword('type')),
 					$author$project$Go$Parser$Helper$whitespaces),
@@ -7699,7 +7699,7 @@ var $author$project$Go$Featherweight$Syntax$declParser = $elm$parser$Parser$oneO
 										F4(
 											function (r, n, s, v) {
 												return $author$project$Go$Featherweight$Syntax$MDecl(
-													{aa: n, bF: r, bK: v, aR: s});
+													{ae: n, bJ: r, bO: v, aV: s});
 											})),
 									$elm$parser$Parser$keyword('func')),
 								$elm$parser$Parser$spaces),
@@ -7814,10 +7814,10 @@ var $author$project$Go$Featherweight$Syntax$parser = function () {
 }();
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
-		return {a6: col, bE: problem, bL: row};
+		return {ba: col, bI: problem, bP: row};
 	});
 var $elm$parser$Parser$problemToDeadEnd = function (p) {
-	return A3($elm$parser$Parser$DeadEnd, p.bL, p.a6, p.bE);
+	return A3($elm$parser$Parser$DeadEnd, p.bP, p.ba, p.bI);
 };
 var $elm$parser$Parser$Advanced$bagToList = F2(
 	function (bag, list) {
@@ -7849,7 +7849,7 @@ var $elm$parser$Parser$Advanced$run = F2(
 	function (_v0, src) {
 		var parse = _v0;
 		var _v1 = parse(
-			{a6: 1, c: _List_Nil, d: 1, b: 0, bL: 1, a: src});
+			{ba: 1, c: _List_Nil, d: 1, b: 0, bP: 1, a: src});
 		if (!_v1.$) {
 			var value = _v1.b;
 			return $elm$core$Result$Ok(value);
@@ -7879,28 +7879,1078 @@ var $author$project$Main$checkFG = function (model) {
 	var _v0 = A2(
 		$elm$core$Result$andThen,
 		$author$project$Go$Featherweight$check,
-		$author$project$Go$Featherweight$parse(model.L));
+		$author$project$Go$Featherweight$parse(model.N));
 	if (!_v0.$) {
 		return _Utils_update(
 			model,
-			{J: ''});
+			{L: ''});
 	} else {
 		var err = _v0.a;
 		return _Utils_update(
 			model,
 			{
-				J: $author$project$Go$Featherweight$displayError(err)
+				L: $author$project$Go$Featherweight$displayError(err)
 			});
 	}
 };
-var $author$project$Go$Featherweight$Generics$displayError = function (err) {
-	var txt = err;
-	return $author$project$Go$Parser$Helper$displayError(txt);
+var $author$project$Go$Featherweight$Generics$TypeError = function (a) {
+	return {$: 1, a: a};
 };
-var $author$project$Go$Featherweight$Generics$ParseError = $elm$core$Basics$identity;
+var $author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition = F2(
+	function (a, b) {
+		return {$: 0, a: a, b: b};
+	});
+var $author$project$Go$Featherweight$Generics$Type$ErrorOn = F2(
+	function (a, b) {
+		return {$: 5, a: a, b: b};
+	});
+var $author$project$Go$Featherweight$Generics$Type$Undefined = F2(
+	function (a, b) {
+		return {$: 1, a: a, b: b};
+	});
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$NotSubtype = F2(
+	function (a, b) {
+		return {$: 3, a: a, b: b};
+	});
+var $author$project$Go$Featherweight$Generics$Syntax$Ty = $elm$core$Basics$identity;
+var $author$project$Go$Featherweight$Generics$Type$UnmatchTypeParams = F2(
+	function (a, b) {
+		return {$: 4, a: a, b: b};
+	});
+var $author$project$Go$Featherweight$Generics$Type$toTypeName = function (_v0) {
+	var _v1 = _v0;
+	var name = _v1.a;
+	return name;
+};
+var $author$project$Go$Featherweight$Generics$Type$buildEta = F2(
+	function (formal, actual) {
+		var _v0 = _Utils_Tuple2(formal, actual);
+		_v0$2:
+		while (true) {
+			if (!_v0.a.b) {
+				if (!_v0.b.b) {
+					return $elm$core$Result$Ok($elm$core$Dict$empty);
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.b) {
+					var _v1 = _v0.a;
+					var _v2 = _v1.a;
+					var a = _v2.a;
+					var fs = _v1.b;
+					var _v3 = _v0.b;
+					var t = _v3.a;
+					var ts = _v3.b;
+					return A2(
+						$elm$core$Result$map,
+						A2($elm$core$Dict$insert, a, t),
+						A2($author$project$Go$Featherweight$Generics$Type$buildEta, fs, ts));
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return $elm$core$Result$Err(
+			A2(
+				$author$project$Go$Featherweight$Generics$Type$UnmatchTypeParams,
+				A2($elm$core$List$map, $elm$core$Tuple$first, formal),
+				A2($elm$core$List$map, $author$project$Go$Featherweight$Generics$Type$toTypeName, actual)));
+	});
+var $author$project$Go$Featherweight$Generics$Type$findTypeLiteral = F2(
+	function (t, dmap) {
+		return A2(
+			$elm$core$Result$fromMaybe,
+			A2($author$project$Go$Featherweight$Generics$Type$Undefined, 'type literal', t),
+			A2(
+				$elm$core$Maybe$map,
+				function ($) {
+					return $.bt;
+				},
+				A2($elm$core$Dict$get, t, dmap)));
+	});
+var $elm$core$Tuple$mapBoth = F3(
+	function (funcA, funcB, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			funcA(x),
+			funcB(y));
+	});
+var $elm$core$Tuple$mapSecond = F2(
+	function (func, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			x,
+			func(y));
+	});
+var $author$project$Go$Featherweight$Generics$Type$substTypeName = F2(
+	function (eta, t) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			t,
+			A2(
+				$elm$core$Maybe$map,
+				$author$project$Go$Featherweight$Generics$Type$toTypeName,
+				A2($elm$core$Dict$get, t, eta)));
+	});
+var $author$project$Go$Featherweight$Generics$Type$substType = F2(
+	function (eta, _v0) {
+		var _v1 = _v0;
+		var t = _v1.a;
+		var tyParams = _v1.b;
+		return _Utils_Tuple2(
+			A2($author$project$Go$Featherweight$Generics$Type$substTypeName, eta, t),
+			A2(
+				$elm$core$List$map,
+				$author$project$Go$Featherweight$Generics$Type$substType(eta),
+				tyParams));
+	});
+var $author$project$Go$Featherweight$Generics$Type$substMethodSign = F2(
+	function (eta, s) {
+		return {
+			_: A2(
+				$elm$core$List$map,
+				$elm$core$Tuple$mapSecond(
+					$author$project$Go$Featherweight$Generics$Type$substType(eta)),
+				s._),
+			ab: A2(
+				$elm$core$List$map,
+				A2(
+					$elm$core$Tuple$mapBoth,
+					$author$project$Go$Featherweight$Generics$Type$substTypeName(eta),
+					$author$project$Go$Featherweight$Generics$Type$substType(eta)),
+				s.ab),
+			bN: A2($author$project$Go$Featherweight$Generics$Type$substType, eta, s.bN)
+		};
+	});
+var $author$project$Go$Featherweight$Generics$Type$uniqMethodSpec = function (s) {
+	return _Utils_Tuple3(
+		s.ae,
+		A2(
+			$elm$core$List$map,
+			A2($elm$core$Basics$composeL, $author$project$Go$Featherweight$Generics$Type$toTypeName, $elm$core$Tuple$second),
+			s.aV._),
+		$author$project$Go$Featherweight$Generics$Type$toTypeName(s.aV.bN));
+};
+var $author$project$Go$Featherweight$Generics$Type$checkBoundsWith = F3(
+	function (env, formal, actual) {
+		return A2(
+			$elm$core$Result$mapError,
+			$author$project$Go$Featherweight$Generics$Type$ErrorOn('check bounds'),
+			A2(
+				$elm$core$Result$andThen,
+				function (eta) {
+					return A2(
+						$elm$core$Result$map,
+						function (_v7) {
+							return eta;
+						},
+						A2(
+							$elm_community$result_extra$Result$Extra$combineMap,
+							function (_v6) {
+								var a = _v6.a;
+								var u = _v6.b;
+								return A3(
+									$author$project$Go$Featherweight$Generics$Type$subtypeWith,
+									env,
+									_Utils_Tuple2(a, _List_Nil),
+									u);
+							},
+							A2(
+								$elm$core$List$map,
+								A2(
+									$elm$core$Tuple$mapBoth,
+									$author$project$Go$Featherweight$Generics$Type$substTypeName(eta),
+									$author$project$Go$Featherweight$Generics$Type$substType(eta)),
+								formal)));
+				},
+				A2($author$project$Go$Featherweight$Generics$Type$buildEta, formal, actual)));
+	});
+var $author$project$Go$Featherweight$Generics$Type$methodsWith = F2(
+	function (env, _v2) {
+		methodsWith:
+		while (true) {
+			var _v3 = _v2;
+			var t = _v3.a;
+			var tyParams = _v3.b;
+			var _v4 = _Utils_Tuple2(
+				A2($elm$core$Dict$get, t, env.w),
+				A2($elm$core$Dict$get, t, env.C));
+			if (!_v4.a.$) {
+				var bound = _v4.a.a;
+				var $temp$env = env,
+					$temp$_v2 = bound;
+				env = $temp$env;
+				_v2 = $temp$_v2;
+				continue methodsWith;
+			} else {
+				if (!_v4.b.$) {
+					var decl = _v4.b.a;
+					return A2(
+						$elm$core$Result$map,
+						function (eta) {
+							return A2(
+								$elm$core$List$map,
+								function (s) {
+									return _Utils_update(
+										s,
+										{
+											aV: A2($author$project$Go$Featherweight$Generics$Type$substMethodSign, eta, s.aV)
+										});
+								},
+								decl.Q);
+						},
+						function () {
+							var _v5 = decl.bt;
+							if (!_v5.$) {
+								return A3($author$project$Go$Featherweight$Generics$Type$checkBoundsWith, env, decl.ab, tyParams);
+							} else {
+								return A2($author$project$Go$Featherweight$Generics$Type$buildEta, decl.ab, tyParams);
+							}
+						}());
+				} else {
+					return $elm$core$Result$Err(
+						A2($author$project$Go$Featherweight$Generics$Type$Undefined, 'type', t));
+				}
+			}
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$subtypeWith = F3(
+	function (env, t, u) {
+		var _v0 = _Utils_Tuple2(
+			$author$project$Go$Featherweight$Generics$Type$toTypeName(t),
+			$author$project$Go$Featherweight$Generics$Type$toTypeName(u));
+		var tname = _v0.a;
+		var uname = _v0.b;
+		var err = $elm$core$Result$Err(
+			A2($author$project$Go$Featherweight$Generics$Type$NotSubtype, tname, uname));
+		var _v1 = _Utils_Tuple2(
+			A2($elm$core$Dict$member, uname, env.w),
+			A2($author$project$Go$Featherweight$Generics$Type$findTypeLiteral, uname, env.C));
+		_v1$0:
+		while (true) {
+			if (!_v1.b.$) {
+				if (!_v1.b.a.$) {
+					if (_v1.a) {
+						break _v1$0;
+					} else {
+						return _Utils_eq(tname, uname) ? $elm$core$Result$Ok(0) : err;
+					}
+				} else {
+					if (_v1.a) {
+						break _v1$0;
+					} else {
+						return $elm_community$result_extra$Result$Extra$join(
+							A3(
+								$elm$core$Result$map2,
+								F2(
+									function (tms, ums) {
+										return A2(
+											$elm$core$List$all,
+											function (m) {
+												return A2($elm$core$List$member, m, tms);
+											},
+											ums) ? $elm$core$Result$Ok(0) : err;
+									}),
+								A2(
+									$elm$core$Result$map,
+									$elm$core$List$map($author$project$Go$Featherweight$Generics$Type$uniqMethodSpec),
+									A2($author$project$Go$Featherweight$Generics$Type$methodsWith, env, t)),
+								A2(
+									$elm$core$Result$map,
+									$elm$core$List$map($author$project$Go$Featherweight$Generics$Type$uniqMethodSpec),
+									A2($author$project$Go$Featherweight$Generics$Type$methodsWith, env, u))));
+					}
+				}
+			} else {
+				if (_v1.a) {
+					break _v1$0;
+				} else {
+					var err2 = _v1.b.a;
+					return $elm$core$Result$Err(err2);
+				}
+			}
+		}
+		return _Utils_eq(tname, uname) ? $elm$core$Result$Ok(0) : err;
+	});
+var $author$project$Go$Featherweight$Generics$Type$combine_ = A2(
+	$elm$core$Basics$composeL,
+	$elm$core$Result$map(
+		$elm$core$Basics$always(0)),
+	$elm_community$result_extra$Result$Extra$combine);
+var $author$project$Go$Featherweight$Generics$Type$checkTypeWith = F2(
+	function (env, _v0) {
+		var _v1 = _v0;
+		var name = _v1.a;
+		var tyParams = _v1.b;
+		var _v2 = _Utils_Tuple3(
+			A2($elm$core$Dict$get, name, env.C),
+			A2($elm$core$Dict$member, name, env.w),
+			tyParams);
+		if (!_v2.a.$) {
+			var decl = _v2.a.a;
+			return $author$project$Go$Featherweight$Generics$Type$combine_(
+				_List_fromArray(
+					[
+						$author$project$Go$Featherweight$Generics$Type$combine_(
+						A2(
+							$elm$core$List$map,
+							$author$project$Go$Featherweight$Generics$Type$checkTypeWith(env),
+							tyParams)),
+						A2(
+						$elm$core$Result$map,
+						function (_v3) {
+							return 0;
+						},
+						A3($author$project$Go$Featherweight$Generics$Type$checkBoundsWith, env, decl.ab, tyParams))
+					]));
+		} else {
+			if (_v2.b && (!_v2.c.b)) {
+				return $elm$core$Result$Ok(0);
+			} else {
+				return $elm$core$Result$Err(
+					A2($author$project$Go$Featherweight$Generics$Type$Undefined, 'type', name));
+			}
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$findDupItem = F2(
+	function (cache, xs) {
+		findDupItem:
+		while (true) {
+			if (!xs.b) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var y = xs.a;
+				var ys = xs.b;
+				if (A2($elm$core$Dict$member, y, cache)) {
+					return $elm$core$Maybe$Just(y);
+				} else {
+					var $temp$cache = A3($elm$core$Dict$insert, y, 0, cache),
+						$temp$xs = ys;
+					cache = $temp$cache;
+					xs = $temp$xs;
+					continue findDupItem;
+				}
+			}
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$distinct = function (xs) {
+	return A2(
+		$elm$core$Maybe$withDefault,
+		$elm$core$Result$Ok(0),
+		A2(
+			$elm$core$Maybe$map,
+			$elm$core$Result$Err,
+			A2($author$project$Go$Featherweight$Generics$Type$findDupItem, $elm$core$Dict$empty, xs)));
+};
+var $elm$core$Dict$foldl = F3(
+	function (func, acc, dict) {
+		foldl:
+		while (true) {
+			if (dict.$ === -2) {
+				return acc;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var $temp$func = func,
+					$temp$acc = A3(
+					func,
+					key,
+					value,
+					A3($elm$core$Dict$foldl, func, acc, left)),
+					$temp$dict = right;
+				func = $temp$func;
+				acc = $temp$acc;
+				dict = $temp$dict;
+				continue foldl;
+			}
+		}
+	});
+var $elm$core$Dict$union = F2(
+	function (t1, t2) {
+		return A3($elm$core$Dict$foldl, $elm$core$Dict$insert, t2, t1);
+	});
+var $author$project$Go$Featherweight$Generics$Type$checkTypeFormalWith = F2(
+	function (env, formal) {
+		var env2 = function (delta) {
+			return _Utils_update(
+				env,
+				{
+					w: A2($elm$core$Dict$union, env.w, delta)
+				});
+		}(
+			$elm$core$Dict$fromList(formal));
+		return $author$project$Go$Featherweight$Generics$Type$combine_(
+			_List_fromArray(
+				[
+					A2(
+					$elm$core$Result$mapError,
+					$author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition('type param'),
+					$author$project$Go$Featherweight$Generics$Type$distinct(
+						A2(
+							$elm$core$List$append,
+							$elm$core$Dict$keys(env.w),
+							A2($elm$core$List$map, $elm$core$Tuple$first, formal)))),
+					$author$project$Go$Featherweight$Generics$Type$combine_(
+					A2(
+						$elm$core$List$map,
+						$author$project$Go$Featherweight$Generics$Type$checkTypeWith(env2),
+						A2($elm$core$List$map, $elm$core$Tuple$second, formal)))
+				]));
+	});
+var $author$project$Go$Featherweight$Generics$Type$mergePhi = F2(
+	function (env, formal) {
+		return $elm$core$Result$Ok(
+			_Utils_update(
+				env,
+				{
+					w: A2(
+						$elm$core$Dict$union,
+						env.w,
+						$elm$core$Dict$fromList(formal))
+				}));
+	});
+var $author$project$Go$Featherweight$Generics$Type$checkMethodSpecWith = F2(
+	function (env, s) {
+		return A2(
+			$elm$core$Result$mapError,
+			$author$project$Go$Featherweight$Generics$Type$ErrorOn(s.ae),
+			A2(
+				$elm$core$Result$andThen,
+				function (env2) {
+					return $author$project$Go$Featherweight$Generics$Type$combine_(
+						A2(
+							$elm$core$List$map,
+							$author$project$Go$Featherweight$Generics$Type$checkTypeWith(env2),
+							A2(
+								$elm$core$List$cons,
+								s.aV.bN,
+								A2($elm$core$List$map, $elm$core$Tuple$second, s.aV._))));
+				},
+				A2(
+					$elm$core$Result$andThen,
+					function (_v0) {
+						return A2($author$project$Go$Featherweight$Generics$Type$mergePhi, env, s.aV.ab);
+					},
+					A2(
+						$elm$core$Result$mapError,
+						$author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition('variable'),
+						$author$project$Go$Featherweight$Generics$Type$distinct(
+							A2($elm$core$List$map, $elm$core$Tuple$first, s.aV._))))));
+	});
+var $author$project$Go$Featherweight$Generics$Type$checkTypeLitWith = F2(
+	function (env, tlit) {
+		if (!tlit.$) {
+			var fs = tlit.a;
+			return A2(
+				$elm$core$Result$mapError,
+				$author$project$Go$Featherweight$Generics$Type$ErrorOn('check struct literal'),
+				A3(
+					$elm$core$Result$map2,
+					F2(
+						function (_v1, _v2) {
+							return 0;
+						}),
+					A2(
+						$elm$core$Result$mapError,
+						$author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition('field'),
+						$author$project$Go$Featherweight$Generics$Type$distinct(
+							A2($elm$core$List$map, $elm$core$Tuple$first, fs))),
+					$author$project$Go$Featherweight$Generics$Type$combine_(
+						A2(
+							$elm$core$List$map,
+							function (_v3) {
+								var name = _v3.a;
+								var ty = _v3.b;
+								return A2(
+									$elm$core$Result$mapError,
+									$author$project$Go$Featherweight$Generics$Type$ErrorOn(name),
+									A2($author$project$Go$Featherweight$Generics$Type$checkTypeWith, env, ty));
+							},
+							fs))));
+		} else {
+			var mss = tlit.a;
+			return A2(
+				$elm$core$Result$mapError,
+				$author$project$Go$Featherweight$Generics$Type$ErrorOn('check interface literal'),
+				A3(
+					$elm$core$Result$map2,
+					F2(
+						function (_v4, _v5) {
+							return 0;
+						}),
+					A2(
+						$elm$core$Result$mapError,
+						function (_v6) {
+							var m = _v6.a;
+							return A2($author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition, 'method', m);
+						},
+						$author$project$Go$Featherweight$Generics$Type$distinct(
+							A2($elm$core$List$map, $author$project$Go$Featherweight$Generics$Type$uniqMethodSpec, mss))),
+					$author$project$Go$Featherweight$Generics$Type$combine_(
+						A2(
+							$elm$core$List$map,
+							$author$project$Go$Featherweight$Generics$Type$checkMethodSpecWith(env),
+							mss))));
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$checkTypeNameWith = F2(
+	function (dmap, t) {
+		return A2(
+			$elm$core$Result$map,
+			$elm$core$Basics$always(0),
+			A2($author$project$Go$Featherweight$Generics$Type$findTypeLiteral, t, dmap));
+	});
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $author$project$Go$Featherweight$Generics$Type$mkRecvType = F2(
+	function (formal, name) {
+		return A2(
+			$elm$core$Tuple$pair,
+			name,
+			A2(
+				$elm$core$List$map,
+				function (a) {
+					return _Utils_Tuple2(a, _List_Nil);
+				},
+				A2($elm$core$List$map, $elm$core$Tuple$first, formal)));
+	});
+var $author$project$Go$Featherweight$Generics$Type$subformalWith = F3(
+	function (env, formal1, formal2) {
+		var _v0 = _Utils_Tuple2(formal1, formal2);
+		_v0$2:
+		while (true) {
+			if (!_v0.a.b) {
+				if (!_v0.b.b) {
+					return $elm$core$Result$Ok(0);
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.b) {
+					var _v1 = _v0.a;
+					var _v2 = _v1.a;
+					var t = _v2.b;
+					var fs = _v1.b;
+					var _v3 = _v0.b;
+					var _v4 = _v3.a;
+					var u = _v4.b;
+					var hs = _v3.b;
+					return $author$project$Go$Featherweight$Generics$Type$combine_(
+						_List_fromArray(
+							[
+								A3($author$project$Go$Featherweight$Generics$Type$subtypeWith, env, t, u),
+								A3($author$project$Go$Featherweight$Generics$Type$subformalWith, env, fs, hs)
+							]));
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return $elm$core$Result$Err(
+			A2(
+				$author$project$Go$Featherweight$Generics$Type$UnmatchTypeParams,
+				A2($elm$core$List$map, $elm$core$Tuple$first, formal1),
+				A2($elm$core$List$map, $elm$core$Tuple$first, formal2)));
+	});
+var $author$project$Go$Featherweight$Generics$Type$displayExp = function (exp) {
+	switch (exp.$) {
+		case 0:
+			var name = exp.a;
+			return name;
+		case 1:
+			var mcall = exp.a;
+			return $author$project$Go$Featherweight$Generics$Type$displayExp(mcall.W) + ('.' + (mcall.bu + ('(' + (A2(
+				$elm$core$String$join,
+				', ',
+				A2($elm$core$List$map, $author$project$Go$Featherweight$Generics$Type$displayExp, mcall._)) + ')'))));
+		case 2:
+			var slit = exp.a;
+			return $author$project$Go$Featherweight$Generics$Type$toTypeName(slit.bT) + ('{' + (A2(
+				$elm$core$String$join,
+				', ',
+				A2($elm$core$List$map, $author$project$Go$Featherweight$Generics$Type$displayExp, slit._)) + '}'));
+		case 3:
+			var sel = exp.a;
+			return $author$project$Go$Featherweight$Generics$Type$displayExp(sel.W) + ('.' + sel.bm);
+		default:
+			var ta = exp.a;
+			return $author$project$Go$Featherweight$Generics$Type$displayExp(ta.W) + ('.(' + ($author$project$Go$Featherweight$Generics$Type$toTypeName(ta.bZ) + ')'));
+	}
+};
+var $author$project$Go$Featherweight$Generics$Type$ExpectStructType = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Go$Featherweight$Generics$Type$fieldsWith = F2(
+	function (env, _v0) {
+		var _v1 = _v0;
+		var t = _v1.a;
+		var tyParams = _v1.b;
+		return A2(
+			$elm$core$Result$andThen,
+			function (decl) {
+				var _v2 = decl.bt;
+				if (!_v2.$) {
+					var fs = _v2.a;
+					return A2(
+						$elm$core$Result$map,
+						function (eta) {
+							return A2(
+								$elm$core$List$map,
+								$elm$core$Tuple$mapSecond(
+									$author$project$Go$Featherweight$Generics$Type$substType(eta)),
+								fs);
+						},
+						A2($author$project$Go$Featherweight$Generics$Type$buildEta, decl.ab, tyParams));
+				} else {
+					return $elm$core$Result$Err(
+						$author$project$Go$Featherweight$Generics$Type$ExpectStructType(t));
+				}
+			},
+			A2(
+				$elm$core$Result$fromMaybe,
+				A2($author$project$Go$Featherweight$Generics$Type$Undefined, 'type', t),
+				A2($elm$core$Dict$get, t, env.C)));
+	});
+var $author$project$Go$Featherweight$Generics$Type$findFieldType = F2(
+	function (_v0, env) {
+		var t = _v0.a;
+		var name = _v0.b;
+		return A2(
+			$elm$core$Result$andThen,
+			function (fs) {
+				var _v1 = $elm$core$List$head(
+					A2(
+						$elm$core$List$filter,
+						function (_v2) {
+							var f = _v2.a;
+							return _Utils_eq(f, name);
+						},
+						fs));
+				if (!_v1.$) {
+					var _v3 = _v1.a;
+					var ty = _v3.b;
+					return $elm$core$Result$Ok(ty);
+				} else {
+					return $elm$core$Result$Err(
+						A2(
+							$author$project$Go$Featherweight$Generics$Type$ErrorOn,
+							$author$project$Go$Featherweight$Generics$Type$toTypeName(t),
+							A2($author$project$Go$Featherweight$Generics$Type$Undefined, 'field', name)));
+				}
+			},
+			A2($author$project$Go$Featherweight$Generics$Type$fieldsWith, env, t));
+	});
+var $author$project$Go$Featherweight$Generics$Type$findMethodSpecific = F2(
+	function (_v0, env) {
+		var t = _v0.a;
+		var m = _v0.b;
+		return A2(
+			$elm$core$Result$mapError,
+			$author$project$Go$Featherweight$Generics$Type$ErrorOn('find method'),
+			$elm_community$result_extra$Result$Extra$join(
+				A2(
+					$elm$core$Result$map,
+					$elm$core$Result$fromMaybe(
+						A2(
+							$author$project$Go$Featherweight$Generics$Type$Undefined,
+							'method',
+							$author$project$Go$Featherweight$Generics$Type$toTypeName(t) + ('.' + m))),
+					A2(
+						$elm$core$Result$map,
+						A2(
+							$elm$core$Basics$composeL,
+							$elm$core$List$head,
+							$elm$core$List$filter(
+								function (s) {
+									return _Utils_eq(s.ae, m);
+								})),
+						A2($author$project$Go$Featherweight$Generics$Type$methodsWith, env, t)))));
+	});
+var $author$project$Go$Featherweight$Generics$Type$typeInferWith = F2(
+	function (env, exp) {
+		switch (exp.$) {
+			case 0:
+				var name = exp.a;
+				return A2(
+					$elm$core$Result$fromMaybe,
+					A2($author$project$Go$Featherweight$Generics$Type$Undefined, 'variable', name),
+					A2($elm$core$Dict$get, name, env.ac));
+			case 1:
+				var mcall = exp.a;
+				return A2(
+					$elm$core$Result$mapError,
+					$author$project$Go$Featherweight$Generics$Type$ErrorOn(
+						$author$project$Go$Featherweight$Generics$Type$displayExp(mcall.W)),
+					A2(
+						$elm$core$Result$andThen,
+						function (s) {
+							return A2(
+								$elm$core$Result$map,
+								function (_v1) {
+									return s.aV.bN;
+								},
+								$elm_community$result_extra$Result$Extra$join(
+									A4(
+										$elm$core$Result$map3,
+										F3(
+											function (eta, ts, us) {
+												return $author$project$Go$Featherweight$Generics$Type$combine_(
+													A3(
+														$elm$core$List$map2,
+														$author$project$Go$Featherweight$Generics$Type$subtypeWith(env),
+														A2(
+															$elm$core$List$map,
+															$author$project$Go$Featherweight$Generics$Type$substType(eta),
+															ts),
+														A2(
+															$elm$core$List$map,
+															$author$project$Go$Featherweight$Generics$Type$substType(eta),
+															us)));
+											}),
+										A3($author$project$Go$Featherweight$Generics$Type$checkBoundsWith, env, s.aV.ab, mcall.b_),
+										A2(
+											$elm_community$result_extra$Result$Extra$combineMap,
+											$author$project$Go$Featherweight$Generics$Type$typeInferWith(env),
+											mcall._),
+										$elm$core$Result$Ok(
+											A2($elm$core$List$map, $elm$core$Tuple$second, s.aV._)))));
+						},
+						A2(
+							$elm$core$Result$andThen,
+							function (t) {
+								return A2(
+									$author$project$Go$Featherweight$Generics$Type$findMethodSpecific,
+									_Utils_Tuple2(t, mcall.bu),
+									env);
+							},
+							A2($author$project$Go$Featherweight$Generics$Type$typeInferWith, env, mcall.W))));
+			case 2:
+				var slit = exp.a;
+				return A2(
+					$elm$core$Result$mapError,
+					$author$project$Go$Featherweight$Generics$Type$ErrorOn('struct literal'),
+					A2(
+						$elm$core$Result$map,
+						function (_v3) {
+							return slit.bT;
+						},
+						$elm_community$result_extra$Result$Extra$join(
+							A4(
+								$elm$core$Result$map3,
+								F3(
+									function (_v2, ts, us) {
+										return $author$project$Go$Featherweight$Generics$Type$combine_(
+											A3(
+												$elm$core$List$map2,
+												$author$project$Go$Featherweight$Generics$Type$subtypeWith(env),
+												ts,
+												us));
+									}),
+								A2($author$project$Go$Featherweight$Generics$Type$checkTypeWith, env, slit.bT),
+								A2(
+									$elm_community$result_extra$Result$Extra$combineMap,
+									$author$project$Go$Featherweight$Generics$Type$typeInferWith(env),
+									slit._),
+								A2(
+									$elm$core$Result$map,
+									$elm$core$List$map($elm$core$Tuple$second),
+									A2($author$project$Go$Featherweight$Generics$Type$fieldsWith, env, slit.bT))))));
+			case 3:
+				var sel = exp.a;
+				return A2(
+					$elm$core$Result$mapError,
+					$author$project$Go$Featherweight$Generics$Type$ErrorOn('select field'),
+					A2(
+						$elm$core$Result$andThen,
+						function (t) {
+							return A2(
+								$author$project$Go$Featherweight$Generics$Type$findFieldType,
+								_Utils_Tuple2(t, sel.bm),
+								env);
+						},
+						A2($author$project$Go$Featherweight$Generics$Type$typeInferWith, env, sel.W)));
+			default:
+				var ta = exp.a;
+				return A2(
+					$elm$core$Result$map,
+					function (_v5) {
+						return ta.bZ;
+					},
+					$elm_community$result_extra$Result$Extra$join(
+						A3(
+							$elm$core$Result$map2,
+							function (_v4) {
+								return A2($author$project$Go$Featherweight$Generics$Type$subtypeWith, env, ta.bZ);
+							},
+							A2($author$project$Go$Featherweight$Generics$Type$checkTypeWith, env, ta.bZ),
+							A2($author$project$Go$Featherweight$Generics$Type$typeInferWith, env, ta.W))));
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$checkDeclWith = F2(
+	function (env, d) {
+		if (!d.$) {
+			var decl = d.a;
+			return A2(
+				$elm$core$Result$mapError,
+				$author$project$Go$Featherweight$Generics$Type$ErrorOn(decl.ae),
+				$author$project$Go$Featherweight$Generics$Type$combine_(
+					_List_fromArray(
+						[
+							A2($author$project$Go$Featherweight$Generics$Type$checkTypeFormalWith, env, decl.ab),
+							A2(
+							$elm$core$Result$andThen,
+							function (env2) {
+								return A2($author$project$Go$Featherweight$Generics$Type$checkTypeLitWith, env2, decl.bt);
+							},
+							A2($author$project$Go$Featherweight$Generics$Type$mergePhi, env, decl.ab))
+						])));
+		} else {
+			var decl = d.a;
+			return A2(
+				$elm$core$Result$mapError,
+				$author$project$Go$Featherweight$Generics$Type$ErrorOn(decl.bJ.b + ('.' + decl.ae)),
+				A2(
+					$elm$core$Result$andThen,
+					function (env2) {
+						return $author$project$Go$Featherweight$Generics$Type$combine_(
+							_List_fromArray(
+								[
+									A2(
+									$elm$core$Result$mapError,
+									$author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition('variable'),
+									$author$project$Go$Featherweight$Generics$Type$distinct(
+										A2(
+											$elm$core$List$cons,
+											decl.bJ.a,
+											A2($elm$core$List$map, $elm$core$Tuple$first, decl.aV._)))),
+									A2(
+									$elm$core$Result$mapError,
+									$author$project$Go$Featherweight$Generics$Type$ErrorOn('receive'),
+									A2(
+										$elm$core$Result$andThen,
+										A2($author$project$Go$Featherweight$Generics$Type$subformalWith, env2, decl.ab),
+										A2(
+											$elm$core$Result$map,
+											function ($) {
+												return $.ab;
+											},
+											A2(
+												$elm$core$Result$fromMaybe,
+												A2($author$project$Go$Featherweight$Generics$Type$Undefined, 'type', decl.bJ.b),
+												A2($elm$core$Dict$get, decl.bJ.b, env2.C))))),
+									A2($author$project$Go$Featherweight$Generics$Type$checkTypeNameWith, env2.C, decl.bJ.b),
+									A2(
+									$elm$core$Result$mapError,
+									$author$project$Go$Featherweight$Generics$Type$ErrorOn('args'),
+									$author$project$Go$Featherweight$Generics$Type$combine_(
+										A2(
+											$elm$core$List$map,
+											$author$project$Go$Featherweight$Generics$Type$checkTypeWith(env2),
+											A2($elm$core$List$map, $elm$core$Tuple$second, decl.aV._)))),
+									A2($author$project$Go$Featherweight$Generics$Type$checkTypeWith, env2, decl.aV.bN),
+									A2(
+									$elm$core$Result$andThen,
+									function (t) {
+										return A3($author$project$Go$Featherweight$Generics$Type$subtypeWith, env2, t, decl.aV.bN);
+									},
+									function (g) {
+										return A2(
+											$author$project$Go$Featherweight$Generics$Type$typeInferWith,
+											_Utils_update(
+												env2,
+												{ac: g}),
+											decl.bO);
+									}(
+										$elm$core$Dict$fromList(
+											A2(
+												$elm$core$List$cons,
+												A2(
+													$elm$core$Tuple$mapSecond,
+													$author$project$Go$Featherweight$Generics$Type$mkRecvType(decl.ab),
+													decl.bJ),
+												decl.aV._))))
+								]));
+					},
+					A2(
+						$elm$core$Result$andThen,
+						function (env2) {
+							return A2($author$project$Go$Featherweight$Generics$Type$mergePhi, env2, decl.aV.ab);
+						},
+						A2($author$project$Go$Featherweight$Generics$Type$mergePhi, env, decl.ab))));
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$mdecls = $elm$core$List$filterMap(
+	function (x) {
+		if (x.$ === 1) {
+			var decl = x.a;
+			return $elm$core$Maybe$Just(
+				_Utils_Tuple2(decl.bJ.b, decl.ae));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$Env = F3(
+	function (gamma, delta, dmap) {
+		return {w: delta, C: dmap, ac: gamma};
+	});
+var $author$project$Go$Featherweight$Generics$Type$mkDeclMap = function (decls) {
+	var update = F2(
+		function (decl, dmap) {
+			return _Utils_update(
+				dmap,
+				{
+					Q: A2(
+						$elm$core$List$cons,
+						{ae: decl.ae, aV: decl.aV},
+						dmap.Q)
+				});
+		});
+	return A3(
+		$elm$core$List$foldl,
+		function (d) {
+			if (!d.$) {
+				return $elm$core$Basics$identity;
+			} else {
+				var decl = d.a;
+				return A2(
+					$elm$core$Dict$update,
+					decl.bJ.b,
+					$elm$core$Maybe$map(
+						update(decl)));
+			}
+		},
+		$elm$core$Dict$fromList(
+			A2(
+				$elm$core$List$filterMap,
+				function (t) {
+					if (!t.$) {
+						var decl = t.a;
+						return $elm$core$Maybe$Just(
+							function () {
+								var _v2 = decl.bt;
+								if (!_v2.$) {
+									return _Utils_Tuple2(
+										decl.ae,
+										{ab: decl.ab, bt: decl.bt, Q: _List_Nil});
+								} else {
+									var methods = _v2.a;
+									return _Utils_Tuple2(
+										decl.ae,
+										{ab: decl.ab, bt: decl.bt, Q: methods});
+								}
+							}());
+					} else {
+						return $elm$core$Maybe$Nothing;
+					}
+				},
+				decls)),
+		decls);
+};
+var $author$project$Go$Featherweight$Generics$Type$newEnv = function (decls) {
+	return A3(
+		$author$project$Go$Featherweight$Generics$Type$Env,
+		$elm$core$Dict$empty,
+		$elm$core$Dict$empty,
+		$author$project$Go$Featherweight$Generics$Type$mkDeclMap(decls));
+};
+var $author$project$Go$Featherweight$Generics$Type$tdecls = $elm$core$List$filterMap(
+	function (x) {
+		if (!x.$) {
+			var decl = x.a;
+			return $elm$core$Maybe$Just(decl.ae);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Go$Featherweight$Generics$Type$check = function (p) {
+	var env = $author$project$Go$Featherweight$Generics$Type$newEnv(p.bc);
+	return $author$project$Go$Featherweight$Generics$Type$combine_(
+		_List_fromArray(
+			[
+				A2(
+				$elm$core$Result$mapError,
+				$author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition('type'),
+				$author$project$Go$Featherweight$Generics$Type$distinct(
+					$author$project$Go$Featherweight$Generics$Type$tdecls(p.bc))),
+				A2(
+				$elm$core$Result$mapError,
+				function (_v0) {
+					var x = _v0.a;
+					var y = _v0.b;
+					return A2($author$project$Go$Featherweight$Generics$Type$DuplicatedDefinition, 'method', x + ('.' + y));
+				},
+				$author$project$Go$Featherweight$Generics$Type$distinct(
+					$author$project$Go$Featherweight$Generics$Type$mdecls(p.bc))),
+				$author$project$Go$Featherweight$Generics$Type$combine_(
+				A2(
+					$elm$core$List$map,
+					$author$project$Go$Featherweight$Generics$Type$checkDeclWith(env),
+					p.bc)),
+				A2(
+				$elm$core$Result$map,
+				$elm$core$Basics$always(0),
+				A2($author$project$Go$Featherweight$Generics$Type$typeInferWith, env, p.W))
+			]));
+};
+var $author$project$Go$Featherweight$Generics$check = A2(
+	$elm$core$Basics$composeL,
+	$elm$core$Result$mapError($author$project$Go$Featherweight$Generics$TypeError),
+	$author$project$Go$Featherweight$Generics$Type$check);
+var $author$project$Go$Featherweight$Generics$Type$displayError = function (err) {
+	switch (err.$) {
+		case 0:
+			var key = err.a;
+			var val = err.b;
+			return 'duplicated ' + (key + (' \'' + (val + '\'')));
+		case 1:
+			var key = err.a;
+			var val = err.b;
+			return 'undefined ' + (key + (' \'' + (val + '\'')));
+		case 2:
+			var t = err.a;
+			return 'type \'' + (t + '\' is interface, but expected to structure');
+		case 3:
+			var t = err.a;
+			var u = err.b;
+			return 'type \'' + (t + ('\' is not subtype of \'' + (u + '\'')));
+		case 4:
+			return 'unmatch type params size';
+		default:
+			var val = err.a;
+			var e = err.b;
+			return $author$project$Go$Featherweight$Generics$Type$displayError(e) + (' on \'' + (val + '\''));
+	}
+};
+var $author$project$Go$Featherweight$Generics$displayError = function (err) {
+	if (!err.$) {
+		var txt = err.a;
+		return $author$project$Go$Parser$Helper$displayError(txt);
+	} else {
+		var e = err.a;
+		return $author$project$Go$Featherweight$Generics$Type$displayError(e);
+	}
+};
+var $author$project$Go$Featherweight$Generics$ParseError = function (a) {
+	return {$: 0, a: a};
+};
 var $author$project$Go$Featherweight$Generics$Syntax$Program = F2(
 	function (decls, exp) {
-		return {a8: decls, T: exp};
+		return {bc: decls, W: exp};
 	});
 var $author$project$Go$Featherweight$Generics$Syntax$MDecl = function (a) {
 	return {$: 1, a: a};
@@ -7917,7 +8967,6 @@ var $author$project$Go$Featherweight$Generics$Syntax$SelectField = function (a) 
 var $author$project$Go$Featherweight$Generics$Syntax$StructLiteral = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Go$Featherweight$Generics$Syntax$Ty = $elm$core$Basics$identity;
 var $author$project$Go$Featherweight$Generics$Syntax$TypeAssertion = function (a) {
 	return {$: 4, a: a};
 };
@@ -7929,15 +8978,11 @@ var $author$project$Go$Featherweight$Generics$Syntax$keywords = $elm$core$Set$fr
 		['package', 'main', 'func', 'struct', 'interface', 'type', 'return']));
 var $author$project$Go$Featherweight$Generics$Syntax$nameParser = $elm$parser$Parser$variable(
 	{
-		bm: function (c) {
+		bq: function (c) {
 			return $elm$core$Char$isAlphaNum(c) || (c === '_');
 		},
-		bH: $author$project$Go$Featherweight$Generics$Syntax$keywords,
-		bO: $elm$core$Char$isAlphaNum
-	});
-var $elm$core$Tuple$pair = F2(
-	function (a, b) {
-		return _Utils_Tuple2(a, b);
+		bL: $author$project$Go$Featherweight$Generics$Syntax$keywords,
+		bS: $elm$core$Char$isAlphaNum
 	});
 function $author$project$Go$Featherweight$Generics$Syntax$cyclic$typeParser() {
 	return A2(
@@ -7978,7 +9023,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$expParserWithExp = function
 					$elm$parser$Parser$succeed(
 						function (ty) {
 							return $author$project$Go$Featherweight$Generics$Syntax$TypeAssertion(
-								{T: exp, bV: ty});
+								{W: exp, bZ: ty});
 						}),
 					$elm$parser$Parser$symbol('(')),
 				A2(
@@ -8003,7 +9048,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$expParserWithExpAndName = F
 							var ts = _v1.a;
 							var xs = _v1.b;
 							return $author$project$Go$Featherweight$Generics$Syntax$MethodCall(
-								{X: xs, T: exp, bq: name, bW: ts});
+								{_: xs, W: exp, bu: name, b_: ts});
 						}),
 					$elm$parser$Parser$oneOf(
 						_List_fromArray(
@@ -8039,7 +9084,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$expParserWithExpAndName = F
 							]))),
 					$elm$parser$Parser$succeed(
 					$author$project$Go$Featherweight$Generics$Syntax$SelectField(
-						{T: exp, bi: name}))
+						{W: exp, bm: name}))
 				]));
 	});
 var $author$project$Go$Featherweight$Generics$Syntax$expParserWithName = function (name) {
@@ -8087,7 +9132,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$structLiteralParser = funct
 		$elm$parser$Parser$succeed(
 			function (args) {
 				return $author$project$Go$Featherweight$Generics$Syntax$StructLiteral(
-					{X: args, bP: ty});
+					{_: args, bT: ty});
 			}),
 		A2(
 			$author$project$Go$Parser$Helper$blockWith,
@@ -8139,7 +9184,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$formalParser = function () 
 }();
 var $author$project$Go$Featherweight$Generics$Syntax$MethodSignature = F3(
 	function (formal, args, rett) {
-		return {X: args, Z: formal, bJ: rett};
+		return {_: args, ab: formal, bN: rett};
 	});
 var $author$project$Go$Featherweight$Generics$Syntax$nameAndTypeParser = A2(
 	$elm$parser$Parser$keeper,
@@ -8187,7 +9232,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$Structure = function (a) {
 };
 var $author$project$Go$Featherweight$Generics$Syntax$MethodSpecific = F2(
 	function (name, sign) {
-		return {aa: name, aR: sign};
+		return {ae: name, aV: sign};
 	});
 var $author$project$Go$Featherweight$Generics$Syntax$methodSpecificParser = A2(
 	$elm$parser$Parser$keeper,
@@ -8255,7 +9300,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$declParser = $elm$parser$Pa
 								F3(
 									function (name, fm, lit) {
 										return $author$project$Go$Featherweight$Generics$Syntax$TDecl(
-											{Z: fm, bp: lit, aa: name});
+											{ab: fm, bt: lit, ae: name});
 									})),
 							$elm$parser$Parser$keyword('type')),
 						$author$project$Go$Parser$Helper$whitespaces),
@@ -8282,7 +9327,7 @@ var $author$project$Go$Featherweight$Generics$Syntax$declParser = $elm$parser$Pa
 											F5(
 												function (r, f, n, s, v) {
 													return $author$project$Go$Featherweight$Generics$Syntax$MDecl(
-														{Z: f, aa: n, bF: r, bK: v, aR: s});
+														{ab: f, ae: n, bJ: r, bO: v, aV: s});
 												})),
 										$elm$parser$Parser$keyword('func')),
 									$elm$parser$Parser$spaces),
@@ -8386,20 +9431,23 @@ var $author$project$Go$Featherweight$Generics$Syntax$parser = function () {
 }();
 var $author$project$Go$Featherweight$Generics$parse = A2(
 	$elm$core$Basics$composeL,
-	$elm$core$Result$mapError($elm$core$Basics$identity),
+	$elm$core$Result$mapError($author$project$Go$Featherweight$Generics$ParseError),
 	$elm$parser$Parser$run($author$project$Go$Featherweight$Generics$Syntax$parser));
 var $author$project$Main$checkFGG = function (model) {
-	var _v0 = $author$project$Go$Featherweight$Generics$parse(model.M);
+	var _v0 = A2(
+		$elm$core$Result$andThen,
+		$author$project$Go$Featherweight$Generics$check,
+		$author$project$Go$Featherweight$Generics$parse(model.O));
 	if (!_v0.$) {
 		return _Utils_update(
 			model,
-			{K: ''});
+			{M: ''});
 	} else {
 		var err = _v0.a;
 		return _Utils_update(
 			model,
 			{
-				K: $author$project$Go$Featherweight$Generics$displayError(err)
+				M: $author$project$Go$Featherweight$Generics$displayError(err)
 			});
 	}
 };
@@ -8411,7 +9459,7 @@ var $author$project$Main$update = F2(
 				$author$project$Main$checkFGG(
 					_Utils_update(
 						model,
-						{M: txt})),
+						{O: txt})),
 				$elm$core$Platform$Cmd$none);
 		} else {
 			var txt = msg.a;
@@ -8419,7 +9467,7 @@ var $author$project$Main$update = F2(
 				$author$project$Main$checkFG(
 					_Utils_update(
 						model,
-						{L: txt})),
+						{N: txt})),
 				$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -8448,11 +9496,11 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 	});
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $author$project$Main$isEmptyFG = function (model) {
-	return model.L === '';
+	return model.N === '';
 };
 var $elm$core$Basics$neq = _Utils_notEqual;
 var $author$project$Main$isErrorFG = function (model) {
-	return model.J !== '';
+	return model.L !== '';
 };
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
@@ -8501,7 +9549,7 @@ var $author$project$Main$viewFormValidateFG = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$elm$html$Html$text(model.J)
+				$elm$html$Html$text(model.L)
 			])) : A2(
 		$elm$html$Html$p,
 		_List_fromArray(
@@ -8553,7 +9601,7 @@ var $author$project$Main$viewFormFG = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(model.L)
+								$elm$html$Html$text(model.N)
 							]))
 					])),
 				$author$project$Main$viewFormValidateFG(model)
@@ -8563,10 +9611,10 @@ var $author$project$Main$InputFGG = function (a) {
 	return {$: 0, a: a};
 };
 var $author$project$Main$isEmptyFGG = function (model) {
-	return model.M === '';
+	return model.O === '';
 };
 var $author$project$Main$isErrorFGG = function (model) {
-	return model.K !== '';
+	return model.M !== '';
 };
 var $author$project$Main$viewFormValidateFGG = function (model) {
 	return $author$project$Main$isEmptyFGG(model) ? A2($elm$html$Html$p, _List_Nil, _List_Nil) : ($author$project$Main$isErrorFGG(model) ? A2(
@@ -8578,7 +9626,7 @@ var $author$project$Main$viewFormValidateFGG = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$elm$html$Html$text(model.K)
+				$elm$html$Html$text(model.M)
 			])) : A2(
 		$elm$html$Html$p,
 		_List_fromArray(
@@ -8588,7 +9636,7 @@ var $author$project$Main$viewFormValidateFGG = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$elm$html$Html$text('parse OK')
+				$elm$html$Html$text('OK')
 			])));
 };
 var $author$project$Main$viewFormFGG = function (model) {
@@ -8630,7 +9678,7 @@ var $author$project$Main$viewFormFGG = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(model.M)
+								$elm$html$Html$text(model.O)
 							]))
 					])),
 				$author$project$Main$viewFormValidateFGG(model)
@@ -8694,12 +9742,12 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		bl: $author$project$Main$init,
-		bQ: function (_v0) {
+		bp: $author$project$Main$init,
+		bU: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		bX: $author$project$Main$update,
-		bY: $author$project$Main$view
+		b$: $author$project$Main$update,
+		b0: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

@@ -11,7 +11,7 @@ Implement [Featherweight Go](https://arxiv.org/abs/2005.11710) using Elm
 - [x] FG code parser
 - [x] FG type checker
 - [x] FGG code parser
-- [ ] FGG type checker
+- [x] FGG type checker
 - [ ] Monomorphisation
 
 ## Build
